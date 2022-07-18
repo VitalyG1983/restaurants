@@ -16,8 +16,8 @@ spring:
         jdbc.batch_size: 20
   datasource:
     # ImMemory
-    url: jdbc:h2:mem:topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/mem:topjava
+    url: jdbc:h2:mem:restaurants
+    #    tcp: jdbc:h2:tcp://localhost:9092/mem:restaurants
     # Absolute path
     #    url: jdbc:h2:C:/projects/bootjava/db/topjava
     #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/topjava
