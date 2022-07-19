@@ -1,8 +1,8 @@
-package com.github.vitaly1983g.restaurants.web.meal;
+package com.github.vitaly1983g.restaurants.web.dish;
 
 
 import com.github.vitaly1983g.restaurants.model.Dish;
-import com.github.vitaly1983g.restaurants.repository.MealRepository;
+import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import com.github.vitaly1983g.restaurants.util.MealsUtil;
 import com.github.vitaly1983g.restaurants.web.AbstractControllerTest;
@@ -29,7 +29,7 @@ class DishControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealController.REST_URL + '/';
 
     @Autowired
-    private MealRepository mealRepository;
+    private DishRepository dishRepository;
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
@@ -60,7 +60,7 @@ class DishControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + MealTestData.LUNCH1_ID))
                 .andExpect(status().isNoContent());
-        assertFalse(mealRepository.get(MealTestData.LUNCH1_ID, UserTestData.USER_ID).isPresent());
+        assertFalse(dishRepository.get(MealTestData.LUNCH1_ID, UserTestData.USER_ID).isPresent());
     }
 
     @Test
@@ -79,7 +79,7 @@ class DishControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        MealTestData.MEAL_MATCHER.assertMatch(mealRepository.getById(MealTestData.LUNCH1_ID), updated);
+        MealTestData.MEAL_MATCHER.assertMatch(dishRepository.getById(MealTestData.LUNCH1_ID), updated);
     }
 
     @Test
@@ -94,7 +94,7 @@ class DishControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newDish.setId(newId);
         MealTestData.MEAL_MATCHER.assertMatch(created, newDish);
-        MealTestData.MEAL_MATCHER.assertMatch(mealRepository.getById(newId), newDish);
+        MealTestData.MEAL_MATCHER.assertMatch(dishRepository.getById(newId), newDish);
     }
 
     @Test

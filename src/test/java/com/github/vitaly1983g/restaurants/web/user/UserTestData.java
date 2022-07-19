@@ -4,7 +4,7 @@ import com.github.vitaly1983g.restaurants.model.Role;
 import com.github.vitaly1983g.restaurants.model.User;
 import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import com.github.vitaly1983g.restaurants.web.MatcherFactory;
-import com.github.vitaly1983g.restaurants.web.meal.MealTestData;
+import com.github.vitaly1983g.restaurants.web.dish.MealTestData;
 
 import java.util.Collections;
 import java.util.Date;

@@ -27,16 +27,16 @@ public class Dish extends NamedEntity {
     @Range(min = 10, max = 5000)
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+   /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference
     @Schema(hidden = true)
-    private User user;
+    private User user;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "rest_id", nullable = false)
+    @JoinColumn(name = "rest_id", nullable = false)
     @JsonBackReference
-    @Schema(hidden = true)
+    //@Schema(hidden = true)
     private Restaurant restaurant;
 
     public Dish(Integer id, LocalDate createdDate, String name, int price) {
