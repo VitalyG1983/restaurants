@@ -1,6 +1,11 @@
-package com.github.vitaly1983g.restaurants.web.meal;
+package com.github.vitaly1983g.restaurants.web.dish;
 
+import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.repository.DishRepository;
+import com.github.vitaly1983g.restaurants.service.MealService;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
+import com.github.vitaly1983g.restaurants.util.MealsUtil;
+import com.github.vitaly1983g.restaurants.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,11 +16,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.vitaly1983g.restaurants.model.Dish;
-import com.github.vitaly1983g.restaurants.repository.MealRepository;
-import com.github.vitaly1983g.restaurants.service.MealService;
-import com.github.vitaly1983g.restaurants.util.MealsUtil;
-import com.github.vitaly1983g.restaurants.web.AuthUser;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -29,18 +29,18 @@ import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = MealController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class MealController {
-    static final String REST_URL = "/api/profile/meals";
+public class DishController {
+    static final String REST_URL = "/api/admin/dishes";
 
-    private final MealRepository repository;
+    private final DishRepository repository;
     private final MealService service;
 
     @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
-        log.info("get meal {} for user {}", id, authUser.id());
+        log.info("get dish {} for user {}", id, authUser.id());
         return ResponseEntity.of(repository.get(id, authUser.id()));
     }
 

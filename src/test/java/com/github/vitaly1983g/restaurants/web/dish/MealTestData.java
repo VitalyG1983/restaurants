@@ -1,4 +1,4 @@
-package com.github.vitaly1983g.restaurants.web.meal;
+package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.to.LunchTo;

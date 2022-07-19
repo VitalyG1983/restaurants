@@ -9,9 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -19,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"restaurant"})
+@ToString(callSuper = true)//, exclude = {"restaurant"})
 public class Restaurant extends NamedEntity{
 
    // @Column(name = "menu_date")//, nullable = false)
@@ -35,7 +33,7 @@ public class Restaurant extends NamedEntity{
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("name")
+    @OrderBy("createdDate, name")
     @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
