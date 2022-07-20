@@ -74,7 +74,7 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @JsonManagedReference
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
-    private List<Dish> dishes;
+    private List<Restaurant> restaurants;
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.caloriesPerDay, u.enabled, u.registered, u.roles);

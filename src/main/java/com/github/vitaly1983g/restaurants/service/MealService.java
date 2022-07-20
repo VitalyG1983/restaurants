@@ -1,6 +1,6 @@
 package com.github.vitaly1983g.restaurants.service;
 
-import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -14,8 +14,8 @@ public class MealService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Dish save(Dish dish, int userId) {
+    public Menu save(Menu menu, int userId) {
         //dish.setRestaurant(userRepository.getById(restaurant));
-        return dishRepository.save(dish);
+        return dishRepository.save(menu);
     }
 }
