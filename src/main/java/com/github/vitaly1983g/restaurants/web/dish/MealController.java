@@ -11,7 +11,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.service.MealService;
 import com.github.vitaly1983g.restaurants.util.MealsUtil;
@@ -39,7 +39,7 @@ public class MealController {
     private final MealService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dish> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
+    public ResponseEntity<Menu> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("get dish {} for user {}", id, authUser.id());
         return ResponseEntity.of(repository.get(id, authUser.id()));
     }
@@ -48,8 +48,8 @@ public class MealController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
         log.info("delete {} for user {}", id, authUser.id());
-        Dish dish = repository.checkBelong(id, authUser.id());
-        repository.delete(dish);
+        Menu menu = repository.checkBelong(id, authUser.id());
+        repository.delete(menu);
     }
 
     @GetMapping
@@ -61,20 +61,20 @@ public class MealController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Dish dish, @PathVariable int id) {
+    public void update(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Menu menu, @PathVariable int id) {
         int userId = authUser.id();
-        log.info("update {} for user {}", dish, userId);
-        assureIdConsistent(dish, id);
+        log.info("update {} for user {}", menu, userId);
+        assureIdConsistent(menu, id);
         repository.checkBelong(id, userId);
-        service.save(dish, userId);
+        service.save(menu, userId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Dish dish) {
+    public ResponseEntity<Menu> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Menu menu) {
         int userId = authUser.id();
-        log.info("create {} for user {}", dish, userId);
-        checkNew(dish);
-        Dish created = service.save(dish, userId);
+        log.info("create {} for user {}", menu, userId);
+        checkNew(menu);
+        Menu created = service.save(menu, userId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -91,7 +91,7 @@ public class MealController {
 
         int userId = authUser.id();
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
-        List<Dish> mealsDateFiltered = repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), userId);
+        List<Menu> mealsDateFiltered = repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), userId);
         //return MealsUtil.getFilteredTos(mealsDateFiltered, authUser.getUser().getCaloriesPerDay(), startTime, endTime);
         return MealsUtil.getTos(mealsDateFiltered, authUser.getUser().getCaloriesPerDay());
     }

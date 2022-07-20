@@ -6,6 +6,7 @@ import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import com.github.vitaly1983g.restaurants.web.MatcherFactory;
 import com.github.vitaly1983g.restaurants.web.dish.MealTestData;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -36,8 +37,8 @@ public class UserTestData {
     public static final User guest = new User(GUEST_ID, "Guest", GUEST_MAIL, "guest", 2000);
 
     static {
-        user.setDishes(MealTestData.dishes);
-        admin.setDishes(List.of(MealTestData.adminDish2, MealTestData.adminDish1));
+        user.setRestaurants(new ArrayList<>());
+        //admin.setMenus(List.of(MealTestData.adminMenu2, MealTestData.adminMenu1));
     }
 
     public static User getNew() {
