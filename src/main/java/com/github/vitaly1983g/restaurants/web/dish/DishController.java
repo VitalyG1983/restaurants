@@ -1,7 +1,7 @@
 package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Menu;
-import com.github.vitaly1983g.restaurants.repository.DishRepository;
+import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import com.github.vitaly1983g.restaurants.service.MealService;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
 import com.github.vitaly1983g.restaurants.util.MealsUtil;
@@ -35,7 +35,7 @@ import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.
 public class DishController {
     static final String REST_URL = "/api/admin/dishes";
 
-    private final DishRepository repository;
+    private final MenuRepository repository;
     private final MealService service;
 
     @GetMapping("/{id}")

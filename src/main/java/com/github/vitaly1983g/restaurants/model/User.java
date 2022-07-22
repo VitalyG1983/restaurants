@@ -69,12 +69,12 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = UserUtil.DEFAULT_CALORIES_PER_DAY;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("name")
-    @JsonManagedReference
+    @OneToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    //@JsonManagedReference
+    @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @Schema(hidden = true)
-    private List<Restaurant> restaurants;
+    //@Schema(hidden = true)
+    private Vote vote;
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.caloriesPerDay, u.enabled, u.registered, u.roles);

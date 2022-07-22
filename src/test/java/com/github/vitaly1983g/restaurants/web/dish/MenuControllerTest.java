@@ -2,7 +2,7 @@ package com.github.vitaly1983g.restaurants.web.dish;
 
 
 import com.github.vitaly1983g.restaurants.model.Menu;
-import com.github.vitaly1983g.restaurants.repository.DishRepository;
+import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import com.github.vitaly1983g.restaurants.util.MealsUtil;
 import com.github.vitaly1983g.restaurants.web.AbstractControllerTest;
@@ -16,8 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,7 +27,7 @@ class MenuControllerTest extends AbstractControllerTest {
     private static final String REST_URL = MealController.REST_URL + '/';
 
     @Autowired
-    private DishRepository dishRepository;
+    private MenuRepository menuRepository;
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
@@ -60,7 +58,7 @@ class MenuControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + MealTestData.MENU1_ID))
                 .andExpect(status().isNoContent());
-        assertFalse(dishRepository.get(MealTestData.MENU1_ID, UserTestData.USER_ID).isPresent());
+        assertFalse(menuRepository.get(MealTestData.MENU1_ID, UserTestData.USER_ID).isPresent());
     }
 
     @Test
@@ -79,7 +77,7 @@ class MenuControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        MealTestData.MEAL_MATCHER.assertMatch(dishRepository.getById(MealTestData.MENU1_ID), updated);
+        MealTestData.MEAL_MATCHER.assertMatch(menuRepository.getById(MealTestData.MENU1_ID), updated);
     }
 
     @Test
@@ -94,7 +92,7 @@ class MenuControllerTest extends AbstractControllerTest {
         int newId = created.id();
         newMenu.setId(newId);
         MealTestData.MEAL_MATCHER.assertMatch(created, newMenu);
-        MealTestData.MEAL_MATCHER.assertMatch(dishRepository.getById(newId), newMenu);
+        MealTestData.MEAL_MATCHER.assertMatch(menuRepository.getById(newId), newMenu);
     }
 
     @Test
