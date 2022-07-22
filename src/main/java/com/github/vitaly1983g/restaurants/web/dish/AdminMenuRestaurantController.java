@@ -2,7 +2,7 @@ package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.MenuRepository;
-import com.github.vitaly1983g.restaurants.service.MealService;
+import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
 import com.github.vitaly1983g.restaurants.util.MealsUtil;
 import com.github.vitaly1983g.restaurants.web.AuthUser;
@@ -29,35 +29,47 @@ import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminMenuRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class DishController {
-    static final String REST_URL = "/api/admin/dishes";
+public class AdminMenuRestaurantController {
+    static final String REST_URL = "/api/admin/restaurants/{restId}/menus";
 
     private final MenuRepository repository;
-    private final MealService service;
+    private final MenuService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Menu> get(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
-        log.info("get dish {} for user {}", id, authUser.id());
-        return ResponseEntity.of(repository.get(id, authUser.id()));
+    @GetMapping("/{menuId}")
+    public ResponseEntity<Menu> get(@PathVariable int menuId, @PathVariable int restId) {
+        log.info("get menu with id={} of restaurant {}", menuId, restId);
+        return ResponseEntity.of(repository.get(menuId, restId));
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id) {
-        log.info("delete {} for user {}", id, authUser.id());
-        Menu menu = repository.checkBelong(id, authUser.id());
-        repository.delete(menu);
+    @GetMapping("/by-date")
+    public ResponseEntity<Menu> getByDate(@PathVariable int restId,
+                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        log.info("get menu on date {} of restaurant {}", menuDate, restId);
+        return ResponseEntity.of(repository.getByDate(menuDate, restId));
+    }
+
+    @GetMapping("/{menuId}")
+    public ResponseEntity<Menu> getWithDish(@PathVariable int menuId, @PathVariable int restId) {
+        log.info("get menu {} of restaurant {}", menuId, restId);
+        return ResponseEntity.of(repository.getWithDish(menuId, restId));
     }
 
     @GetMapping
-    public List<LunchTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("getAll for user {}", authUser.id());
-        return MealsUtil.getTos(repository.getAll(authUser.id()), authUser.getUser().getCaloriesPerDay());
+    public List<Menu> getAll(@PathVariable int restId) {
+        log.info("getAll of restaurant {}", restId);
+        return repository.getAll(restId);
     }
 
+    @DeleteMapping("/{menuId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int menuId, @PathVariable int restId) {
+        log.info("delete menu {} of restaurant {}", menuId, restId);
+        Menu menu = repository.checkBelong(menuId, restId);
+        repository.delete(menu);
+    }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
