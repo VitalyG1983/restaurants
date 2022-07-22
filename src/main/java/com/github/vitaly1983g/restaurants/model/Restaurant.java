@@ -1,5 +1,7 @@
 package com.github.vitaly1983g.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -26,11 +28,14 @@ public class Restaurant extends NamedEntity{
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    //@OrderBy("menuDate, name")
-    //@JsonManagedReference
+    @OrderBy("menuDate, restaurant")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
     private List<Menu> menu;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("name")
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @Schema(hidden = true)
+    private List<Dish> dishes;
 }

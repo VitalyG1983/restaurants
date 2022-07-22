@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MenuControllerTest extends AbstractControllerTest {
+class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = MealController.REST_URL + '/';
 

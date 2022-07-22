@@ -1,6 +1,7 @@
 package com.github.vitaly1983g.restaurants.repository;
 
 import com.github.vitaly1983g.restaurants.error.DataConflictException;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import com.github.vitaly1983g.restaurants.model.Menu;
@@ -19,18 +20,19 @@ public interface MenuRepository extends BaseRepository<Menu> {
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
     Optional<Menu> get(int id, int restId);
 
-    @Query("SELECT m FROM Menu m WHERE m.menuDate = :menuDate and m.restaurant.id = :restId")
+    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    // @Query("SELECT m FROM Menu m JOIN FETCH m.restaurant JOIN FETCH m.dishes WHERE m.id = :id and m.restaurant.id = :restId")
+    @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
+    Optional<Menu> getWithDish(int id, int restId);
+
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId and m.menuDate = :menuDate")
     Optional<Menu> getByDate(LocalDate menuDate, int restId);
 
-    @Query("SELECT m from Menu m WHERE m.restaurant.id=:userId AND m.menuDate >= :startDate AND m.menuDate < :endDate ORDER BY m.menuDate DESC")
-    List<Menu> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int userId);
+    @Query("SELECT m from Menu m WHERE m.restaurant.id=:restId AND m.menuDate >= :startDate AND m.menuDate < :endDate ORDER BY m.menuDate DESC")
+    List<Menu> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int restId);
 
-
-    @Query("SELECT m FROM Menu m JOIN FETCH m.restaurant WHERE m.id = :id and m.restaurant.id = :userId")
-    Optional<Menu> getWithUser(int id, int userId);
-
-    default Menu checkBelong(int id, int userId) {
-        return get(id, userId).orElseThrow(
-                () -> new DataConflictException("Dish id=" + id + " doesn't belong to Restaurant id=" + userId));
+    default Menu checkBelong(int id, int restId) {
+        return get(id, restId).orElseThrow(
+                () -> new DataConflictException("Menu with id=" + id + " doesn't belong to Restaurant id=" + restId));
     }
 }
