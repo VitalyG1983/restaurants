@@ -25,8 +25,6 @@ public class Restaurant extends NamedEntity{
     @NoHtml
     private String address;
 
-
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     //@OrderBy("menuDate, name")
     //@JsonManagedReference
