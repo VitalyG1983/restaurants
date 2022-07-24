@@ -10,7 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "menu_id"}, name = "dish_unique_rest_id_menu_id_idx")})
+//@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "menu_id"}, name = "dish_unique_rest_id_menu_id_idx")})
+@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "name"}, name = "dish_unique_rest_id_name_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,17 +23,21 @@ public class Dish extends NamedEntity {
     @Range(min = 0)
     private Integer price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "rest_id", nullable = false, insertable = false, updatable = false)
+    //@Schema(hidden = true)
+    private int restId;
+
+   /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
-    private Restaurant restaurant;
+    private Restaurant restaurant;*/
 
-    @ManyToOne(fetch = FetchType.LAZY)
+  /*  @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    private Menu menu;
+    private Menu menu;*/
 
     public Dish(Integer id, String name, int price) {
         super(id, name);
