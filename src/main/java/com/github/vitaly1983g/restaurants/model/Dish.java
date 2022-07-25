@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-//@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "menu_id"}, name = "dish_unique_rest_id_menu_id_idx")})
 @Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "name"}, name = "dish_unique_rest_id_name_idx")})
 @Getter
 @Setter
@@ -23,11 +22,19 @@ public class Dish extends NamedEntity {
     @Range(min = 0)
     private Integer price;
 
-    @Column(name = "rest_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "rest_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
+    @Range(min = 1)
+    @NotNull
     private int restId;
 
-   /* @ManyToOne(fetch = FetchType.LAZY)
+ /*   @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rest_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Restaurant restaurant;*/
+
+    /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
@@ -39,8 +46,9 @@ public class Dish extends NamedEntity {
     @JsonBackReference
     private Menu menu;*/
 
-    public Dish(Integer id, String name, int price) {
+    public Dish(Integer id, String name, int price, int restId) {
         super(id, name);
         this.price = price;
+       // this.restId=restId;
     }
 }

@@ -1,10 +1,14 @@
 package com.github.vitaly1983g.restaurants.util.validation;
 
+import com.github.vitaly1983g.restaurants.HasId;
+import com.github.vitaly1983g.restaurants.error.IllegalRequestDataException;
+import com.github.vitaly1983g.restaurants.repository.MenuRepository;
+import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.experimental.UtilityClass;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
-import com.github.vitaly1983g.restaurants.HasId;
-import com.github.vitaly1983g.restaurants.error.IllegalRequestDataException;
+
+import java.time.LocalDate;
 
 @UtilityClass
 public class ValidationUtil {
@@ -35,5 +39,19 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+
+    public static void assureMenuDateConsistent(MenuTo menuTo, LocalDate menuDate, int restId, MenuRepository menuRepository) {
+        if (menuRepository.getByDate(menuDate, restId).size() == 0) {
+            menuTo.setMenuDate(menuDate);
+        } else if (menuTo.getMenuDate() != menuDate) {
+            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has menuDate=" + menuDate);
+        }
+    }
+
+    public static void checkNewMenu(MenuTo menuTo, LocalDate menuDate, int restId, MenuRepository menuRepository) {
+        if (menuRepository.getByDate(menuDate, restId).size() != 0) {
+            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must be new (absent on date menu)");
+        }
     }
 }

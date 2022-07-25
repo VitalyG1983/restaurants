@@ -1,5 +1,6 @@
 package com.github.vitaly1983g.restaurants.web.user;
 
+import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,7 +19,6 @@ import java.net.URI;
 import java.util.List;
 
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
-import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +58,7 @@ public class AdminUserController extends AbstractUserController {
     @CacheEvict(allEntries = true)
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
-        checkNew(user);
+        ValidationUtil.checkNew(user);
         User created = prepareAndSave(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
