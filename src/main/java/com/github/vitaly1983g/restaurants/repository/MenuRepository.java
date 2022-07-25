@@ -20,8 +20,8 @@ public interface MenuRepository extends BaseRepository<Menu> {
  /*   @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
     Optional<Menu> get(int id, int restId);*/
 
-/*    @EntityGraph(attributePaths = {"dishes"}, type = EntityGraph.EntityGraphType.LOAD)
-    // @Query("SELECT m FROM Menu m JOIN FETCH m.restaurant JOIN FETCH m.dishes WHERE m.id = :id and m.restaurant.id = :restId")
+/*    @EntityGraph(attributePaths = {"dishIds"}, type = EntityGraph.EntityGraphType.LOAD)
+    // @Query("SELECT m FROM Menu m JOIN FETCH m.restaurant JOIN FETCH m.dishIds WHERE m.id = :id and m.restaurant.id = :restId")
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
     Optional<Menu> getWithDish(int id, int restId);*/
 
@@ -44,7 +44,5 @@ public interface MenuRepository extends BaseRepository<Menu> {
             return menuByDate;
         } else
             throw new DataConflictException("Menu on date=" + menuDate + " doesn't belong to Restaurant id=" + restId);
-/*        return getByDate(menuDate, restId).orElseThrow(
-                () -> new DataConflictException("Menu on date=" + menuDate + " doesn't belong to Restaurant id=" + restId));*/
     }
 }

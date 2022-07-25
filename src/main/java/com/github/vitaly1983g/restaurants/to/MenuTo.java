@@ -1,27 +1,33 @@
 package com.github.vitaly1983g.restaurants.to;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
-//@FieldDefaults(makeFinal=true, level=AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(callSuper = true)
 public class MenuTo extends BaseTo {
 
-    LocalDate menuDate;
+    @NotNull
+    @DateTimeFormat(pattern = MenuUtil.DATE_PATTERN)
+    private LocalDate menuDate;
 
-    @NonFinal
-    int restId;
+    @NotNull
+    @Range(min = 1)
+    private int restId;
 
-    List<Dish> dishes;
+    @Size(min=1)
+    private List<Dish> dishes;
 
     public MenuTo() {
     }

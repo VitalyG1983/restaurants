@@ -18,6 +18,7 @@ import static java.util.stream.Collectors.toList;
 @UtilityClass
 public class MenuUtil {
     static final Comparator<MenuTo> MENU_TO_DATE_COMPARATOR = Comparator.comparing(MenuTo::getMenuDate);
+    public static final String DATE_PATTERN = "yyyy-MM-dd";
 
 
     public static List<LunchTo> getTos(Collection<Menu> menus, int caloriesPerDay) {
@@ -47,11 +48,11 @@ public class MenuUtil {
 
     public static List<Menu> createFromTo(MenuTo menuTo) {
         List<Menu> menus = new ArrayList<>();
-        menuTo.getDishes().forEach(dish -> menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestId(), dish)));
+        //menuTo.getDishIds().forEach(dishId -> menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestId(), dishId)));
         return menus;
     }
 
-    public static MenuTo createMenuTo(LocalDate menuDate, int restId, List<Dish> dishes) {
+    public static MenuTo createMenuTo(LocalDate menuDate, int restId,List<Dish> dishes) {
         return new MenuTo(1, menuDate, restId, dishes);
     }
 

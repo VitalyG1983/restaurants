@@ -1,6 +1,7 @@
 package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.to.LunchTo;
+import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import com.github.vitaly1983g.restaurants.service.MenuService;
@@ -18,7 +18,6 @@ import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import com.github.vitaly1983g.restaurants.web.AuthUser;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -26,7 +25,6 @@ import java.util.List;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.atStartOfDayOrMin;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.atStartOfNextDayOrMax;
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
-import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = MealController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -65,21 +63,22 @@ public class MealController {
         int userId = authUser.id();
         log.info("update {} for user {}", menu, userId);
         assureIdConsistent(menu, id);
-        //repository.checkBelong(id, userId);
-        //service.save(menu, userId);
+       // repository.checkBelong(id, userId);
+       // service.save(menu, userId);
     }
 
- /*   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody Menu menu) {
         int userId = authUser.id();
         log.info("create {} for user {}", menu, userId);
-        checkNew(menu);
-        Menu created = service.save(menu, userId);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
-    }*/
+        ValidationUtil.checkNew(menu);
+       // Menu created = service.save(menu, userId);
+       // URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+               // .path(REST_URL + "/{id}")
+               // .buildAndExpand(created.getId()).toUri();
+        //return ResponseEntity.created(uriOfNewResource).body(created);
+        return null;
+    }
 
 
     @GetMapping("/filter")

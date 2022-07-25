@@ -22,21 +22,20 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)//, exclude = {"restaurant"})
-public class Menu extends BaseEntity implements Iterable<Menu>{
+public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
     @NotNull
     private LocalDate menuDate;
 
-    @Column(name = "rest_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "rest_id", nullable = false)
     //@Schema(hidden = true)
     private int restId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
     @OrderBy("name")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    //@BatchSize(size = 10)
+   // @OnDelete(action = OnDeleteAction.CASCADE)  нельзя удалять, тк может быть в др меню
     private Dish dish;
 
 
@@ -57,7 +56,7 @@ public class Menu extends BaseEntity implements Iterable<Menu>{
     @OrderBy("name")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
-    private List<Dish> dishes;*/
+    private List<Dish> dishIds;*/
 
 
 
@@ -74,13 +73,8 @@ public class Menu extends BaseEntity implements Iterable<Menu>{
 
     }
 
-    public LocalDate getMenuDate() {
+   /* public LocalDate getMenuDate() {
         return menuDate;
-    }
+    }*/
 
-
-    @Override
-    public Iterator<Menu> iterator() {
-        return iterator();
-    }
 }
