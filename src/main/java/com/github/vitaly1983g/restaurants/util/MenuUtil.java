@@ -2,6 +2,8 @@ package com.github.vitaly1983g.restaurants.util;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.model.Menu;
+import com.github.vitaly1983g.restaurants.model.Restaurant;
+import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.experimental.UtilityClass;
@@ -46,14 +48,16 @@ public class MenuUtil {
         return new LunchTo(menu.getId(), menu.getMenuDate(), menu.toString(), menu.id(), excess);
     }
 
-    public static List<Menu> createFromTo(MenuTo menuTo) {
+    public static List<Menu> createFromTo(MenuTo menuTo, DishRepository dishRepository) {
         List<Menu> menus = new ArrayList<>();
-        //menuTo.getDishIds().forEach(dishId -> menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestId(), dishId)));
+        menuTo.getDishes().forEach(dish -> menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestaurant(),
+                dishRepository.findById(dish.id()).get())));
         return menus;
     }
 
-    public static MenuTo createMenuTo(LocalDate menuDate, int restId,List<Dish> dishes) {
-        return new MenuTo(1, menuDate, restId, dishes);
+    public static MenuTo createMenuTo(LocalDate menuDate, int restId, List<Dish> dishes) {
+        //return new MenuTo(1, menuDate, restId, dishes);
+        return null;
     }
 
  /*   public static List<Dish> getListDishes(List<Menu> menus, LocalDate menuDate) {
@@ -62,14 +66,36 @@ public class MenuUtil {
         return dishesOnDate.size() != 0 ? dishesOnDate.get(menuDate) : null;
     }*/
 
-    public static List<MenuTo> getMenuTos(List<Menu> menus, int restId) {
+    public static List<MenuTo> getAllMenuTosForRestaurant(List<Menu> menus, Restaurant restaurant) {
         Map<LocalDate, List<Dish>> dishesByDate = menus.stream()
                 .collect(Collectors.groupingBy(Menu::getMenuDate, mapping(Menu::getDish, toList())));
         Set<Map.Entry<LocalDate, List<Dish>>> entries = dishesByDate.entrySet();
         List<MenuTo> menuTos = new ArrayList<>();
         AtomicInteger id = new AtomicInteger();
-        entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menu.getKey(), restId, menu.getValue())));
+        entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menu.getKey(), restaurant, menu.getValue())));
         menuTos.sort(MENU_TO_DATE_COMPARATOR);
         return menuTos;
     }
+
+    public static List<MenuTo> getMenuTosByDateForRestaurants(List<Menu> menus, LocalDate menuDate) {
+        Map<Restaurant, List<Dish>> dishesByRest = menus.stream()
+                .collect(Collectors.groupingBy(Menu::getRestaurant, mapping(Menu::getDish, toList())));
+        Set<Map.Entry<Restaurant, List<Dish>>> entries = dishesByRest.entrySet();
+        List<MenuTo> menuTos = new ArrayList<>();
+        AtomicInteger id = new AtomicInteger();
+        entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menuDate, menu.getKey(), menu.getValue())));
+        menuTos.sort(MENU_TO_DATE_COMPARATOR);
+        return menuTos;
+    }
+
+   /* public static List<MenuTo> getMenuTosAllRestaurants(List<Menu> menus) {
+        Map<LocalDate, Map<Restaurant, List<Dish>>> dishesByDate = menus.stream()
+                .collect(Collectors.groupingBy(Menu::getMenuDate, Collectors.groupingBy(Menu::getRestaurant, mapping(Menu::getDish, toList()))));
+        Set<Map.Entry<LocalDate, Map<Restaurant, List<Dish>>>> entries = dishesByDate.entrySet();
+        List<MenuTo> menuTos = new ArrayList<>();
+        AtomicInteger id = new AtomicInteger();
+        entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menu.getKey(), restId, menu.getValue())));
+        menuTos.sort(MENU_TO_DATE_COMPARATOR);
+        return menuTos;
+    }*/
 }
