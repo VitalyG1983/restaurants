@@ -45,10 +45,8 @@ public class DishController {
     @GetMapping
     public List<Dish> getAll(@PathVariable int restId) {
         log.info("getAll for restaurant {}", restId);
-        //return MealsUtil.getTos(repository.getAll(restId), authUser.getUser().getCaloriesPerDay());
         return repository.getAll(restId);
     }
-
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -56,21 +54,22 @@ public class DishController {
         log.info("update {} for user {}", dish, restId);
         assureIdConsistent(dish, id);
         repository.checkBelong(id, restId);
-        service.save(dish, restId);
+        dish.setRestId(restId);
+        repository.save(dish);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restId, @Valid @RequestBody Dish dish) {
         log.info("create dish {} for restaurant {}", dish, restId);
         ValidationUtil.checkNew(dish);
-        Dish created = service.save(dish, restId);
+        dish.setRestId(restId);
+        Dish created = repository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getRestId(), created.getId())
                 .toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
-
 
   /*  @GetMapping("/filter")
     public List<MealTo> getBetween(@AuthenticationPrincipal AuthUser authUser,

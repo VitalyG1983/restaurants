@@ -1,6 +1,7 @@
 package com.github.vitaly1983g.restaurants.to;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
@@ -23,19 +24,18 @@ public class MenuTo extends BaseTo {
     private LocalDate menuDate;
 
     @NotNull
-    @Range(min = 1)
-    private int restId;
+    private Restaurant restaurant;
 
-    @Size(min=1)
+    @Size(min = 1)
     private List<Dish> dishes;
 
     public MenuTo() {
     }
 
-    public MenuTo(int id, LocalDate menuDate, int restId, List<Dish> dishes) {
+    public MenuTo(int id, LocalDate menuDate, Restaurant restaurant, List<Dish> dishes) {
         this.id = id;
         this.menuDate = menuDate;
-        this.restId = restId;
+        this.restaurant = restaurant;
         this.dishes = dishes;
     }
 }

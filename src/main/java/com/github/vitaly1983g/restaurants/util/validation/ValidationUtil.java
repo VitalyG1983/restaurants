@@ -41,17 +41,17 @@ public class ValidationUtil {
         return rootCause != null ? rootCause : t;
     }
 
-    public static void assureMenuDateConsistent(MenuTo menuTo, LocalDate menuDate, int restId, MenuRepository menuRepository) {
-        if (menuRepository.getByDate(menuDate, restId).size() == 0) {
-            menuTo.setMenuDate(menuDate);
-        } else if (menuTo.getMenuDate() != menuDate) {
+    public static void assureMenuDataConsistent(MenuTo menuTo, LocalDate menuDate, int restId) {
+        if (!menuTo.getMenuDate().isEqual(menuDate)) {
             throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has menuDate=" + menuDate);
+        } else if (menuTo.getRestaurant().id() != restId) {
+            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has restaurant Id=" + restId);
         }
     }
 
     public static void checkNewMenu(MenuTo menuTo, LocalDate menuDate, int restId, MenuRepository menuRepository) {
         if (menuRepository.getByDate(menuDate, restId).size() != 0) {
-            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must be new (absent on date menu)");
+            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " menu must be new - absent on date=" + menuDate);
         }
     }
 }

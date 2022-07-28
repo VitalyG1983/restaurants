@@ -13,8 +13,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @EntityGraph(attributePaths = {"dish"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restId=:restId ORDER BY m.menuDate")
+    @EntityGraph(attributePaths = {"dish","restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate, m.dish.name")
     List<Menu> getAll(int restId);
 
  /*   @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
@@ -25,17 +25,22 @@ public interface MenuRepository extends BaseRepository<Menu> {
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
     Optional<Menu> getWithDish(int id, int restId);*/
 
-    @EntityGraph(attributePaths = {"dish"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restId = :restId and m.menuDate = :menuDate")
+    @EntityGraph(attributePaths = {"dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId and m.menuDate = :menuDate ORDER BY m.dish.name")
         //Optional<Menu> getByDate(LocalDate menuDate, int restId);
     List<Menu> getByDate(LocalDate menuDate, int restId);
+
+    @EntityGraph(attributePaths = {"dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.menuDate = :menuDate ORDER BY m.restaurant.id, m.dish.name")
+        //Optional<Menu> getByDate(LocalDate menuDate, int restId);
+    List<Menu> getByDateAllRestaurants(LocalDate menuDate);
 
    /* @Transactional
     @Modifying
     @Query("DELETE FROM Menu m WHERE m.menuDate=:menuDate AND m.restId = :restId")
     int deleteByDate(LocalDate menuDate, int restId);*/
 
-    @Query("SELECT m from Menu m WHERE m.restId=:restId AND m.menuDate >= :startDate AND m.menuDate < :endDate ORDER BY m.menuDate DESC")
+    @Query("SELECT m from Menu m WHERE m.restaurant.id=:restId AND m.menuDate >= :startDate AND m.menuDate < :endDate ORDER BY m.menuDate DESC")
     List<Menu> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int restId);
 
     default List<Menu> checkBelong(LocalDate menuDate, int restId) {

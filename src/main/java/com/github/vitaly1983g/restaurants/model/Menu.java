@@ -3,6 +3,7 @@ package com.github.vitaly1983g.restaurants.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.vitaly1983g.restaurants.util.UserUtil;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
@@ -28,14 +29,21 @@ public class Menu extends BaseEntity {
     @NotNull
     private LocalDate menuDate;
 
-    @Column(name = "rest_id", nullable = false)
+/*    @Column(name = "rest_id", nullable = false)
     //@Schema(hidden = true)
-    private int restId;
+    private int restId;*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rest_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+   // @JsonManagedReference
+    @Schema(hidden = true)
+    private Restaurant restaurant;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
     @OrderBy("name")
-   // @OnDelete(action = OnDeleteAction.CASCADE)  нельзя удалять, тк может быть в др меню
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Dish dish;
 
 
@@ -65,10 +73,10 @@ public class Menu extends BaseEntity {
         this.menuDate = menuDate;
     }
 
-    public Menu(Integer id, LocalDate menuDate, int restId, Dish dish ) {
+    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, Dish dish ) {
         super(id);
         this.menuDate = menuDate;
-        this.restId = restId;
+        this.restaurant = restaurant;
         this.dish = dish;
 
     }

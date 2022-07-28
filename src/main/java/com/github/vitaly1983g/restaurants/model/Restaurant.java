@@ -1,6 +1,8 @@
 package com.github.vitaly1983g.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurant"})
+@ToString(callSuper = true, exclude = {"menus","dishes"})
 public class Restaurant extends NamedEntity{
 
     @Column(name = "address", nullable = false)
@@ -27,18 +29,21 @@ public class Restaurant extends NamedEntity{
     @NoHtml
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "rest_id")
-    @OrderBy("restId, menuDate")
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@Schema(hidden = true)
-    private List<Menu> menu;
+   // @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+   // @JoinColumn(name = "rest_id")
+   // @OrderBy("restaurant, menuDate")
+   // @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+   // @JsonBackReference
+    //@JsonIgnore
+   // @Schema(hidden = true)
+   // private List<Menu> menus;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     @OrderBy("restId, name")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-   // @Schema(hidden = true)
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Schema(hidden = true)
     private List<Dish> dishes;
 
 

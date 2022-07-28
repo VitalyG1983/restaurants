@@ -10,7 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_vote", "user_id"}, name = "vote_unique_date_userId_idx")})
+    @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_vote", "user_id"}, name = "vote_unique_date_userId_idx"), }
+    )
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,23 +26,34 @@ public class Vote extends BaseEntity {
     @NotNull
     private LocalDate dateVote;
 
-    //@Column(name = "dish_id", nullable = false)
+ /*   //@Column(name = "dish_id", nullable = false)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User user;*/
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Column(name = "user_id", nullable = false)
+    @NotNull
+    private int userId;
+
+/*    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@JsonBackReference
     //@Schema(hidden = true)
-    private Restaurant restaurant;
+    private Restaurant restaurant;*/
 
-    public Vote(Integer id, LocalDateTime dtVote, User user, Restaurant restaurant) {
+    @Column(name = "rest_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    //@JsonBackReference
+    //@Schema(hidden = true)
+    @NotNull
+    private int restId;
+
+    public Vote(Integer id, LocalDateTime dtVote, int userId, int restId) {
         super(id);
         this.dtVote = dtVote;
         this.dateVote = dtVote.toLocalDate();
-        this.user = user;
-        this.restaurant = restaurant;
+        this.userId = userId;
+        this.restId = restId;
     }
 }
