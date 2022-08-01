@@ -28,6 +28,20 @@ public class ValidationUtil {
         }
     }
 
+  /*  public static void assureRestIdConsistent(HasId bean, int restId) {
+        if (bean.getClass() == Dish.class) {
+            Dish dish = (Dish) bean;
+            if (dish.getRestId() != restId) {
+                throw new IllegalRequestDataException("Dish must has restId=" + restId);
+            }
+        } else if (bean.getClass() == Vote.class) {
+            Vote vote = (Vote) bean;
+            if (vote.getRestId() != restId) {
+                throw new IllegalRequestDataException("Vote must has restId=" + restId);
+            }
+        }
+    }*/
+
     public static void checkModification(int count, int id) {
         if (count == 0) {
             throw new IllegalRequestDataException("Entity with id=" + id + " not found");
@@ -45,7 +59,7 @@ public class ValidationUtil {
         if (!menuTo.getMenuDate().isEqual(menuDate)) {
             throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has menuDate=" + menuDate);
         } else if (menuTo.getRestaurant().id() != restId) {
-            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has restaurant Id=" + restId);
+            throw new IllegalRequestDataException(menuTo.getClass().getSimpleName() + " must has restaurants Id=" + restId);
         }
     }
 

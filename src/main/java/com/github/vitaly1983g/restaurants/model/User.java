@@ -1,11 +1,9 @@
 package com.github.vitaly1983g.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.vitaly1983g.restaurants.HasIdAndEmail;
 import com.github.vitaly1983g.restaurants.util.UserUtil;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
-import io.swagger.v3.oas.annotations.media.Schema;
+import com.github.vitaly1983g.restaurants.HasIdAndEmail;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -69,12 +67,12 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @Range(min = 10, max = 10000)
     private int caloriesPerDay = UserUtil.DEFAULT_CALORIES_PER_DAY;
 
-    @OneToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    //@JsonManagedReference
-    @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
+  /*  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonManagedReference
+    // @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
-    private Vote vote;
+    private List<Vote> votes;*/
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.caloriesPerDay, u.enabled, u.registered, u.roles);

@@ -4,7 +4,6 @@ import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import lombok.*;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;

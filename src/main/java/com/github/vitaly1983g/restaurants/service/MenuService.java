@@ -1,11 +1,11 @@
 package com.github.vitaly1983g.restaurants.service;
 
-import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
+import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

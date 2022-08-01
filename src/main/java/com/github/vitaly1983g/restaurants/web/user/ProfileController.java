@@ -1,6 +1,8 @@
 package com.github.vitaly1983g.restaurants.web.user;
 
+import com.github.vitaly1983g.restaurants.model.User;
 import com.github.vitaly1983g.restaurants.to.UserTo;
+import com.github.vitaly1983g.restaurants.util.UserUtil;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import com.github.vitaly1983g.restaurants.web.AuthUser;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +15,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.vitaly1983g.restaurants.model.User;
-import com.github.vitaly1983g.restaurants.util.UserUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -62,8 +62,8 @@ public class ProfileController extends AbstractUserController {
         prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }
 
-    @GetMapping("/with-meals")
-    public ResponseEntity<User> getWithMeals(@AuthenticationPrincipal AuthUser authUser) {
-        return super.getWithMeals(authUser.id());
+    @GetMapping("/vote")
+    public ResponseEntity<User> getWithCurrentVote(@AuthenticationPrincipal AuthUser authUser) {
+        return super.getWithCurrentVote(authUser.id());
     }
 }

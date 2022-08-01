@@ -1,20 +1,13 @@
 package com.github.vitaly1983g.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.github.vitaly1983g.restaurants.util.UserUtil;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Iterator;
-import java.util.List;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id", "dish_id"}, name = "menu_unique_date_restId_dishId_idx")})
@@ -22,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurant"})
+@ToString(callSuper = true)//, exclude = {"restaurants"})
 public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
@@ -58,7 +51,7 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
-    private Restaurant restaurant;*/
+    private Restaurant restaurants;*/
 
 /*    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
     @OrderBy("name")

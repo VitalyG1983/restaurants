@@ -1,9 +1,9 @@
 package com.github.vitaly1983g.restaurants.web;
 
+import com.github.vitaly1983g.restaurants.model.User;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
-import com.github.vitaly1983g.restaurants.model.User;
 
 @Getter
 @ToString(of = "user")

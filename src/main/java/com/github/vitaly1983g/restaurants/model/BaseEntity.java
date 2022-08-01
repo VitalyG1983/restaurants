@@ -2,7 +2,6 @@ package com.github.vitaly1983g.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.vitaly1983g.restaurants.HasId;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
