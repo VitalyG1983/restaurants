@@ -1,9 +1,9 @@
 package com.github.vitaly1983g.restaurants.web;
 
+import com.github.vitaly1983g.restaurants.model.User;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.github.vitaly1983g.restaurants.model.User;
 
 import static java.util.Objects.requireNonNull;
 

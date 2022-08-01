@@ -1,6 +1,5 @@
 package com.github.vitaly1983g.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurant"})
+@ToString(callSuper = true)//, exclude = {"restaurants"})
 public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
@@ -32,13 +31,13 @@ public class Dish extends NamedEntity {
  /*   @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Restaurant restaurant;*/
+    private Restaurant restaurants;*/
 
     /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
-    private Restaurant restaurant;*/
+    private Restaurant restaurants;*/
 
   /*  @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id", nullable = false)

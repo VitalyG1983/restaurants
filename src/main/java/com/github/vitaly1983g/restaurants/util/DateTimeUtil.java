@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 @UtilityClass
@@ -11,7 +12,9 @@ public class DateTimeUtil {
 
     // DB doesn't support LocalDate.MIN/MAX
     private static final LocalDateTime MIN_DATE = LocalDateTime.of(1, 1, 1, 0, 0);
-    private static final LocalDateTime MAX_DATE = LocalDateTime.of(3000, 1, 1, 0, 0);
+    public static final LocalDateTime MAX_DATE = LocalDateTime.of(3000, 1, 1, 0, 0);
+    public static final LocalDate TODAY_DATE = LocalDate.now();
+    public static final LocalTime VOTE_ELEVEN_TIME = LocalTime.of(11, 0, 0);
 
     public static LocalDateTime atStartOfDayOrMin(LocalDate localDate) {
         return localDate != null ? localDate.atStartOfDay() : MIN_DATE;

@@ -1,9 +1,9 @@
 package com.github.vitaly1983g.restaurants.web.menu;
 
-import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
-import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
+import com.github.vitaly1983g.restaurants.model.Menu;
+import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
@@ -49,7 +49,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
 
     @GetMapping("/{restId}/menus")
     public List<MenuTo> getAll(@PathVariable int restId) {
-        log.info("getAll menus of restaurant {}", restId);
+        log.info("getAll menus of restaurants {}", restId);
         return service.getAll(restId);
     }
 
@@ -57,7 +57,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByDate(@PathVariable int restId,
                              @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("delete menu on date {} of restaurant {}", menuDate, restId);
+        log.info("delete menu on date {} of restaurants {}", menuDate, restId);
         List<Menu> menu = menuRepository.checkBelong(menuDate, restId);
         menuRepository.deleteAll(menu);
     }
@@ -66,7 +66,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
                        @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("update menu on date={} of restaurant {}", menuDate, restId);
+        log.info("update menu on date={} of restaurants {}", menuDate, restId);
         ValidationUtil.assureMenuDataConsistent(menuTo, menuDate, restId);
         menuRepository.checkBelong(menuDate, restId);
         service.save(menuTo, restId, menuDate);
@@ -75,7 +75,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @PostMapping(value = "/{restId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MenuTo> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
                                                      @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("create menu {} for restaurant {}", menuTo, restId);
+        log.info("create menu {} for restaurants {}", menuTo, restId);
         ValidationUtil.checkNewMenu(menuTo, menuDate, restId, menuRepository);
         List<Menu> saved = service.save(menuTo, restId, menuDate);
         List<MenuTo> savedTos = MenuUtil.getMenuTosByDateForRestaurants(saved, menuDate);

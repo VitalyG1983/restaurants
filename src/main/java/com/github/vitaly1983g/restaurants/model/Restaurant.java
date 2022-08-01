@@ -1,9 +1,6 @@
 package com.github.vitaly1983g.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -21,7 +18,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"menus","dishes"})
-public class Restaurant extends NamedEntity{
+public class Restaurant extends NamedEntity {
 
     @Column(name = "address", nullable = false)
     @NotBlank
@@ -29,9 +26,9 @@ public class Restaurant extends NamedEntity{
     @NoHtml
     private String address;
 
-   // @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+   // @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
    // @JoinColumn(name = "rest_id")
-   // @OrderBy("restaurant, menuDate")
+   // @OrderBy("restaurants, menuDate")
    // @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
    // @JsonBackReference
     //@JsonIgnore
@@ -48,8 +45,8 @@ public class Restaurant extends NamedEntity{
 
 
 
-    /*    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @OrderBy("menuDate, restaurant")
+    /*    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurants")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("menuDate, restaurants")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @Schema(hidden = true)
     private List<Menu> menu;*/

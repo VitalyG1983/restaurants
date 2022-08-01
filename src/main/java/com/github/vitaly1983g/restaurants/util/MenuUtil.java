@@ -1,11 +1,11 @@
 package com.github.vitaly1983g.restaurants.util;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
-import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
+import com.github.vitaly1983g.restaurants.model.Menu;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;

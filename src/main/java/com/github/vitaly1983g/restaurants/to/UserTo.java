@@ -1,10 +1,10 @@
 package com.github.vitaly1983g.restaurants.to;
 
+import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import org.hibernate.validator.constraints.Range;
 import com.github.vitaly1983g.restaurants.HasIdAndEmail;
-import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

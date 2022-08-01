@@ -2,7 +2,6 @@ package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
-import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,25 +25,24 @@ public class DishController {
     static final String REST_URL = "/api/admin/restaurants/{restId}/dishes";
 
     private final DishRepository repository;
-    private final MenuService service;
 
     @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@PathVariable int restId, @PathVariable int id) {
-        log.info("get dish {} of restaurant {}", id, restId);
+        log.info("get dish {} of restaurants {}", id, restId);
         return ResponseEntity.of(repository.get(id, restId));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restId, @PathVariable int id) {
-        log.info("delete dish {} of restaurant {}", id, restId);
+        log.info("delete dish {} of restaurants {}", id, restId);
         Dish dish = repository.checkBelong(id, restId);
         repository.delete(dish);
     }
 
     @GetMapping
     public List<Dish> getAll(@PathVariable int restId) {
-        log.info("getAll for restaurant {}", restId);
+        log.info("getAll for restaurants {}", restId);
         return repository.getAll(restId);
     }
 
@@ -60,7 +58,7 @@ public class DishController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restId, @Valid @RequestBody Dish dish) {
-        log.info("create dish {} for restaurant {}", dish, restId);
+        log.info("create dish {} for restaurants {}", dish, restId);
         ValidationUtil.checkNew(dish);
         dish.setRestId(restId);
         Dish created = repository.save(dish);

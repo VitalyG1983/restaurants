@@ -1,5 +1,6 @@
 package com.github.vitaly1983g.restaurants.web.user;
 
+import com.github.vitaly1983g.restaurants.model.User;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.vitaly1983g.restaurants.model.User;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -35,9 +35,9 @@ public class AdminUserController extends AbstractUserController {
         return super.get(id);
     }
 
-    @GetMapping("/{id}/with-meals")
-    public ResponseEntity<User> getWithMeals(@PathVariable int id) {
-        return super.getWithMeals(id);
+    @GetMapping("/{id}/with-vote")
+    public ResponseEntity<User> getWithCurrentVote(@PathVariable int id) {
+        return super.getWithCurrentVote(id);
     }
 
     @Override

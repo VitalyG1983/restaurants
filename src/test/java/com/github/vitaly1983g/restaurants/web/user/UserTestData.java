@@ -2,13 +2,9 @@ package com.github.vitaly1983g.restaurants.web.user;
 
 import com.github.vitaly1983g.restaurants.model.Role;
 import com.github.vitaly1983g.restaurants.model.User;
-import com.github.vitaly1983g.restaurants.model.Vote;
 import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import com.github.vitaly1983g.restaurants.web.MatcherFactory;
-import com.github.vitaly1983g.restaurants.web.dish.MealTestData;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

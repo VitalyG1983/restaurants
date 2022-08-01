@@ -2,22 +2,18 @@ package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
-import com.github.vitaly1983g.restaurants.to.MenuTo;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -31,19 +27,19 @@ public class AdminRestaurantController {
 
     @GetMapping("/{restId}")
     public ResponseEntity<Restaurant> get(@PathVariable int restId) {
-        log.info("get restaurant id={}", restId);
+        log.info("get restaurants id={}", restId);
         return ResponseEntity.of(repository.findById(restId));
     }
 
     @GetMapping("/{restId}/with-dishes")
     public ResponseEntity<Restaurant> getWithDishes(@PathVariable int restId) {
-        log.info("get restaurant id={} with dishes", restId);
+        log.info("get restaurants id={} with dishes", restId);
         return ResponseEntity.of(repository.getWithDishes(restId));
     }
 
  /*   @GetMapping("/{restId}/with-menus")
     public ResponseEntity<Restaurant> getWithMenus(@PathVariable int restId) {
-        log.info("get restaurant id={} with all menus", restId);
+        log.info("get restaurants id={} with all menus", restId);
         return ResponseEntity.of(repository.getWithMenus(restId));
     }*/
 
@@ -56,21 +52,21 @@ public class AdminRestaurantController {
     @DeleteMapping("/{restId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restId) {
-        log.info("delete restaurant id={}", restId);
+        log.info("delete restaurants id={}", restId);
         repository.deleteExisted(restId);
     }
 
     @PutMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int restId) {
-        log.info("update restaurant {}", restId);
+        log.info("update restaurants {}", restId);
         ValidationUtil.assureIdConsistent(restaurant, restId);
         repository.save(restaurant);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
-        log.info("create restaurant {}", restaurant);
+        log.info("create restaurants {}", restaurant);
         ValidationUtil.checkNew(restaurant);
         Restaurant saved = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

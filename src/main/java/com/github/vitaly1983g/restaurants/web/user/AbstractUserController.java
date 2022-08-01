@@ -1,14 +1,14 @@
 package com.github.vitaly1983g.restaurants.web.user;
 
+import com.github.vitaly1983g.restaurants.model.User;
+import com.github.vitaly1983g.restaurants.repository.UserRepository;
+import com.github.vitaly1983g.restaurants.util.UserUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import com.github.vitaly1983g.restaurants.model.User;
-import com.github.vitaly1983g.restaurants.repository.UserRepository;
-import com.github.vitaly1983g.restaurants.util.UserUtil;
 
 @Slf4j
 public abstract class AbstractUserController {
@@ -35,9 +35,9 @@ public abstract class AbstractUserController {
         repository.deleteExisted(id);
     }
 
-    public ResponseEntity<User> getWithMeals(int id) {
+    public ResponseEntity<User> getWithCurrentVote(int id) {
         log.info("getWithMeals {}", id);
-        return ResponseEntity.of(repository.getWithMeals(id));
+        return ResponseEntity.of(repository.getWithVotes(id));
     }
 
     protected User prepareAndSave(User user) {
