@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id", "dish_id"}, name = "menu_unique_date_restId_dishId_idx")})
@@ -53,11 +54,12 @@ public class Menu extends BaseEntity {
     //@Schema(hidden = true)
     private Restaurant restaurants;*/
 
-/*    @OneToMany(fetch = FetchType.LAZY, mappedBy = "menu")
+/*    @OneToMany(fetch = FetchType.LAZY)//, mappedBy = "menu")
+    @JoinColumn(name = "dish_id", nullable = false)
     @OrderBy("name")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonManagedReference
-    private List<Dish> dishIds;*/
+    //@JsonManagedReference
+    private List<Dish> dishes;*/
 
 
 

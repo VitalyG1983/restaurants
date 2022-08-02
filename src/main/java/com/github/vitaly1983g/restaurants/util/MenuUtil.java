@@ -1,11 +1,11 @@
 package com.github.vitaly1983g.restaurants.util;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
+import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.to.LunchTo;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
-import com.github.vitaly1983g.restaurants.model.Menu;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
@@ -50,8 +50,15 @@ public class MenuUtil {
 
     public static List<Menu> createFromTo(MenuTo menuTo, DishRepository dishRepository) {
         List<Menu> menus = new ArrayList<>();
-        menuTo.getDishes().forEach(dish -> menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestaurant(),
-                dishRepository.findById(dish.id()).get())));
+        //List<Integer> dishIds = new ArrayList<>();
+        menuTo.getDishes().forEach(dish -> {
+           // dishIds.add(dish.id());
+            menus.add(new Menu(null, menuTo.getMenuDate(), menuTo.getRestaurant(),
+                    dishRepository.findById(dish.id()).get()));
+        });
+        //dishRepository.findById(dish.id()).get())));
+        // dish)));
+       // menus.dishRepository.getAllByIds( menuTo.getRestaurant().id(), dishIds);
         return menus;
     }
 

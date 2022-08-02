@@ -18,7 +18,7 @@ public abstract class AbstractMenuController {
     protected MenuRepository menuRepository;
 
     public ResponseEntity<MenuTo> getByDate(int restId, LocalDate menuDate) {
-        log.info("get menu on date {} of restaurants {}", menuDate, restId);
+        log.info("get menu on date {} of restaurant {}", menuDate, restId);
         List<Menu> menus = menuRepository.getByDate(menuDate, restId);
        /* if (menus.size() == 0) {      ?????
             throw new EntityNotFoundException("Not found menu on date=" + menuDate + " for restaurants with id=" + restId);

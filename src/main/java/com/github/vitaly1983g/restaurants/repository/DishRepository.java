@@ -15,7 +15,7 @@ public interface DishRepository extends BaseRepository<Dish> {
     List<Dish> getAll(int restId);
 
     @Query("SELECT d FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids) ORDER BY d.name")
-    List<Dish> getAllCollection(int restId, List<Integer> ids);
+    List<Dish> getAllByIds(int restId, List<Integer> ids);
 
 /*    @Query("SELECT d from Dish d WHERE d.restId=:restId AND d.dateTime >= :startDate AND d.dateTime < :endDate ORDER BY d.dateTime DESC")
     List<Dish> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int restId);*/
