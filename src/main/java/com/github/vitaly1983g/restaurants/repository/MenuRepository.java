@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @EntityGraph(attributePaths = {"dish","restaurants"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish","restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate, m.dish.name")
     List<Menu> getAll(int restId);
 
@@ -25,12 +25,12 @@ public interface MenuRepository extends BaseRepository<Menu> {
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
     Optional<Menu> getWithDish(int id, int restId);*/
 
-    @EntityGraph(attributePaths = {"dish", "restaurants"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId and m.menuDate = :menuDate ORDER BY m.dish.name")
         //Optional<Menu> getByDate(LocalDate menuDate, int restId);
     List<Menu> getByDate(LocalDate menuDate, int restId);
 
-    @EntityGraph(attributePaths = {"dish", "restaurants"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.menuDate = :menuDate ORDER BY m.restaurant.id, m.dish.name")
         //Optional<Menu> getByDate(LocalDate menuDate, int restId);
     List<Menu> getByDateAllRestaurants(LocalDate menuDate);

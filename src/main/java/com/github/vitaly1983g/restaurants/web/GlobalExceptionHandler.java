@@ -24,6 +24,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.getRootCause;
+import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.EXCEPTION;
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
 @RestControllerAdvice
@@ -35,25 +37,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AppException.class)
     public ResponseEntity<?> appException(WebRequest request, AppException ex) {
         log.error("ApplicationException: {}", ex.getMessage());
-        return createResponseEntity(request, ex.getOptions(), null, ex.getStatus());
+        return createResponseEntity(request, ex.getOptions(), getRootCause(ex).getMessage(), ex.getStatus());
     }
 
     @ExceptionHandler({EntityNotFoundException.class})
     public ResponseEntity<?> entityNotFoundException(WebRequest request, EntityNotFoundException ex) {
         log.error("EntityNotFoundException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.UNPROCESSABLE_ENTITY);
+        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<?> dataIntegrityViolationException(WebRequest request, DataIntegrityViolationException ex) {
         log.error("DataIntegrityViolationException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.CONFLICT);
+        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(DataConflictException.class)
     public ResponseEntity<?> dataConflictException(WebRequest request, DataConflictException ex) {
         log.error("DataConflictException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(MESSAGE), null, HttpStatus.CONFLICT);
+        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.CONFLICT);
     }
 
     @NonNull
@@ -62,7 +64,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             @NonNull Exception ex, Object body, @NonNull HttpHeaders headers, @NonNull HttpStatus status, @NonNull WebRequest request) {
         log.error("Exception", ex);
         super.handleExceptionInternal(ex, body, headers, status, request);
-        return createResponseEntity(request, ErrorAttributeOptions.of(), ValidationUtil.getRootCause(ex).getMessage(), status);
+        return createResponseEntity(request, ErrorAttributeOptions.of(), getRootCause(ex).getMessage(), status);
     }
 
     @NonNull
