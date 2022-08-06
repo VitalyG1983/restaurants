@@ -11,12 +11,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id", "dish_id"}, name = "menu_unique_date_restId_dishId_idx")})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_restId_idx")})
 //@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_restId_dishId_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurants"})
+@ToString(callSuper = true, exclude = {"restaurant","dishes"})
 public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
@@ -34,11 +34,12 @@ public class Menu extends BaseEntity {
     @Schema(hidden = true)
     private Restaurant restaurant;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dish_id", nullable = false)
-    @OrderBy("name")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "menu_id", nullable = false)
+    @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Dish dish;
+    //@JsonManagedReference
+    private List<DishInMenu> dishes;
 
 
  /*   @Column(name = "rest_id", nullable = false, insertable = false, updatable = false)
@@ -59,21 +60,18 @@ public class Menu extends BaseEntity {
     @OrderBy("name")
     @OnDelete(action = OnDeleteAction.CASCADE)
     //@JsonManagedReference
-    private List<Dish> dishes;*/
-
-
+    private List<Dish> dishIds;*/
 
     public Menu(Integer id, LocalDate menuDate) {
         super(id);
         this.menuDate = menuDate;
     }
 
-    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, Dish dish ) {
+    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant,  List<DishInMenu> dishes  ) {
         super(id);
         this.menuDate = menuDate;
         this.restaurant = restaurant;
-        this.dish = dish;
-
+        this.dishes = dishes;
     }
 
    /* public LocalDate getMenuDate() {

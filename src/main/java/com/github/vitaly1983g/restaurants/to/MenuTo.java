@@ -1,6 +1,5 @@
 package com.github.vitaly1983g.restaurants.to;
 
-import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.util.MenuUtil;
 import lombok.*;
@@ -10,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,18 +23,18 @@ public class MenuTo extends BaseTo {
     private LocalDate menuDate;
 
     @NotNull
-    private Restaurant restaurant;
+    private int restId;
 
     @Size(min = 1)
-    private List<Dish> dishes;
+    private Set<Integer> dishIds;
 
     public MenuTo() {
     }
 
-    public MenuTo(int id, LocalDate menuDate, Restaurant restaurant, List<Dish> dishes) {
+    public MenuTo(int id, LocalDate menuDate, int restId, Set<Integer> dishIds) {
         this.id = id;
         this.menuDate = menuDate;
-        this.restaurant = restaurant;
-        this.dishes = dishes;
+        this.restId = restId;
+        this.dishIds = dishIds;
     }
 }

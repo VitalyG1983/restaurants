@@ -17,19 +17,20 @@ public abstract class AbstractMenuController {
     @Autowired
     protected MenuRepository menuRepository;
 
-    public ResponseEntity<MenuTo> getByDate(int restId, LocalDate menuDate) {
+    public ResponseEntity<Menu> getByDate(int id, int restId, LocalDate menuDate) {
         log.info("get menu on date {} of restaurant {}", menuDate, restId);
-        List<Menu> menus = menuRepository.getByDate(menuDate, restId);
+        return  ResponseEntity.of(menuRepository.getByDate(id, menuDate, restId));
        /* if (menus.size() == 0) {      ?????
             throw new EntityNotFoundException("Not found menu on date=" + menuDate + " for restaurants with id=" + restId);
         }*/
-        return ResponseEntity.of(MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate).stream().findFirst());
+       // return ResponseEntity.of(MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate).stream().findFirst());
     }
 
-    protected List<MenuTo> getByDateAllRestaurants(LocalDate menuDate) {
+    protected List<Menu> getByDateAllRestaurants(LocalDate menuDate) {
         log.info("get menu on date {} for all restaurants", menuDate);
-        List<Menu> menus = menuRepository.getByDateAllRestaurants(menuDate);
-        return MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate);
+       // List<Menu> menus = menuRepository.getByDateAllRestaurants(menuDate);
+       // return MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate);
+        return menuRepository.getByDateAllRestaurants(menuDate);
     }
 
   /*  @CacheEvict(value = "users", allEntries = true)
