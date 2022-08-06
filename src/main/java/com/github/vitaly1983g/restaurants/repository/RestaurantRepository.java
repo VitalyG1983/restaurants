@@ -23,9 +23,9 @@ public interface RestaurantRepository extends BaseRepository<Restaurant> {
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
     Optional<Restaurant> getWithDishes(int id);
 
-    @EntityGraph(attributePaths = {"menus"}, type = EntityGraph.EntityGraphType.LOAD)
+  /*  @EntityGraph(attributePaths = {"menus"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
-    Optional<Restaurant> getWithMenus(int id);
+    Optional<Restaurant> getWithMenus(int id);*/
 
  /*   default Restaurant checkBelong(int id, int userId) {
         return get(id, userId).orElseThrow(

@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.List;
 
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,7 +60,7 @@ public class DishController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restId, @Valid @RequestBody Dish dish) {
         log.info("create dish {} for restaurants {}", dish, restId);
-        ValidationUtil.checkNew(dish);
+        checkNew(dish);
         dish.setRestId(restId);
         Dish created = repository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

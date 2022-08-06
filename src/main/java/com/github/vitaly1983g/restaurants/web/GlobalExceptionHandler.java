@@ -49,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<?> dataIntegrityViolationException(WebRequest request, DataIntegrityViolationException ex) {
         log.error("DataIntegrityViolationException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.CONFLICT);
+        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(DataConflictException.class)

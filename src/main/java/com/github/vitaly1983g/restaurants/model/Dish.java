@@ -48,6 +48,6 @@ public class Dish extends NamedEntity {
     public Dish(Integer id, String name, int price, int restId) {
         super(id, name);
         this.price = price;
-       // this.restId=restId;
+        this.restId=restId;
     }
 }

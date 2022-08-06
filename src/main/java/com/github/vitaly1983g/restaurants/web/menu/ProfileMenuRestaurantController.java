@@ -1,5 +1,6 @@
 package com.github.vitaly1983g.restaurants.web.menu;
 
+import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,14 @@ import java.util.List;
 public class ProfileMenuRestaurantController extends AbstractMenuController {
     static final String REST_URL = "/api/restaurants";
 
-    @GetMapping("/{restId}/menus/{menuDate}")
-    public ResponseEntity<MenuTo> getByDate(@PathVariable int restId,
-                                            @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.getByDate(restId, menuDate);
+    @GetMapping("/{restId}/menus/{id}")
+    public ResponseEntity<Menu> getByDate(@PathVariable int restId, @PathVariable int id,
+                                          @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        return super.getByDate(id, restId, menuDate);
     }
 
     @GetMapping(name = "/with-menu-on-date")
-    public List<MenuTo> getByDateAllRestaurants(
+    public List<Menu> getByDateAllRestaurants(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
         return super.getByDateAllRestaurants(menuDate);
     }

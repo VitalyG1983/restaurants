@@ -1,11 +1,10 @@
 package com.github.vitaly1983g.restaurants.web.menu;
 
-import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
-import com.github.vitaly1983g.restaurants.to.MenuTo;
 import com.github.vitaly1983g.restaurants.model.Menu;
+import com.github.vitaly1983g.restaurants.repository.MenuRepository;
+import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
 import com.github.vitaly1983g.restaurants.service.MenuService;
-import com.github.vitaly1983g.restaurants.util.MenuUtil;
-import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
+import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,6 +21,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureMenuDataConsistent;
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminMenuRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,54 +38,58 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @Autowired
     protected RestaurantRepository restaurantRepository;
 
-    @GetMapping("/{restId}/menus/{menuDate}")
-    public ResponseEntity<MenuTo> getByDate(@PathVariable int restId,
-                                            @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-       return super.getByDate(restId, menuDate);
+    @Autowired
+    private final MenuRepository menuRepository;
+
+    @GetMapping("/{restId}/menus/{id}")
+    public ResponseEntity<Menu> getByDate(@PathVariable int restId, @PathVariable int id,
+                                          @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        return super.getByDate(id, restId, menuDate);
     }
 
     @GetMapping("/with-menu-on-date")
-    public List<MenuTo> getByDateAllRestaurants(
+    public List<Menu> getByDateAllRestaurants(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
         return super.getByDateAllRestaurants(menuDate);
     }
 
     @GetMapping("/{restId}/menus")
-    public List<MenuTo> getAll(@PathVariable int restId) {
-        log.info("getAll menus of restaurants {}", restId);
-        return service.getAll(restId);
+    public List<Menu> getAll(@PathVariable int restId) {
+        log.info("getAll menus of restaurant {}", restId);
+        return menuRepository.getAll(restId);
     }
 
-    @DeleteMapping("/{restId}/menus/{menuDate}")
+    @Transactional
+    @DeleteMapping("/{restId}/menus/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByDate(@PathVariable int restId,
-                             @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("delete menu on date {} of restaurants {}", menuDate, restId);
-        List<Menu> menu = menuRepository.checkBelong(menuDate, restId);
-        menuRepository.deleteAll(menu);
+    public void deleteByDate(@PathVariable int restId, @PathVariable int id,
+                             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        log.info("delete menu on date {} of restaurant {}", menuDate, restId);
+        menuRepository.delete(menuRepository.checkBelong(id, menuDate, restId));
     }
 
-    @PutMapping(value = "/{restId}/menus/{menuDate}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    @PutMapping(value = "/{restId}/menus/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
-                       @PathVariable @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("update menu on date={} of restaurants {}", menuDate, restId);
-        ValidationUtil.assureMenuDataConsistent(menuTo, menuDate, restId);
-        menuRepository.checkBelong(menuDate, restId);
+    public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id,
+                       @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        log.info("update menu on date={} of restaurant {}", menuDate, restId);
+        assureMenuDataConsistent(menuTo, menuDate, restId);
+        //assureIdConsistent(dish, id);
+        menuRepository.delete(menuRepository.checkBelong(id, menuDate, restId));
+        //menuTo.setId(id);
         service.save(menuTo, restId, menuDate);
     }
 
     @PostMapping(value = "/{restId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuTo> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
-                                                     @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("create menu {} for restaurants {}", menuTo, restId);
-        ValidationUtil.checkNewMenu(menuTo, menuDate, restId, menuRepository);
-        List<Menu> saved = service.save(menuTo, restId, menuDate);
-        List<MenuTo> savedTos = MenuUtil.getMenuTosByDateForRestaurants(saved, menuDate);
-        MenuTo savedTo = savedTos.get(0);
+    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
+                                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        log.info("create menu {} for restaurant {}", menuTo, restId);
+        checkNew(menuTo);
+        Menu saved = service.save(menuTo, restId, menuDate);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{menuDate}")
-                .buildAndExpand(savedTo.getRestaurant().id(), savedTo.getMenuDate()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(savedTo);
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(saved.getRestaurant().getId(), saved.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(saved);
     }
 }

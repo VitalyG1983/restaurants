@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Transactional(readOnly = true)
 public interface DishRepository extends BaseRepository<Dish> {
@@ -14,8 +15,11 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d WHERE d.restId=:restId ORDER BY d.name")
     List<Dish> getAll(int restId);
 
-    @Query("SELECT d FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids) ORDER BY d.name")
-    List<Dish> getAllByIds(int restId, List<Integer> ids);
+    @Query("SELECT d.id FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids) ORDER BY d.name")
+    Set<Integer> getAllIds(int restId, Set<Integer> ids);
+
+  /*  @Query("SELECT d.id FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids) ORDER BY d.name")
+    List<Dish> getAllByIds(int restId, Set<Integer> ids);*/
 
 /*    @Query("SELECT d from Dish d WHERE d.restId=:restId AND d.dateTime >= :startDate AND d.dateTime < :endDate ORDER BY d.dateTime DESC")
     List<Dish> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int restId);*/

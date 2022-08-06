@@ -33,7 +33,7 @@ public class AdminRestaurantController {
 
     @GetMapping("/{restId}/with-dishes")
     public ResponseEntity<Restaurant> getWithDishes(@PathVariable int restId) {
-        log.info("get restaurants id={} with dishes", restId);
+        log.info("get restaurants id={} with dishIds", restId);
         return ResponseEntity.of(repository.getWithDishes(restId));
     }
 
