@@ -3,7 +3,6 @@ package com.github.vitaly1983g.restaurants.web.dish;
 import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
-import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,11 +20,11 @@ import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
-@RequestMapping(value = DishController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = DishController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
 public class DishController {
-    static final String REST_URL = "/api/admin/restaurants/{restId}/dishes";
+    static final String API_URL = "/api/admin/restaurants/{restId}/dishes";
 
     private final DishRepository repository;
     private final RestaurantRepository restaurantRepository;
@@ -71,7 +70,7 @@ public class DishController {
         dish.setRestId(restId);
         Dish created = repository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(API_URL + "/{id}")
                 .buildAndExpand(created.getRestId(), created.getId())
                 .toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);

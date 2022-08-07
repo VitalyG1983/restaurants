@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.vitaly1983g.restaurants.util.UserUtil;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
 import com.github.vitaly1983g.restaurants.HasIdAndEmail;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
@@ -68,8 +65,8 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     private int caloriesPerDay = UserUtil.DEFAULT_CALORIES_PER_DAY;
 
   /*  @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JsonManagedReference
-    // @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
+    //@JsonManagedReference
+    @JoinColumn(name = "user_id") //https://stackoverflow.com/a/62848296/548473
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@Schema(hidden = true)
     private List<Vote> votes;*/

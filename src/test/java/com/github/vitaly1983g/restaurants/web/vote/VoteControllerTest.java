@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.VOTE_ELEVEN_TIME;
+import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.*;
 import static com.github.vitaly1983g.restaurants.web.vote.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -57,7 +58,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_URL + "/" + ADMIN_VOTE1_ID + "?restId=" + RESTAURANT_ID2))
+        perform(MockMvcRequestBuilders.get(API_URL + "/" + ADMIN_VOTE1_ID + "?restId=" + REST_ID2))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -76,7 +77,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getAllForRestaurant() throws Exception {
         perform(MockMvcRequestBuilders.get("/api/admin/votes/for-restaurant")
-                .param("restId", String.valueOf(RESTAURANT_ID1)).param("voteDate", String.valueOf(NOW_DATE)))
+                .param("restId", String.valueOf(REST_ID1)).param("voteDate", String.valueOf(NOW_DATE)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -108,7 +109,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void createDuplicate() throws Exception {
-        perform(MockMvcRequestBuilders.post(API_URL + "/?restId=" + RESTAURANT_ID1))
+        perform(MockMvcRequestBuilders.post(API_URL + "/?restId=" + REST_ID1))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
@@ -125,19 +126,19 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateBeforeEleven() throws Exception {
         setVoteTestTime(VOTE_ELEVEN_TIME.minusHours(1));
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + RESTAURANT_ID2))
+        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
                 .andExpect(status().isNoContent());
 
-        assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), RESTAURANT_ID2);
+        assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), REST_ID2);
     }
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateAfterEleven() throws Exception {
         setVoteTestTime(VOTE_ELEVEN_TIME.plusHours(1));
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + RESTAURANT_ID2))
+        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
                 .andExpect(status().isUnprocessableEntity());
 
-        assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), RESTAURANT_ID1);
+        assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), REST_ID1);
     }
 }

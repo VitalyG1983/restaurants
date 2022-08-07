@@ -17,11 +17,11 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = AdminRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminRestaurantController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
 public class AdminRestaurantController {
-    static final String REST_URL = "/api/admin/restaurants";
+    static final String API_URL = "/api/admin/restaurants";
 
     private final RestaurantRepository repository;
 
@@ -70,7 +70,7 @@ public class AdminRestaurantController {
         ValidationUtil.checkNew(restaurant);
         Restaurant saved = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{restId}")
+                .path(API_URL + "/{restId}")
                 .buildAndExpand(saved.id()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(saved);
     }

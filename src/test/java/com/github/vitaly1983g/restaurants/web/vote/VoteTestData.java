@@ -16,9 +16,6 @@ public class VoteTestData {
 
     public static final int USER_VOTE1_ID = 1;
     public static final int ADMIN_VOTE1_ID = 3;
-    public static final int RESTAURANT_ID1 = 1;
-    public static final int RESTAURANT_ID2 = 2;
-    public static final int INVALID_RESTAURANT_ID = 99;
 
     public static final Vote userVote1 = new Vote(USER_VOTE1_ID, LocalDateTime.MIN, user, 1);
     //public static final Vote userVote2 = new Vote(USER_VOTE1_ID + 1, LocalDateTime.of(2020, 1, 6, 10, 0), user, 2);
