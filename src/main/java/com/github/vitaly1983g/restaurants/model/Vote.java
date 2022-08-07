@@ -46,16 +46,15 @@ public class Vote extends BaseEntity {
     //@JsonBackReference
     private User user;
 
-/*    @OneToOne(fetch = FetchType.LAZY)
+ /*   @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     //@JsonBackReference
     //@Schema(hidden = true)
-    private Restaurant restaurants;*/
+    private Restaurant restaurant;*/
 
     @Column(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@JsonBackReference
     //@Schema(hidden = true)
     @NotNull
     private int restId;

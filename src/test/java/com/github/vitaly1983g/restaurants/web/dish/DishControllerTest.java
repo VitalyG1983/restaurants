@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.vitaly1983g.restaurants.web.dish.DishTestData.*;
+import static com.github.vitaly1983g.restaurants.web.user.UserTestData.USER_ID;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -54,16 +56,16 @@ class DishControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + DishTestData.DISH1_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + DISH1_ID))
                 .andExpect(status().isNoContent());
-        //assertFalse(menuRepository.get(MealTestData.MENU1_ID, UserTestData.USER_ID).isPresent());
+        assertFalse(dishRepository.get(DISH1_ID, USER_ID).isPresent());
     }
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void deleteDataConflict() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + DishTestData.REST2_DISH4_ID))
-                .andExpect(status().isConflict());
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test

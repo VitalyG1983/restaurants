@@ -3,6 +3,8 @@ package com.github.vitaly1983g.restaurants.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.vitaly1983g.restaurants.HasId;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
@@ -52,6 +54,7 @@ public class DishInMenu implements Persistable<Integer>, HasId {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     public Dish dish;
 
  /*   @ManyToOne(fetch = FetchType.LAZY)
