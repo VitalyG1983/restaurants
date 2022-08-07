@@ -44,7 +44,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getNotFound() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + DishTestData.REST2_DISH4_ID))
                 .andDo(print())
