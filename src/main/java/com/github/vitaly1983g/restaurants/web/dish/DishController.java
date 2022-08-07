@@ -2,12 +2,14 @@ package com.github.vitaly1983g.restaurants.web.dish;
 
 import com.github.vitaly1983g.restaurants.model.Dish;
 import com.github.vitaly1983g.restaurants.repository.DishRepository;
+import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
 import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,6 +28,8 @@ public class DishController {
     static final String REST_URL = "/api/admin/restaurants/{restId}/dishes";
 
     private final DishRepository repository;
+    private final RestaurantRepository restaurantRepository;
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@PathVariable int restId, @PathVariable int id) {
@@ -47,6 +51,7 @@ public class DishController {
         return repository.getAll(restId);
     }
 
+    @Transactional
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Dish dish, @PathVariable int id, @PathVariable int restId) {
@@ -57,10 +62,12 @@ public class DishController {
         repository.save(dish);
     }
 
+    @Transactional
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restId, @Valid @RequestBody Dish dish) {
         log.info("create dish {} for restaurants {}", dish, restId);
         checkNew(dish);
+        restaurantRepository.checkExistence(restId);
         dish.setRestId(restId);
         Dish created = repository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

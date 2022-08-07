@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.TODAY_DATE;
+import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 
 @Transactional(readOnly = true)
 public interface VoteRepository extends BaseRepository<Vote> {
@@ -40,9 +40,9 @@ public interface VoteRepository extends BaseRepository<Vote> {
                         " doesn't belong to User id=" + userId));
     }
 
-    default Vote checkBelongCurrentVote(int id, int userId, int restId) {
-        return getCurrentVote(id, TODAY_DATE, userId).orElseThrow(
-                () -> new DataConflictException("Vote id=" + id + " for restaurants id=" + restId + " on date=" +
-                        TODAY_DATE + " doesn't belong to User id=" + userId));
+    default Vote checkBelongCurrentVote(int id, int userId) {
+        return getCurrentVote(id, NOW_DATE, userId).orElseThrow(
+                () -> new DataConflictException("Vote id=" + id + " on date=" +
+                        NOW_DATE + " doesn't belong to User id=" + userId));
     }
 }

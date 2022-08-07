@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-    @Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_vote", "user_id"}, name = "vote_unique_date_userId_idx"), }
-    )
+@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_vote", "user_id"}, name = "vote_unique_date_userId_idx"),}
+)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurants"})
+@ToString(callSuper = true)//, exclude = {"user"})
 public class Vote extends BaseEntity {
 
     @Column(name = "time_vote", nullable = false)

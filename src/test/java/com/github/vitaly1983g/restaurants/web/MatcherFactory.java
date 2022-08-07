@@ -1,9 +1,9 @@
 package com.github.vitaly1983g.restaurants.web;
 
+import com.github.vitaly1983g.restaurants.util.JsonUtil;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
-import com.github.vitaly1983g.restaurants.util.JsonUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -74,6 +74,10 @@ public class MatcherFactory {
 
         public T readFromJson(ResultActions action) throws UnsupportedEncodingException {
             return JsonUtil.readValue(getContent(action.andReturn()), clazz);
+        }
+
+        public List<T> readValuesFromJson(ResultActions action) throws UnsupportedEncodingException {
+            return JsonUtil.readValues(getContent(action.andReturn()), clazz);
         }
 
         private static String getContent(MvcResult result) throws UnsupportedEncodingException {
