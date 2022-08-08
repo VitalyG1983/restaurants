@@ -13,18 +13,13 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "dishinmenu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dishinmenu_unique_menu_id_dish_id_idx")})
-@Access(AccessType.FIELD)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 //@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-//public class DishInMenu extends BaseEntity {
-public class DishInMenu implements Persistable<Integer>, HasId {
+public class DishInMenu extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     @JsonIgnore
     protected Integer id;
 
@@ -38,15 +33,6 @@ public class DishInMenu implements Persistable<Integer>, HasId {
     @JsonIgnore
     private Menu menu;*/
 
-
-/*    @Column(name = "menu_id")//, nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@Schema(hidden = true)
-    //@Range(min = 1)
-    //@NotNull
-    //@JsonBackReference
-    @JsonIgnore
-    private Integer menuId;*/
 
    /* @Column(name = "dish_id", nullable = false)
     //@OnDelete(action = OnDeleteAction.CASCADE)
@@ -76,12 +62,12 @@ public class DishInMenu implements Persistable<Integer>, HasId {
 
     public DishInMenu(Integer id, Dish dish) {
         this.id = id;
-       // this.menu = menu;
+       // this.menuId = menuId;
         this.dish = dish;
     }
 
     // doesn't work for hibernate lazy proxy
-    public int id() {
+   /* public int id() {
         Assert.notNull(id, "Entity must have id");
         return id;
     }
@@ -113,5 +99,5 @@ public class DishInMenu implements Persistable<Integer>, HasId {
     @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;
-    }
+    }*/
 }

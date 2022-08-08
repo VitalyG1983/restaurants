@@ -16,7 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"restaurant","dishes"})
+//@ToString(callSuper = true, exclude = {"restaurant","dishes"})
+@ToString(callSuper = true, exclude = {"dishes"})
 public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
@@ -34,12 +35,12 @@ public class Menu extends BaseEntity {
     @Schema(hidden = true)
     private Restaurant restaurant;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "menu_id", nullable = false)
     @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
     //@JsonManagedReference
-    private List<DishInMenu> dishes;
+    private List<DishInMenu> dishesInMenu;
 
 
  /*   @Column(name = "rest_id", nullable = false, insertable = false, updatable = false)
@@ -62,16 +63,17 @@ public class Menu extends BaseEntity {
     //@JsonManagedReference
     private List<Dish> dishIds;*/
 
-    public Menu(Integer id, LocalDate menuDate) {
-        super(id);
-        this.menuDate = menuDate;
-    }
-
-    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant,  List<DishInMenu> dishes  ) {
+    public Menu(Integer id, LocalDate menuDate,Restaurant restaurant ) {
         super(id);
         this.menuDate = menuDate;
         this.restaurant = restaurant;
-        this.dishes = dishes;
+    }
+
+    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant,  List<DishInMenu> dishesInMenu) {
+        super(id);
+        this.menuDate = menuDate;
+        this.restaurant = restaurant;
+        this.dishesInMenu = dishesInMenu;
     }
 
    /* public LocalDate getMenuDate() {

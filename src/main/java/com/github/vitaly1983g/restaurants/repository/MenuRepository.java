@@ -14,38 +14,30 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @EntityGraph(attributePaths = {"dishes","dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishes", "dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate")
     List<Menu> getAll(int restId);
 
- /*   @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
-    Optional<Menu> get(int id, int restId);*/
+    @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
+    Optional<Menu> get(int id, int restId);
 
-/*    @EntityGraph(attributePaths = {"dishIds"}, type = EntityGraph.EntityGraphType.LOAD)
-    // @Query("SELECT m FROM Menu m JOIN FETCH m.restaurants JOIN FETCH m.dishIds WHERE m.id = :id and m.restaurants.id = :restId")
-    @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restId = :restId")
-    Optional<Menu> getWithDish(int id, int restId);*/
+    /*@EntityGraph(attributePaths = {"restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.id = :id")
+    Menu getWithRestaurant(int id);*/
 
-    @EntityGraph(attributePaths = {"dishes","dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId AND m.menuDate = :menuDate AND m.id =:id")
-        //Optional<Menu> getByDate(LocalDate menuDate, int restId);
-    Optional<Menu> getByDate(int id, LocalDate menuDate, int restId);
+    @EntityGraph(attributePaths = {"dishes", "dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId AND m.menuDate = :menuDate")
+    Optional<Menu> getByDate(LocalDate menuDate, int restId);
 
-    @EntityGraph(attributePaths = {"dishes","dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishes", "dishes.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.menuDate = :menuDate ORDER BY m.restaurant.id, m.menuDate")
-        //Optional<Menu> getByDate(LocalDate menuDate, int restId);
-    List<Menu> getByDateAllRestaurants(LocalDate menuDate);
-
-   /* @Transactional
-    @Modifying
-    @Query("DELETE FROM Menu m WHERE m.menuDate=:menuDate AND m.restId = :restId")
-    int deleteByDate(LocalDate menuDate, int restId);*/
+    List<Menu> allRestaurantsGetByDate(LocalDate menuDate);
 
     @Query("SELECT m from Menu m WHERE m.restaurant.id=:restId AND m.menuDate >= :startDate AND m.menuDate < :endDate ORDER BY m.menuDate DESC")
     List<Menu> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int restId);
 
-    default Menu checkBelong(int id, LocalDate menuDate, int restId) {
-        return getByDate(id, menuDate, restId).orElseThrow(
-                () -> new DataConflictException("Menu on date=" + menuDate + " doesn't belong to Restaurant id=" + restId));
+    default Menu checkBelong(int id, int restId) {
+        return get(id, restId).orElseThrow(
+                () -> new DataConflictException("Menu id=" + id + " doesn't belong to Restaurant id=" + restId));
     }
 }

@@ -7,7 +7,9 @@ import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,15 +24,12 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureMenuDataConsistent;
-import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
-
 @RestController
-@RequestMapping(value = AdminMenuRestaurantController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminMenuRestaurantController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
 public class AdminMenuRestaurantController extends AbstractMenuController {
-    static final String REST_URL = "/api/admin/restaurants";
+    static final String API_URL = "/api/admin/restaurants";
 
     @Autowired
     protected MenuService service;
@@ -42,15 +41,20 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     private final MenuRepository menuRepository;
 
     @GetMapping("/{restId}/menus/{id}")
-    public ResponseEntity<Menu> getByDate(@PathVariable int restId, @PathVariable int id,
-                                          @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.getByDate(id, restId, menuDate);
+    public ResponseEntity<Menu> get(@PathVariable int restId, @PathVariable int id) {
+        return ResponseEntity.of(menuRepository.get(id, restId));
     }
 
-    @GetMapping("/with-menu-on-date")
-    public List<Menu> getByDateAllRestaurants(
+    @GetMapping("/{restId}/menus/by-date")
+    public ResponseEntity<Menu> getByDate(@PathVariable int restId,
+                                          @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+        return super.getByDate(restId, menuDate);
+    }
+
+    @GetMapping("/menus/all-by-date")
+    public List<Menu> allRestaurantsGetByDate(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.getByDateAllRestaurants(menuDate);
+        return super.allRestaurantsGetByDate(menuDate);
     }
 
     @GetMapping("/{restId}/menus")
@@ -62,33 +66,33 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @Transactional
     @DeleteMapping("/{restId}/menus/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByDate(@PathVariable int restId, @PathVariable int id,
-                             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("delete menu on date {} of restaurant {}", menuDate, restId);
-        menuRepository.delete(menuRepository.checkBelong(id, menuDate, restId));
+    public void delete(@PathVariable int restId, @PathVariable int id) {
+        log.info("delete menu id={} of restaurant {}", id, restId);
+        menuRepository.delete(menuRepository.checkBelong(id, restId));
     }
 
     @Transactional
+    //@Modifying(clearAutomatically=true, flushAutomatically=true)
     @PutMapping(value = "/{restId}/menus/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id,
-                       @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        log.info("update menu on date={} of restaurant {}", menuDate, restId);
-        assureMenuDataConsistent(menuTo, menuDate, restId);
+   public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id){
+         log.info("update menu id={} of restaurant {}", id, restId);
+       // assureMenuDataConsistent(menuTo, menuDate, restId);
         //assureIdConsistent(dish, id);
-        menuRepository.delete(menuRepository.checkBelong(id, menuDate, restId));
-        //menuTo.setId(id);
-        service.save(menuTo, restId, menuDate);
+        Menu menu = menuRepository.checkBelong(id, restId);
+        menuRepository.deleteExisted(id);
+        service.save(menuTo, restId, menu.getMenuDate(), id);
     }
 
+    @Transactional
     @PostMapping(value = "/{restId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
                                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
         log.info("create menu {} for restaurant {}", menuTo, restId);
-        checkNew(menuTo);
+        //checkNew(menuTo);
         Menu saved = service.save(menuTo, restId, menuDate);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(API_URL + "/{id}")
                 .buildAndExpand(saved.getRestaurant().getId(), saved.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(saved);
     }

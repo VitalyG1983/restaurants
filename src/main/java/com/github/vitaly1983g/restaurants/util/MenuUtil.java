@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class MenuUtil {
-    static final Comparator<MenuTo> MENU_TO_DATE_COMPARATOR = Comparator.comparing(MenuTo::getMenuDate);
+    //static final Comparator<MenuTo> MENU_TO_DATE_COMPARATOR = Comparator.comparing(MenuTo::getMenuDate);
     public static final String DATE_PATTERN = "yyyy-MM-dd";
 
 
@@ -45,7 +45,7 @@ public class MenuUtil {
         return new LunchTo(menu.getId(), menu.getMenuDate(), menu.toString(), menu.id(), excess);
     }
 
-    public static Menu createFromTo(MenuTo menuTo, Restaurant restaurant, List<Dish> dishes) {
+    public static Menu create(Restaurant restaurant, List<Dish> dishes, LocalDate menuDate, int... id) {
    /*     List<Menu> menus = new ArrayList<>();
         //List<Integer> dishIds = new ArrayList<>();
         menuTo.getDishIds().forEach(dish -> {
@@ -56,8 +56,9 @@ public class MenuUtil {
         // dish)));
         // menus.dishRepository.getAllByIds( menuTo.getRestId().id(), dishIds);
         List<DishInMenu> menus = new ArrayList<>();
-        dishes.forEach(dish -> menus.add(new DishInMenu(null, dish)));
-        return new Menu(null, menuTo.getMenuDate(), restaurant, menus);
+        //dishes.forEach(dish -> menus.add(new DishInMenu(null,id.length != 0 ? id[0] : null ,dish)));
+        dishes.forEach(dish -> menus.add(new DishInMenu(null,dish)));
+        return new Menu(id.length != 0 ? id[0] : null, menuDate, restaurant, menus);
         // return menus;
     }
 
@@ -80,7 +81,7 @@ public class MenuUtil {
         List<MenuTo> menuTos = new ArrayList<>();
         AtomicInteger id = new AtomicInteger();
         // entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menu.getKey(), restId, menu.getKey()));
-        menuTos.sort(MENU_TO_DATE_COMPARATOR);
+        // menuTos.sort(MENU_TO_DATE_COMPARATOR);
         return menuTos;
     }
 
@@ -92,7 +93,7 @@ public class MenuUtil {
         List<MenuTo> menuTos = new ArrayList<>();
         AtomicInteger id = new AtomicInteger();
         //  entries.forEach(menu -> menuTos.add(new MenuTo(id.getAndIncrement(), menuDate, menu.getKey(), menu.getValue())));
-        menuTos.sort(MENU_TO_DATE_COMPARATOR);
+        // menuTos.sort(MENU_TO_DATE_COMPARATOR);
         return menuTos;
     }
 

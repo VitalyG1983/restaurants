@@ -55,7 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataConflictException.class)
     public ResponseEntity<?> dataConflictException(WebRequest request, DataConflictException ex) {
         log.error("DataConflictException: {}", ex.getMessage());
-        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        return createResponseEntity(request, ErrorAttributeOptions.of(EXCEPTION), getRootCause(ex).getMessage(), HttpStatus.CONFLICT);
     }
 
     @NonNull
