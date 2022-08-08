@@ -42,9 +42,9 @@ public class VoteController {
     }
 
     @GetMapping("/votes/get-current")
-    public ResponseEntity<Vote> getCurrentVote(@AuthenticationPrincipal AuthUser authUser, @RequestParam int id) {
+    public ResponseEntity<Vote> getCurrent(@AuthenticationPrincipal AuthUser authUser, @RequestParam int id) {
         log.info("get current vote id={} for user id={}", id, authUser.id());
-        return ResponseEntity.of(repository.getCurrentVote(id, NOW_DATE, authUser.id()));
+        return ResponseEntity.of(repository.getCurrent(id, NOW_DATE, authUser.id()));
     }
 
     @GetMapping("/admin/votes/for-restaurant")
@@ -76,7 +76,7 @@ public class VoteController {
         int userId = authUser.id();
         log.info("update vote for user {}", userId);
         restaurantRepository.checkExistence(newRestId);
-        service.update(repository.checkBelongCurrentVote(id, userId), newRestId);
+        service.update(repository.checkBelongCurrent(id, userId), newRestId);
     }
 
     @Transactional

@@ -13,7 +13,7 @@ public interface BaseRepository<T> extends JpaRepository<T, Integer> {
 
     //    https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query.spel-expressions
     @Transactional
-    @Modifying
+    @Modifying(clearAutomatically=true, flushAutomatically=true)
     @Query("DELETE FROM #{#entityName} u WHERE u.id=:id")
     int delete(int id);
 

@@ -14,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import static com.github.vitaly1983g.restaurants.util.MenuUtil.createFromTo;
+import static com.github.vitaly1983g.restaurants.util.MenuUtil.create;
 
 @Service
 @AllArgsConstructor
@@ -26,8 +25,8 @@ public class MenuService {
     private final DishRepository dishRepository;
     private final RestaurantRepository restaurantRepository;
 
-    @Transactional
-    public Menu save(MenuTo menuTo, int restId, LocalDate menuDate) {
+   // @Transactional
+    public Menu save(MenuTo menuTo, int restId, LocalDate menuDate, int... id) {
         //Restaurant restaurant = getRestaurant(restId);
         //menuTo.getDishIds().forEach(dish -> dishRepository.checkBelong(dish.id(), restId));
         Set<Integer> dishIds = new HashSet<>(menuTo.getDishIds());
@@ -36,8 +35,8 @@ public class MenuService {
         if (dishIds.size() != 0) {
             throw new DataConflictException("Dishes with ids=" + dishIds + " doesn't belong to Restaurant id=" + restId);
         }
-        menuTo.setMenuDate(menuDate);
-        return menuRepository.save(createFromTo(menuTo, restaurantRepository.getById(restId), dishRepository.findAllById(idsRepository)));
+        return menuRepository.save(create(restaurantRepository.findById(restId).get(),
+                dishRepository.findAllById(idsRepository), menuDate, id));
     }
 
 /*    public List<Menu> getAll(int restId) {

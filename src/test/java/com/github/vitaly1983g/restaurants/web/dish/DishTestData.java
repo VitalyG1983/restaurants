@@ -11,7 +11,6 @@ public class DishTestData {
     public static final int DISH1_ID = 1;
     public static final int REST2_DISH4_ID = 4;
 
-
     public static final Dish dish1 = new Dish(DISH1_ID, "Мисо суп", 330, 1);
     public static final Dish dish2 = new Dish(DISH1_ID + 1, "Ролл Филадельфия", 1000, 1);
     public static final Dish dish3 = new Dish(DISH1_ID + 2, "Пуэр", 500, 1);

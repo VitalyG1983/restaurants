@@ -44,7 +44,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER.contentJson(rest1));
+                .andExpect(REST_WITH_DISHES_MATCHER.contentJson(rest1));
     }
 
     @Test
@@ -91,16 +91,16 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void createWithLocation() throws Exception {
-        Restaurant newMenu = RestaurantTestData.getNew();
+        Restaurant newRestaurant = RestaurantTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(API_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMenu)));
+                .content(JsonUtil.writeValue(newRestaurant)));
 
         Restaurant created = RESTAURANT_MATCHER.readFromJson(action);
         int newId = created.id();
-        newMenu.setId(newId);
-        RESTAURANT_MATCHER.assertMatch(created, newMenu);
-        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(newId), newMenu);
+        newRestaurant.setId(newId);
+        RESTAURANT_MATCHER.assertMatch(created, newRestaurant);
+        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(newId), newRestaurant);
     }
 
     @Test
@@ -157,7 +157,6 @@ class RestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
