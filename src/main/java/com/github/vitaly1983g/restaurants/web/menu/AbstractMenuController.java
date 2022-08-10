@@ -4,6 +4,8 @@ import com.github.vitaly1983g.restaurants.model.Menu;
 import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
@@ -15,25 +17,15 @@ public abstract class AbstractMenuController {
     @Autowired
     protected MenuRepository menuRepository;
 
+    @Cacheable("menu")
     public ResponseEntity<Menu> getByDate(int restId, LocalDate menuDate) {
         log.info("get menu on date {} of restaurant {}", menuDate, restId);
-        return  ResponseEntity.of(menuRepository.getByDate(menuDate, restId));
-       /* if (menus.size() == 0) {      ?????
-            throw new EntityNotFoundException("Not found menu on date=" + menuDate + " for restaurants with id=" + restId);
-        }*/
-       // return ResponseEntity.of(MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate).stream().findFirst());
+        return ResponseEntity.of(menuRepository.getByDate(menuDate, restId));
     }
 
-    protected List<Menu> getAllForRestaurantsByDate(LocalDate menuDate) {
+    @Cacheable("menus")
+    public List<Menu> getAllForRestaurantsByDate(LocalDate menuDate) {
         log.info("get menu on date {} for all restaurants", menuDate);
-       // List<Menu> menus = menuRepository.getByDateAllRestaurants(menuDate);
-       // return MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate);
         return menuRepository.getAllForRestaurantsByDate(menuDate);
     }
-
-  /*  @CacheEvict(value = "users", allEntries = true)
-    public void delete(int id) {
-        log.info("delete {}", id);
-        menuRepository.deleteExisted(id);
-    }*/
 }

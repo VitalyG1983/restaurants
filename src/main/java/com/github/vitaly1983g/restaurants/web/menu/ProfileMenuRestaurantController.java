@@ -3,6 +3,7 @@ package com.github.vitaly1983g.restaurants.web.menu;
 import com.github.vitaly1983g.restaurants.model.Menu;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class ProfileMenuRestaurantController extends AbstractMenuController {
-    static final String API_URL = "/api/restaurants";
+    protected static final String API_URL = "/api/restaurants";
 
     @GetMapping("/{restId}/menus/by-date")
     public ResponseEntity<Menu> getByDate(@PathVariable int restId,

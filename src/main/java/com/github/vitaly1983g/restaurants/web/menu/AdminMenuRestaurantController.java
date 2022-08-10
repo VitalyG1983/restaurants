@@ -8,6 +8,8 @@ import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,17 +28,12 @@ import java.util.List;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
+@CacheConfig(cacheNames = {"menu", "menus"})
 public class AdminMenuRestaurantController extends AbstractMenuController {
     static final String API_URL = "/api/admin/restaurants/{restId}/menus";
 
-    @Autowired
     protected MenuService service;
-
-    @Autowired
     protected RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private final MenuRepository menuRepository;
 
     @GetMapping(API_URL + "/{id}")
     public ResponseEntity<Menu> get(@PathVariable int restId, @PathVariable int id) {
@@ -64,6 +61,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @Transactional
     @DeleteMapping(API_URL + "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void delete(@PathVariable int restId, @PathVariable int id) {
         log.info("delete menu id={} of restaurant {}", id, restId);
         menuRepository.delete(menuRepository.checkBelong(id, restId));
@@ -72,6 +70,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @Transactional
     @PutMapping(value = API_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id) {
         log.info("update menu id={} of restaurant {}", id, restId);
         Menu menu = menuRepository.checkBelong(id, restId);
@@ -84,6 +83,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
 
     @Transactional
     @PostMapping(value = API_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @CacheEvict(allEntries = true)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
                                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
         log.info("create menu {} for restaurant {}", menuTo, restId);
