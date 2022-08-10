@@ -25,9 +25,9 @@ public class ProfileMenuRestaurantController extends AbstractMenuController {
         return super.getByDate(restId, menuDate);
     }
 
-    @GetMapping(name = "/menus/all-by-date")
-    public List<Menu> allRestaurantsGetByDate(
+    @GetMapping("/menus/all-by-date")
+    public List<Menu> getAllForRestaurantsByDate(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.allRestaurantsGetByDate(menuDate);
+        return super.getAllForRestaurantsByDate(menuDate);
     }
 }

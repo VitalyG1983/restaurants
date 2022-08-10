@@ -10,6 +10,7 @@ import org.springframework.data.util.ProxyUtils;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "dishinmenu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dishinmenu_unique_menu_id_dish_id_idx")})
@@ -34,9 +35,10 @@ public class DishInMenu extends BaseEntity {
     private Menu menu;*/
 
 
-   /* @Column(name = "dish_id", nullable = false)
-    //@OnDelete(action = OnDeleteAction.CASCADE)
-    public int dishId;*/
+ /*   @Column(name = "menu_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
+    public int menuId;*/
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
@@ -65,6 +67,12 @@ public class DishInMenu extends BaseEntity {
        // this.menuId = menuId;
         this.dish = dish;
     }
+
+ /*   public DishInMenu(Integer id,Integer menuId, Dish dish) {
+        this.id = id;
+        this.menuId = menuId;
+        this.dish = dish;
+    }*/
 
     // doesn't work for hibernate lazy proxy
    /* public int id() {

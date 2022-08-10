@@ -7,9 +7,7 @@ import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,15 +50,15 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     }
 
     @GetMapping("/menus/all-by-date")
-    public List<Menu> allRestaurantsGetByDate(
+    public List<Menu> getAllForRestaurantsByDate(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.allRestaurantsGetByDate(menuDate);
+        return super.getAllForRestaurantsByDate(menuDate);
     }
 
     @GetMapping("/{restId}/menus")
-    public List<Menu> getAll(@PathVariable int restId) {
+    public List<Menu> getAllForRestaurant(@PathVariable int restId) {
         log.info("getAll menus of restaurant {}", restId);
-        return menuRepository.getAll(restId);
+        return menuRepository.getAllForRestaurant(restId);
     }
 
     @Transactional
@@ -72,19 +70,21 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     }
 
     @Transactional
-    //@Modifying(clearAutomatically=true, flushAutomatically=true)
     @PutMapping(value = "/{restId}/menus/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-   public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id){
+    public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id){
          log.info("update menu id={} of restaurant {}", id, restId);
        // assureMenuDataConsistent(menuTo, menuDate, restId);
         //assureIdConsistent(dish, id);
         Menu menu = menuRepository.checkBelong(id, restId);
+        // to avoid: Нарушение уникального индекса или первичного ключа: \"PUBLIC.DISHINMENU_UNIQUE_MENU_ID_DISH_ID_IDX
+        // I do: menuRepository.deleteExisted(id);
+        // before save(menu). But in this case, will be generated new 'id' for saved Menu object
         menuRepository.deleteExisted(id);
-        service.save(menuTo, restId, menu.getMenuDate(), id);
+        service.save(menuTo, restId, menu.getMenuDate());
     }
 
-    @Transactional
+    //@Transactional
     @PostMapping(value = "/{restId}/menus", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
                                                    @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {

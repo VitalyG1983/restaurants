@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MenuTestData {
     public static final MatcherFactory.Matcher<Menu> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "restaurant.dishes", "restaurant.votes", "dishesInMenu.id");
-    //public static MatcherFactory.Matcher<MenuTo> MENU_TO_MATCHER = MatcherFactory.usingEqualsComparator(MenuTo.class);
     public static MatcherFactory.Matcher<Menu> MENU_WITH_DISHES_MATCHER =
             MatcherFactory.usingAssertions(Menu.class,
                     //     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
@@ -26,31 +25,46 @@ public class MenuTestData {
                     });
 
     public static final int MENU1_ID = 1;
+    public static final int MENU1_AFTER_UPDATE_ID = 6;
     public static final int REST2_MENU1_ID = 4;
-    public static final String NEW_DATE = " 2020-02-01";
+    public static final int INVALID_MENU_ID = 99;
+    public static final String NEW_DATE = "2020-02-01";
 
     //public static final int ADMIN_MENU_ID = 8;
 
+    public static final Menu emptyRestMenu1 = new Menu(MENU1_ID, LocalDate.of(2020, Month.JANUARY, 30));
     public static final Menu rest1Menu1 = new Menu(MENU1_ID, LocalDate.of(2020, Month.JANUARY, 30), rest1);
     public static final Menu rest1Menu2 = new Menu(MENU1_ID + 1, LocalDate.of(2020, Month.JANUARY, 31), rest1);
     public static final Menu rest1Menu3 = new Menu(MENU1_ID + 2, LocalDate.of(2020, Month.JANUARY, 29), rest1);
     public static final Menu rest2Menu1 = new Menu(REST2_MENU1_ID, LocalDate.of(2020, Month.JANUARY, 31), rest2);
     public static final Menu rest3Menu1 = new Menu(MENU1_ID + 4, LocalDate.of(2020, Month.JANUARY, 31), rest3);
 
-    public static final DishInMenu dishInMenu1 = new DishInMenu(1, dish1);
-    public static final DishInMenu dishInMenu2 = new DishInMenu(2 ,dish2);
-    public static final DishInMenu dishInMenu3 = new DishInMenu(3, dish3);
+    public static final DishInMenu dish2InMenu = new DishInMenu(null, dish2);
+    public static final DishInMenu dish3InMenu = new DishInMenu(null, dish3);
+    public static final DishInMenu dish1InMenu = new DishInMenu(null, dish1);
 
+    public static final DishInMenu dish4InMenu4 = new DishInMenu(null, rest2Dish4);
+    public static final DishInMenu dish5InMenu4 = new DishInMenu(null, rest2Dish5);
+    public static final DishInMenu dish6InMenu4 = new DishInMenu(null, rest2Dish6);
 
+    public static final DishInMenu dish7InMenu5 = new DishInMenu(null, dish7);
+    public static final DishInMenu dish8InMenu5 = new DishInMenu(null, dish8);
     // public static final Menu adminMenu1 = new Menu(ADMIN_MENU_ID, of(2020, Month.JANUARY, 31, 14, 0), "Админ ланч", 510);
     // public static final Menu adminMenu2 = new Menu(ADMIN_MENU_ID + 1, of(2020, Month.JANUARY, 31, 21, 0), "Админ ужин", 1500);
 
-    public static final List<Menu> menus = List.of(rest3Menu1, rest2Menu1, rest1Menu3, rest1Menu2, rest1Menu1);
-    public static final List<DishInMenu> dishes1InMenu1 = List.of(dishInMenu3, dishInMenu2, dishInMenu1);
-    public static final List<DishInMenu> dishes2InMenu1 = List.of(dishInMenu1, dishInMenu2);
+    public static final List<Menu> rest1Menus = List.of(rest1Menu3, rest1Menu1, rest1Menu2);
+    public static final List<Menu> restMenusOnDate = List.of(rest1Menu2, rest2Menu1, rest3Menu1);
+    public static final List<DishInMenu> dishes1InMenu1 = List.of(dish1InMenu, dish2InMenu, dish3InMenu);
+    public static final List<DishInMenu> dishes2InMenu1 = List.of(dish1InMenu, dish2InMenu);
 
     static {
-        rest1Menu1.setDishesInMenu(dishes1InMenu1);
+        //rest1Menu1.setDishesInMenu(dishes1InMenu1);
+        rest1Menu1.setDishesInMenu(List.of(dish1InMenu));
+        rest1Menu2.setDishesInMenu(List.of(dish2InMenu));
+        rest1Menu3.setDishesInMenu(List.of(dish3InMenu));
+        rest2Menu1.setDishesInMenu(List.of(dish4InMenu4, dish5InMenu4, dish6InMenu4));
+        rest3Menu1.setDishesInMenu(List.of(dish7InMenu5, dish8InMenu5));
+
     }
 
     public static Menu getNew() {
@@ -58,7 +72,7 @@ public class MenuTestData {
     }
 
     public static MenuTo getNewMenuTo() {
-        return new MenuTo(null, new HashSet<>(List.of(2, 1)));
+        return new MenuTo(null, new HashSet<>(List.of(2, 3, 1)));
     }
 
     public static Menu getUpdated() {
