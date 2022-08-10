@@ -24,11 +24,11 @@ public abstract class AbstractMenuController {
        // return ResponseEntity.of(MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate).stream().findFirst());
     }
 
-    protected List<Menu> allRestaurantsGetByDate(LocalDate menuDate) {
+    protected List<Menu> getAllForRestaurantsByDate(LocalDate menuDate) {
         log.info("get menu on date {} for all restaurants", menuDate);
        // List<Menu> menus = menuRepository.getByDateAllRestaurants(menuDate);
        // return MenuUtil.getMenuTosByDateForRestaurants(menus, menuDate);
-        return menuRepository.allRestaurantsGetByDate(menuDate);
+        return menuRepository.getAllForRestaurantsByDate(menuDate);
     }
 
   /*  @CacheEvict(value = "users", allEntries = true)

@@ -2,6 +2,7 @@ package com.github.vitaly1983g.restaurants.to;
 
 import lombok.*;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
@@ -20,6 +21,7 @@ public class MenuTo extends BaseTo {
     private int restId;*/
 
     @Size(min = 1)
+    @NotNull
     private Set<Integer> dishIds;
 
     public MenuTo() {

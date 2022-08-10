@@ -53,7 +53,7 @@ public class MealController {
     @GetMapping
     public List<LunchTo> getAll(@AuthenticationPrincipal AuthUser authUser) {
         log.info("getAll for user {}", authUser.id());
-        return MenuUtil.getTos(repository.getAll(authUser.id()), authUser.getUser().getCaloriesPerDay());
+        return MenuUtil.getTos(repository.getAllForRestaurant(authUser.id()), authUser.getUser().getCaloriesPerDay());
     }
 
 
