@@ -29,24 +29,23 @@ public class DishController {
     private final DishRepository repository;
     private final RestaurantRepository restaurantRepository;
 
-
     @GetMapping("/{id}")
     public ResponseEntity<Dish> get(@PathVariable int restId, @PathVariable int id) {
-        log.info("get dish {} of restaurants {}", id, restId);
+        log.info("get dish {} of restaurant {}", id, restId);
         return ResponseEntity.of(repository.get(id, restId));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restId, @PathVariable int id) {
-        log.info("delete dish {} of restaurants {}", id, restId);
+        log.info("delete dish {} of restaurant {}", id, restId);
         Dish dish = repository.checkBelong(id, restId);
         repository.delete(dish);
     }
 
     @GetMapping
     public List<Dish> getAll(@PathVariable int restId) {
-        log.info("getAll for restaurants {}", restId);
+        log.info("getAll for restaurant {}", restId);
         return repository.getAll(restId);
     }
 
@@ -64,7 +63,7 @@ public class DishController {
     @Transactional
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> createWithLocation(@PathVariable int restId, @Valid @RequestBody Dish dish) {
-        log.info("create dish {} for restaurants {}", dish, restId);
+        log.info("create dish {} for restaurant {}", dish, restId);
         checkNew(dish);
         restaurantRepository.checkExistence(restId);
         dish.setRestId(restId);
@@ -75,17 +74,4 @@ public class DishController {
                 .toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
-
-  /*  @GetMapping("/filter")
-    public List<MealTo> getBetween(@AuthenticationPrincipal AuthUser authUser,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime startTime,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime endTime) {
-
-        int restId = restId;
-        log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, restId);
-        List<Dish> mealsDateFiltered = repository.getBetweenHalfOpen(atStartOfDayOrMin(startDate), atStartOfNextDayOrMax(endDate), restId);
-        return MealsUtil.getFilteredTos(mealsDateFiltered, authUser.getUser().getCaloriesPerDay(), startTime, endTime);
-    }*/
 }

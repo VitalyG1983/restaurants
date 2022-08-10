@@ -23,8 +23,6 @@ public class MenuService {
     private final RestaurantRepository restaurantRepository;
 
     public Menu save(MenuTo menuTo, int restId, LocalDate menuDate) {
-        //Restaurant restaurant = getRestaurant(restId);
-        //menuTo.getDishIds().forEach(dish -> dishRepository.checkBelong(dish.id(), restId));
         Set<Integer> dishIds = new HashSet<>(menuTo.getDishIds());
         Set<Integer> idsRepository = dishRepository.getAllIds(restId, dishIds);
         dishIds.removeAll(idsRepository);

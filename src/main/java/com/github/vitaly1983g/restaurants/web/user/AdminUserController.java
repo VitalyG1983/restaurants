@@ -21,13 +21,13 @@ import java.util.List;
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping(value = AdminUserController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminUserController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 // TODO: cache only most requested data!
 @CacheConfig(cacheNames = "users")
 public class AdminUserController extends AbstractUserController {
 
-    static final String REST_URL = "/api/admin/users";
+    static final String API_URL = "/api/admin/users";
 
     @Override
     @GetMapping("/{id}")
@@ -56,7 +56,7 @@ public class AdminUserController extends AbstractUserController {
         ValidationUtil.checkNew(user);
         User created = prepareAndSave(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(API_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
