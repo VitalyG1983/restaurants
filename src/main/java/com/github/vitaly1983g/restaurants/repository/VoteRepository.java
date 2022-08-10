@@ -30,13 +30,16 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Optional<Vote> getCurrent(int id, LocalDate toDay, int userId);
 
     @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote >= :toDay")
+    Optional<Vote> getCurrentByDate(LocalDate toDay, int userId);
+
+    @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote >= :toDay")
     Optional<Vote> getProbablyVote(LocalDate toDay, int userId);
   /*  @Query("SELECT v FROM Vote v JOIN FETCH v.user WHERE v.id = :id and v.user.id = :userId")
     Optional<Vote> getWithUser(int id, int userId);*/
 
     default Vote checkBelong(int id, int userId, int restId) {
         return get(id, userId, restId).orElseThrow(
-                () -> new DataConflictException("Vote id=" + id + " for restaurants id=" + restId +
+                () -> new DataConflictException("Vote id=" + id + " for restaurant id=" + restId +
                         " doesn't belong to User id=" + userId));
     }
 

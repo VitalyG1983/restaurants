@@ -1,6 +1,7 @@
 package com.github.vitaly1983g.restaurants.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.vitaly1983g.restaurants.model.Role;
 import com.github.vitaly1983g.restaurants.model.User;
 import com.github.vitaly1983g.restaurants.repository.UserRepository;
 import com.github.vitaly1983g.restaurants.util.JsonUtil;
@@ -57,8 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-               // .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
-               // .antMatchers("/api/admin/**").anonymous()
+                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
+                //.antMatchers("/api/admin/**").anonymous()
                 .antMatchers(HttpMethod.POST, "/api/profile").anonymous()
                 .antMatchers("/api/**").authenticated()
                 .and().httpBasic()

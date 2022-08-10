@@ -1,6 +1,7 @@
 package com.github.vitaly1983g.restaurants.web.menu;
 
 import com.github.vitaly1983g.restaurants.web.AbstractControllerTest;
+import com.github.vitaly1983g.restaurants.web.user.UserTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -42,5 +43,12 @@ class ProfileMenuRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MENU_MATCHER.contentJson(restMenusOnDate));
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.USER_MAIL)
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/"))
+                .andExpect(status().isForbidden());
     }
 }

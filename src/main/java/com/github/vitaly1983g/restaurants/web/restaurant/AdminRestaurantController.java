@@ -1,4 +1,4 @@
-package com.github.vitaly1983g.restaurants.web.dish;
+package com.github.vitaly1983g.restaurants.web.restaurant;
 
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;

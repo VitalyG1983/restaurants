@@ -1,4 +1,4 @@
-package com.github.vitaly1983g.restaurants.web.user;
+package com.github.vitaly1983g.restaurants.web.vote;
 
 import com.github.vitaly1983g.restaurants.model.Vote;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
@@ -47,6 +47,12 @@ public class VoteController {
         return ResponseEntity.of(repository.getCurrent(id, NOW_DATE, authUser.id()));
     }
 
+    @GetMapping("/votes/get-current-by-date")
+    public ResponseEntity<Vote> getCurrentByDate(@AuthenticationPrincipal AuthUser authUser) {
+        log.info("get current vote on date={} for user id={}", NOW_DATE, authUser.id());
+        return ResponseEntity.of(repository.getCurrentByDate(NOW_DATE, authUser.id()));
+    }
+
     @GetMapping("/admin/votes/for-restaurant")
     public List<Vote> getAllForRestaurant(@RequestParam int restId,
                                           @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate voteDate) {
@@ -60,17 +66,16 @@ public class VoteController {
         return repository.getAll(voteDate);
     }
 
-    // if user can delete his vote
-/*    @DeleteMapping("/votes/{id}")
+    @DeleteMapping("/admin/votes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@AuthenticationPrincipal AuthUser authUser, @PathVariable int id, @RequestParam int restId) {
-        log.info("delete vote id={} for user {}", id, authUser.id());
-        Vote vote = repository.checkBelong(id, authUser.id(), restId);
+    public void delete(@PathVariable int id, @RequestParam int restId, @RequestParam int userId) {
+        log.info("delete vote id={} for user {}", id, userId);
+        Vote vote = repository.checkBelong(id, userId, restId);
         repository.delete(vote);
-    }*/
+    }
 
     @Transactional
-    @PutMapping(value = "/votes/{id}")
+    @PatchMapping(value = "/votes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int newRestId, @PathVariable int id) {
         int userId = authUser.id();
