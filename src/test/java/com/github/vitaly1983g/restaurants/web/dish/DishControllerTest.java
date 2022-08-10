@@ -65,7 +65,7 @@ class DishControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void deleteDataConflict() throws Exception {
         perform(MockMvcRequestBuilders.delete(API_URL + DishTestData.REST2_DISH4_ID))
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 
     @Test

@@ -29,8 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
 
-    private static final String API_ADMIN_URL = AdminMenuRestaurantController.API_URL + '/';
-    // private static final String API_PROFILE_URL = ProfileMenuRestaurantController.API_URL + '/';
+    private static final String API_ADMIN_URL = "/api/admin/restaurants/" + REST_ID1 + "/menus";
 
     @Autowired
     private MenuRepository menuRepository;
@@ -38,7 +37,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + REST_ID1 + "/menus/" + MENU1_ID))
+        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + "/" + MENU1_ID))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -47,14 +46,14 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void getUnauth() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + REST_ID1 + "/menus/" + MENU1_ID))
+        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + "/" + MENU1_ID))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + REST_ID1 + "/menus/" + INVALID_MENU_ID))
+        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + "/" + INVALID_MENU_ID))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -62,7 +61,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(API_ADMIN_URL + REST_ID1 + "/menus/" + MENU1_ID))
+        perform(MockMvcRequestBuilders.delete(API_ADMIN_URL + "/" + MENU1_ID))
                 .andExpect(status().isNoContent());
         assertFalse(menuRepository.get(MENU1_ID, REST_ID1).isPresent());
     }
@@ -70,7 +69,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteDataConflict() throws Exception {
-        perform(MockMvcRequestBuilders.delete(API_ADMIN_URL + REST_ID1 + "/menus/" + REST2_MENU1_ID))
+        perform(MockMvcRequestBuilders.delete(API_ADMIN_URL + "/" + REST2_MENU1_ID))
                 .andExpect(status().isConflict());
     }
 
@@ -79,7 +78,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         MenuTo update = MenuTestData.getNewMenuTo();
         update.setDishIds(Set.of(2, 1));
-        perform(MockMvcRequestBuilders.put(API_ADMIN_URL + REST_ID1 + "/menus/" + MENU1_ID)
+        perform(MockMvcRequestBuilders.put(API_ADMIN_URL + "/" + MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(update)))
                 .andExpect(status().isNoContent());
@@ -92,8 +91,8 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void updateInvalid() throws Exception {
-        MenuTo invalid =  new MenuTo(null, new HashSet<>(List.of()));
-        perform(MockMvcRequestBuilders.put(API_ADMIN_URL + REST_ID1 + "/menus/" + MENU1_ID)
+        MenuTo invalid = new MenuTo(null, new HashSet<>(List.of()));
+        perform(MockMvcRequestBuilders.put(API_ADMIN_URL + "/" + MENU1_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -117,7 +116,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void createWithLocation() throws Exception {
         MenuTo newMenuTo = MenuTestData.getNewMenuTo();
-        ResultActions action = perform(MockMvcRequestBuilders.post(API_ADMIN_URL + REST_ID1 + "/menus?menuDate=" + NEW_DATE)
+        ResultActions action = perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + NEW_DATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMenuTo)));
 
@@ -133,7 +132,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void createInvalid() throws Exception {
         MenuTo invalid = new MenuTo(null, new HashSet<>(List.of()));
-        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + REST_ID1 + "/menus?menuDate=" + NEW_DATE)
+        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + NEW_DATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -145,7 +144,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void createDuplicate() throws Exception {
         MenuTo invalid = new MenuTo(null, new HashSet<>(List.of(3, 2, 1)));
-        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + REST_ID1 + "/menus?menuDate=" + rest1Menu1.getMenuDate().toString())
+        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + rest1Menu1.getMenuDate().toString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -155,7 +154,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + REST_ID2 + "/menus/by-date?menuDate=2020-01-31"))
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/" + REST_ID2 + "/menus/by-date?menuDate=2020-01-31"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -165,7 +164,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getAllForRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + REST_ID1 + "/menus"))
+        perform(MockMvcRequestBuilders.get(API_ADMIN_URL))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -175,7 +174,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
     void getAllForRestaurantsByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_ADMIN_URL + "menus/all-by-date?menuDate=2020-01-31"))
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/all-by-date?menuDate=2020-01-31"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

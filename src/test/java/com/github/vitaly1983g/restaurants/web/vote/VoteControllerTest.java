@@ -16,8 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.VOTE_ELEVEN_TIME;
 import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.*;
+import static com.github.vitaly1983g.restaurants.web.user.UserTestData.USER_ID;
+import static com.github.vitaly1983g.restaurants.web.vote.VoteController.REST_URL;
 import static com.github.vitaly1983g.restaurants.web.vote.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,8 +44,18 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
-    void getCurrentVote() throws Exception {
+    void getCurrent() throws Exception {
         perform(MockMvcRequestBuilders.get(API_URL + "/get-current?id=" + USER_VOTE1_ID))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(VOTE_MATCHER.contentJson(userVote1));
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.USER_MAIL)
+    void getCurrentByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(API_URL + "/get-current-by-date"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -53,6 +66,13 @@ class VoteControllerTest extends AbstractControllerTest {
     void getUnauth() throws Exception {
         perform(MockMvcRequestBuilders.get(API_URL + "/" + USER_VOTE1_ID))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.USER_MAIL)
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get("/api/admin/votes/"))
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -85,6 +105,24 @@ class VoteControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
+    void delete() throws Exception {
+        perform(MockMvcRequestBuilders.delete("/api/admin/votes/"
+                + USER_VOTE1_ID + "?restId=" + REST_ID1 + "&userId=" + USER_ID))
+                .andExpect(status().isNoContent());
+
+        assertFalse(voteRepository.findById(USER_VOTE1_ID).isPresent());
+    }
+
+    @Test
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
+    void deleteDataConflict() throws Exception {
+        perform(MockMvcRequestBuilders.delete("/api/admin/votes/"
+                + INVALID_VOTE_ID + "?restId=" + REST_ID1 + "&userId=" + USER_ID))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
     @WithUserDetails(value = UserTestData.GUEST_MAIL)
     void createWithLocation() throws Exception {
         Vote newVote = VoteTestData.getNew();
@@ -102,7 +140,7 @@ class VoteControllerTest extends AbstractControllerTest {
     void createInvalid() throws Exception {
         perform(MockMvcRequestBuilders.post(API_URL + "/" + "?restId=" + INVALID_RESTAURANT_ID))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 
     @Test
@@ -117,16 +155,16 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.GUEST_MAIL)
     void updateInvalid() throws Exception {
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + INVALID_RESTAURANT_ID))
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + INVALID_RESTAURANT_ID))
                 .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
+                .andExpect(status().isConflict());
     }
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateBeforeEleven() throws Exception {
         setVoteTestTime(VOTE_ELEVEN_TIME.minusHours(1));
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
                 .andExpect(status().isNoContent());
 
         assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), REST_ID2);
@@ -136,8 +174,8 @@ class VoteControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateAfterEleven() throws Exception {
         setVoteTestTime(VOTE_ELEVEN_TIME.plusHours(1));
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
-                .andExpect(status().isUnprocessableEntity());
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + USER_VOTE1_ID + "?newRestId=" + REST_ID2))
+                .andExpect(status().isConflict());
 
         assertEquals(voteRepository.getById(USER_VOTE1_ID).getRestId(), REST_ID1);
     }
