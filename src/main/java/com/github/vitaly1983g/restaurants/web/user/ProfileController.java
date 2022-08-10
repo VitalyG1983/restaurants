@@ -61,9 +61,4 @@ public class ProfileController extends AbstractUserController {
         User user = authUser.getUser();
         prepareAndSave(UserUtil.updateFromTo(user, userTo));
     }
-
-    @GetMapping("/vote")
-    public ResponseEntity<User> getWithCurrentVote(@AuthenticationPrincipal AuthUser authUser) {
-        return super.getWithCurrentVote(authUser.id());
-    }
 }

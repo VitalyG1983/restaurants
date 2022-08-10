@@ -35,11 +35,6 @@ public class AdminUserController extends AbstractUserController {
         return super.get(id);
     }
 
-    @GetMapping("/{id}/with-vote")
-    public ResponseEntity<User> getWithCurrentVote(@PathVariable int id) {
-        return super.getWithCurrentVote(id);
-    }
-
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
