@@ -25,7 +25,6 @@ public class MenuTestData {
                     });
 
     public static final int MENU1_ID = 1;
-    public static final int MENU1_AFTER_UPDATE_ID = 6;
     public static final int REST2_MENU1_ID = 4;
     public static final int INVALID_MENU_ID = 99;
     public static final String NEW_DATE = "2020-02-01";

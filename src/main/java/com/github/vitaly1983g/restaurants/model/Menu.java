@@ -63,7 +63,7 @@ public class Menu extends BaseEntity {
     //@JsonManagedReference
     private List<Dish> dishIds;*/
 
-    public Menu(Integer id, LocalDate menuDate ) {
+    public Menu(Integer id, LocalDate menuDate) {
         super(id);
         this.menuDate = menuDate;
     }
@@ -82,7 +82,14 @@ public class Menu extends BaseEntity {
         this.dishesInMenu = dishesInMenu;
     }
 
-   /* public LocalDate getMenuDate() {
+ /*   public void setDishesInMenu(List<DishInMenu> dishesInMenu) {
+        this.dishesInMenu.clear();
+        if (dishesInMenu.size() != 0) {
+            this.dishesInMenu.addAll(dishesInMenu);
+        }
+    }*/
+
+    /* public LocalDate getMenuDate() {
         return menuDate;
     }*/
 

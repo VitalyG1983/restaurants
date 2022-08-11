@@ -1,13 +1,11 @@
 package com.github.vitaly1983g.restaurants.web.menu;
 
 import com.github.vitaly1983g.restaurants.model.Menu;
-import com.github.vitaly1983g.restaurants.repository.MenuRepository;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
 import com.github.vitaly1983g.restaurants.service.MenuService;
 import com.github.vitaly1983g.restaurants.to.MenuTo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -74,11 +72,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id) {
         log.info("update menu id={} of restaurant {}", id, restId);
         Menu menu = menuRepository.checkBelong(id, restId);
-        // to avoid: Нарушение уникального индекса или первичного ключа: \"PUBLIC.DISHINMENU_UNIQUE_MENU_ID_DISH_ID_IDX
-        // I do before save(menu): menuRepository.deleteExisted(id);
-        // But in this case, will be generated new 'id' for saved Menu object
-        menuRepository.deleteExisted(id);
-        service.save(menuTo, restId, menu.getMenuDate());
+        service.save(menuTo, restId, menu.getMenuDate(), id);
     }
 
     @Transactional
