@@ -30,7 +30,7 @@ class DishControllerTest extends AbstractControllerTest {
     private DishRepository dishRepository;
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(API_URL + DishTestData.DISH1_ID))
                 .andExpect(status().isOk())
@@ -54,7 +54,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(API_URL + DISH1_ID))
                 .andExpect(status().isNoContent());
@@ -62,14 +62,14 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void deleteDataConflict() throws Exception {
         perform(MockMvcRequestBuilders.delete(API_URL + DishTestData.REST2_DISH4_ID))
                 .andExpect(status().isConflict());
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void update() throws Exception {
         Dish updated = DishTestData.getUpdated();
         perform(MockMvcRequestBuilders.put(API_URL + DishTestData.DISH1_ID)
@@ -81,7 +81,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void createWithLocation() throws Exception {
         Dish newMenu = DishTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(API_URL)
@@ -96,7 +96,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(API_URL))
                 .andExpect(status().isOk())
@@ -117,7 +117,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateInvalid() throws Exception {
         Dish invalid = new Dish(DISH1_ID, "invalid", 0, 0);
         perform(MockMvcRequestBuilders.put(API_URL + DishTestData.DISH1_ID)
@@ -128,7 +128,7 @@ class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
         Dish invalid = new Dish(DISH1_ID, "<script>alert(123)</script>", 99, REST_ID1);
         perform(MockMvcRequestBuilders.put(API_URL + DISH1_ID)
@@ -140,7 +140,7 @@ class DishControllerTest extends AbstractControllerTest {
 
     @Test
     @Transactional(propagation = Propagation.NEVER)
-    @WithUserDetails(value = UserTestData.USER_MAIL)
+    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateDuplicate() throws Exception {
         Dish invalid = new Dish(DISH1_ID, dish2.getName(), 0, REST_ID1);
         perform(MockMvcRequestBuilders.put(API_URL + DishTestData.DISH1_ID)

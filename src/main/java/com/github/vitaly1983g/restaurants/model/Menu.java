@@ -12,12 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_restId_idx")})
-//@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_restId_dishId_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@ToString(callSuper = true, exclude = {"restaurant","dishes"})
-@ToString(callSuper = true, exclude = {"dishes"})
+@ToString(callSuper = true, exclude = {"dishesInMenu"})
 public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
@@ -75,22 +73,10 @@ public class Menu extends BaseEntity {
     }
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<DishInMenu> dishesInMenu) {
-        //super(id);
+        super(id);
         this.id = id;
         this.menuDate = menuDate;
         this.restaurant = restaurant;
         this.dishesInMenu = dishesInMenu;
     }
-
- /*   public void setDishesInMenu(List<DishInMenu> dishesInMenu) {
-        this.dishesInMenu.clear();
-        if (dishesInMenu.size() != 0) {
-            this.dishesInMenu.addAll(dishesInMenu);
-        }
-    }*/
-
-    /* public LocalDate getMenuDate() {
-        return menuDate;
-    }*/
-
 }

@@ -17,7 +17,6 @@ import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.VOTE_ELEVEN_TIME;
 import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.*;
 import static com.github.vitaly1983g.restaurants.web.user.UserTestData.USER_ID;
-import static com.github.vitaly1983g.restaurants.web.vote.VoteController.REST_URL;
 import static com.github.vitaly1983g.restaurants.web.vote.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

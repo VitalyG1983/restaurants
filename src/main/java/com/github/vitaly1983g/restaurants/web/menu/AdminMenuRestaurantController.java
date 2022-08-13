@@ -66,7 +66,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     }
 
     @Transactional
-    @PutMapping(value = API_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = API_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id) {

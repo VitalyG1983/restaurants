@@ -1,19 +1,27 @@
 package com.github.vitaly1983g.restaurants.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "dish", uniqueConstraints = {@UniqueConstraint(columnNames = {"rest_id", "name"}, name = "dish_unique_rest_id_name_idx")})
+@Table(name = "dish", uniqueConstraints = {
+        @UniqueConstraint(name = "dish_unique_rest_id_name_idx", columnNames = {"rest_id", "name"})
+})
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"restaurants"})
+@NoArgsConstructor
+@ToString//, exclude = {"restaurants"})
 public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
@@ -48,6 +56,6 @@ public class Dish extends NamedEntity {
     public Dish(Integer id, String name, int price, int restId) {
         super(id, name);
         this.price = price;
-        this.restId=restId;
+        this.restId = restId;
     }
 }
