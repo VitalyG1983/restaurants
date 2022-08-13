@@ -16,10 +16,6 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Menu m SET m.dishesInMenu = :dishInMenus WHERE m.id =:id AND m.restaurant.id=:restId")
-    int update(int id, int restId, List<DishInMenu> dishInMenus);
 
 /*    @Modifying
     @Transactional
@@ -39,11 +35,8 @@ public interface MenuRepository extends BaseRepository<Menu> {
 
     @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId AND m.menuDate = :menuDate")
+   // Optional<Menu> getByDate(LocalDate menuDate, int restId);
     Optional<Menu> getByDate(LocalDate menuDate, int restId);
-
-    @EntityGraph(attributePaths = {"restaurant", "dishesInMenu", "dishesInMenu.dish"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId AND m.menuDate = :menuDate")
-    Menu getByDatee(LocalDate menuDate, int restId);
 
     @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.menuDate = :menuDate ORDER BY m.restaurant.id, m.menuDate")

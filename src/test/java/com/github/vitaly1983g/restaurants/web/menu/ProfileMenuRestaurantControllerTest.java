@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitaly1983g.restaurants.web.menu.MenuTestData.*;
 import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.REST_ID1;
 import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.REST_ID2;
@@ -22,7 +23,7 @@ class ProfileMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_PROFILE_URL + REST_ID2 + "/menus/by-date?menuDate=2020-01-31"))
+        perform(MockMvcRequestBuilders.get(API_PROFILE_URL + REST_ID2 + "/menus/by-date?menuDate=" + rest2Menu1.getMenuDate()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -38,7 +39,7 @@ class ProfileMenuRestaurantControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void getAllForRestaurantsByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_PROFILE_URL + "menus/all-by-date?menuDate=2020-01-31"))
+        perform(MockMvcRequestBuilders.get(API_PROFILE_URL + "menus/all-by-date?menuDate=" + NOW_DATE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

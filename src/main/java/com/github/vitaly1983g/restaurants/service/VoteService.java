@@ -2,9 +2,7 @@ package com.github.vitaly1983g.restaurants.service;
 
 import com.github.vitaly1983g.restaurants.error.DataConflictException;
 import com.github.vitaly1983g.restaurants.model.Vote;
-import com.github.vitaly1983g.restaurants.repository.VoteRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +17,6 @@ import static com.github.vitaly1983g.restaurants.util.Util.isBetweenHalfOpen;
 @Service
 @AllArgsConstructor
 public class VoteService {
-    private final VoteRepository voteRepository;
-
-    @Autowired
     private final Environment environment;
 
     public void update(Vote vote, int newRestId) {
@@ -33,7 +28,6 @@ public class VoteService {
         }
         if (isBetweenHalfOpen(vote.getTimeVote(), LocalTime.MIN, VOTE_ELEVEN_TIME)) {
             vote.setRestId(newRestId);
-            voteRepository.save(vote);
         } else throw new DataConflictException("Vote id=" + vote.id() + " can't be updated after 11:00 o'clock");
     }
 }

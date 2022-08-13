@@ -1,7 +1,10 @@
 package com.github.vitaly1983g.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,12 +16,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "vote", uniqueConstraints = {@UniqueConstraint(columnNames = {"date_vote", "user_id"}, name = "vote_unique_date_userId_idx"),}
-)
+@Table(name = "vote", uniqueConstraints = {
+        @UniqueConstraint(name = "vote_unique_date_userId_idx", columnNames = {"date_vote", "user_id"})
+})
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)//, exclude = {"user"})
+@NoArgsConstructor
+@ToString//, exclude = {"user"})
 public class Vote extends BaseEntity {
 
     @Column(name = "time_vote", nullable = false)

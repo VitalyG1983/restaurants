@@ -26,11 +26,11 @@ import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE_TIME
 
 
 @RestController
-@RequestMapping(value = VoteController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = VoteController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
 public class VoteController {
-    static final String REST_URL = "/api";
+    static final String API_URL = "/api";
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
     private final VoteService service;
@@ -92,7 +92,7 @@ public class VoteController {
         restaurantRepository.checkExistence(restId);
         Vote created = repository.save(new Vote(null, NOW_DATE_TIME, authUser.getUser(), restId));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(API_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
