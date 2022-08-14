@@ -19,17 +19,17 @@ spring:
     url: jdbc:h2:mem:restaurants
     #    tcp: jdbc:h2:tcp://localhost:9092/mem:restaurants
     # Absolute path
-    #    url: jdbc:h2:C:/projects/bootjava/db/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/bootjava/db/topjava
+    #    url: jdbc:h2:C:/projects/restaurants/db/restaurants
+    #    tcp: jdbc:h2:tcp://localhost:9092/C:/projects/restaurants/db/restaurants
     # Relative path form current dir
-    #    url: jdbc:h2:./db/topjava
+    #    url: jdbc:h2:./db/restaurants
     # Relative path from home
-    #    url: jdbc:h2:~/topjava
-    #    tcp: jdbc:h2:tcp://localhost:9092/~/topjava
+    #    url: jdbc:h2:~/restaurants
+    #    tcp: jdbc:h2:tcp://localhost:9092/~/restaurants
     username: sa
     password:
 
-# Jackson Serialization Issue Resolver
+  # Jackson Serialization Issue Resolver
   jackson.visibility:
     field: any
     getter: none

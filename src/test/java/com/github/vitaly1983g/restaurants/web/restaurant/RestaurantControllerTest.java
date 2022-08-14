@@ -66,7 +66,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(API_URL + "/" + REST_ID1))
                 .andExpect(status().isNoContent());
-        assertFalse(restaurantRepository.get(REST_ID1).isPresent());
+        assertFalse(restaurantRepository.findById(REST_ID1).isPresent());
     }
 
     @Test
@@ -80,12 +80,12 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void update() throws Exception {
         Restaurant updated = RestaurantTestData.getUpdated();
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + RestaurantTestData.REST_ID1)
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + RestaurantTestData.REST_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
-        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(RestaurantTestData.REST_ID1), updated);
+        RESTAURANT_MATCHER.assertMatch(restaurantRepository.getById(REST_ID1), updated);
     }
 
     @Test
@@ -128,7 +128,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateInvalid() throws Exception {
         Restaurant invalid = new Restaurant(REST_ID1, "invalid", "");
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + REST_ID1)
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + REST_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -139,7 +139,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateHtmlUnsafe() throws Exception {
         Restaurant invalid = new Restaurant(REST_ID1, "Обновленный ресторан", "<script>alert(123)</script>");
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + REST_ID1)
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + REST_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -151,7 +151,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateDuplicate() throws Exception {
         Restaurant invalid = new Restaurant(REST_ID1, rest2.getName(), rest2.getAddress());
-        perform(MockMvcRequestBuilders.put(API_URL + "/" + RestaurantTestData.REST_ID1)
+        perform(MockMvcRequestBuilders.patch(API_URL + "/" + RestaurantTestData.REST_ID1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())

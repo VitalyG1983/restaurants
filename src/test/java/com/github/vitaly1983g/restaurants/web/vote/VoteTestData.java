@@ -19,9 +19,8 @@ public class VoteTestData {
     public static final int INVALID_VOTE_ID = 99;
 
     public static final Vote userVote1 = new Vote(USER_VOTE1_ID, LocalDateTime.MIN, user, 1);
-    //public static final Vote userVote2 = new Vote(USER_VOTE1_ID + 1, LocalDateTime.of(2020, 1, 6, 10, 0), user, 2);
+    public static final Vote userVote2 = new Vote(USER_VOTE1_ID + 1, LocalDateTime.of(2020, 1, 6, 0, 0, 0), user, 3);
     public static final Vote adminVote1 = new Vote(ADMIN_VOTE1_ID, LocalDateTime.MAX, admin, 2);
-    //public static final Vote adminVote2 = new Vote(ADMIN_VOTE1_ID + 1, LocalDateTime.of(2020, 1, 6, 10, 0), admin, 1);
 
     public static final List<Vote> todayVotes = List.of(userVote1, adminVote1);
     public static final List<Vote> todayVotesRest1 = List.of(userVote1);

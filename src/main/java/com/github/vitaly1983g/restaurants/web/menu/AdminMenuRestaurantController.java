@@ -53,6 +53,7 @@ public class AdminMenuRestaurantController extends AbstractMenuController {
     @GetMapping(API_URL)
     public List<Menu> getAllForRestaurant(@PathVariable int restId) {
         log.info("getAll menus of restaurant {}", restId);
+        restaurantRepository.checkExistence(restId);
         return menuRepository.getAllForRestaurant(restId);
     }
 

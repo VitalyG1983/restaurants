@@ -1,10 +1,13 @@
 package com.github.vitaly1983g.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.vitaly1983g.restaurants.HasIdAndEmail;
 import com.github.vitaly1983g.restaurants.util.UserUtil;
 import com.github.vitaly1983g.restaurants.util.validation.NoHtml;
-import com.github.vitaly1983g.restaurants.HasIdAndEmail;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.Range;

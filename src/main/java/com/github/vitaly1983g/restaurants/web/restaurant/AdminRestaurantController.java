@@ -2,7 +2,6 @@ package com.github.vitaly1983g.restaurants.web.restaurant;
 
 import com.github.vitaly1983g.restaurants.model.Restaurant;
 import com.github.vitaly1983g.restaurants.repository.RestaurantRepository;
-import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
@@ -11,12 +10,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
+import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminRestaurantController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,20 +57,22 @@ public class AdminRestaurantController {
         repository.deleteExisted(restId);
     }
 
-    @PutMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    @PatchMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int restId) {
         log.info("update restaurant {}", restId);
-        ValidationUtil.assureIdConsistent(restaurant, restId);
-        repository.save(restaurant);
+        Restaurant foundedRest = repository.checkExistence(restId);
+        foundedRest.setAddress(restaurant.getAddress());
+        foundedRest.setName(restaurant.getName());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create restaurant {}", restaurant);
-        ValidationUtil.checkNew(restaurant);
+        checkNew(restaurant);
         Restaurant saved = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(API_URL + "/{restId}")
