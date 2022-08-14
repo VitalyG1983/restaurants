@@ -1,11 +1,11 @@
 package com.github.vitaly1983g.restaurants.util;
 
+import com.github.vitaly1983g.restaurants.model.Role;
+import com.github.vitaly1983g.restaurants.model.User;
 import com.github.vitaly1983g.restaurants.to.UserTo;
 import lombok.experimental.UtilityClass;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import com.github.vitaly1983g.restaurants.model.Role;
-import com.github.vitaly1983g.restaurants.model.User;
 
 @UtilityClass
 public class UserUtil {

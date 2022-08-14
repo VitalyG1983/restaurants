@@ -53,12 +53,12 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
-    void getCurrentByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get(API_URL + "/get-current-by-date"))
+    void getByDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(API_URL + "/get-by-date?voteDate=" + userVote2.getDateVote()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(userVote1));
+                .andExpect(VOTE_MATCHER.contentJson(userVote2));
     }
 
     @Test

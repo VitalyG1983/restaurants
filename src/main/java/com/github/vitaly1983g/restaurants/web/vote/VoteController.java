@@ -47,10 +47,11 @@ public class VoteController {
         return ResponseEntity.of(repository.getCurrent(id, NOW_DATE, authUser.id()));
     }
 
-    @GetMapping("/votes/get-current-by-date")
-    public ResponseEntity<Vote> getCurrentByDate(@AuthenticationPrincipal AuthUser authUser) {
-        log.info("get current vote on date={} for user id={}", NOW_DATE, authUser.id());
-        return ResponseEntity.of(repository.getCurrentByDate(NOW_DATE, authUser.id()));
+    @GetMapping("/votes/get-by-date")
+    public ResponseEntity<Vote> getByDate(@AuthenticationPrincipal AuthUser authUser,
+                                          @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate voteDate) {
+        log.info("get current vote on date={} for user id={}", voteDate, authUser.id());
+        return ResponseEntity.of(repository.getByDate(voteDate, authUser.id()));
     }
 
     @GetMapping("/admin/votes/for-restaurant")
@@ -66,6 +67,7 @@ public class VoteController {
         return repository.getAll(voteDate);
     }
 
+    @Transactional
     @DeleteMapping("/admin/votes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id, @RequestParam int restId, @RequestParam int userId) {

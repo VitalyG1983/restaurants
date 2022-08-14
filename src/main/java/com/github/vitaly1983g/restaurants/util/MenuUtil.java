@@ -20,7 +20,7 @@ public class MenuUtil {
 
     public static List<DishInMenu> createDishInMenu(List<Dish> dishes) {
         List<DishInMenu> menus = new ArrayList<>();
-        dishes.forEach(dish -> menus.add(new DishInMenu(null, dish)));
+        dishes.forEach(dish -> menus.add(new DishInMenu(dish)));
         return menus;
     }
 }

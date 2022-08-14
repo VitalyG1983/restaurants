@@ -13,40 +13,32 @@ import java.util.List;
 import static com.github.vitaly1983g.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitaly1983g.restaurants.web.dish.DishTestData.*;
 import static com.github.vitaly1983g.restaurants.web.restaurant.RestaurantTestData.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MenuTestData {
     public static final MatcherFactory.Matcher<Menu> MENU_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Menu.class, "restaurant.dishes", "restaurant.votes", "dishesInMenu.id");
-    public static MatcherFactory.Matcher<Menu> MENU_WITH_DISHES_MATCHER =
-            MatcherFactory.usingAssertions(Menu.class,
-                    //     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
-                    (a, e) -> assertThat(a).usingRecursiveComparison().isEqualTo(e),
-                    (a, e) -> {
-                        throw new UnsupportedOperationException();
-                    });
 
     public static final int MENU1_ID = 1;
     public static final int REST2_MENU1_ID = 4;
     public static final int INVALID_MENU_ID = 99;
     public static final String NEW_DATE = NOW_DATE.plusDays(1).toString();
 
-    public static final Menu emptyRestMenu1 = new Menu(MENU1_ID, NOW_DATE);
+    //public static final Menu emptyRestMenu1 = new Menu(MENU1_ID, NOW_DATE);
     public static final Menu rest1Menu1 = new Menu(MENU1_ID, NOW_DATE, rest1);
     public static final Menu rest1Menu2 = new Menu(MENU1_ID + 1, LocalDate.of(2020, Month.JANUARY, 31), rest1);
     public static final Menu rest1Menu3 = new Menu(MENU1_ID + 2, LocalDate.of(2020, Month.JANUARY, 29), rest1);
     public static final Menu rest2Menu1 = new Menu(REST2_MENU1_ID, NOW_DATE, rest2);
     public static final Menu rest3Menu1 = new Menu(MENU1_ID + 4, LocalDate.of(2020, Month.JANUARY, 31), rest3);
 
-    public static final DishInMenu dish2InMenu = new DishInMenu(null, dish2);
-    public static final DishInMenu dish3InMenu = new DishInMenu(null, dish3);
-    public static final DishInMenu dish1InMenu = new DishInMenu(null, dish1);
+    public static final DishInMenu dish2InMenu = new DishInMenu(dish2);
+    public static final DishInMenu dish3InMenu = new DishInMenu(dish3);
+    public static final DishInMenu dish1InMenu = new DishInMenu(dish1);
 
-    public static final DishInMenu dish4InMenu4 = new DishInMenu(null, rest2Dish4);
-    public static final DishInMenu dish5InMenu4 = new DishInMenu(null, rest2Dish5);
-    public static final DishInMenu dish6InMenu4 = new DishInMenu(null, rest2Dish6);
+    public static final DishInMenu dish4InMenu4 = new DishInMenu(rest2Dish4);
+    public static final DishInMenu dish5InMenu4 = new DishInMenu(rest2Dish5);
+    public static final DishInMenu dish6InMenu4 = new DishInMenu(rest2Dish6);
 
-    public static final DishInMenu dish7InMenu5 = new DishInMenu(null, dish7);
-    public static final DishInMenu dish8InMenu5 = new DishInMenu(null, dish8);
+    public static final DishInMenu dish7InMenu5 = new DishInMenu(dish7);
+    public static final DishInMenu dish8InMenu5 = new DishInMenu(dish8);
 
     public static final List<Menu> rest1Menus = List.of(rest1Menu3, rest1Menu2, rest1Menu1);
     public static final List<Menu> restMenusOnDate = List.of(rest1Menu1, rest2Menu1);

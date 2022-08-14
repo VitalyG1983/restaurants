@@ -2,7 +2,6 @@ package com.github.vitaly1983g.restaurants.web;
 
 import com.github.vitaly1983g.restaurants.error.AppException;
 import com.github.vitaly1983g.restaurants.error.DataConflictException;
-import com.github.vitaly1983g.restaurants.util.validation.ValidationUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.getRootCause;
 import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.EXCEPTION;
-import static org.springframework.boot.web.error.ErrorAttributeOptions.Include.MESSAGE;
 
 @RestControllerAdvice
 @AllArgsConstructor

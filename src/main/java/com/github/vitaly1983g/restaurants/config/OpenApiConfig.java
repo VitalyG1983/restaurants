@@ -27,13 +27,13 @@ import java.time.format.DateTimeFormatter;
                 title = "REST API documentation",
                 version = "1.0",
                 description = """
-                        Приложение по <a href='https://javaops.ru/view/bootjava'>курсу BootJava</a>
-                        <p><b>Тестовые креденшелы:</b><br>
+                        Spring Boot-based application by courses: <a href='https://javaops.ru/view/bootjava'>BootJava</a>, <a href='https://topjava.ru/topjava'>Topjava</a>
+                        <p><b>Test credentials:</b><br>
                         - user@yandex.ru / password<br>
                         - admin@gmail.com / admin<br>
                         - guest@gmail.com / guest</p>
                         """,
-                contact = @Contact(url = "https://javaops.ru/#contacts", name = "Grigory Kislin", email = "admin@javaops.ru")
+                contact = @Contact(url = "https://github.com/Vitaly1983G", name = "Vitaly Gavrilov", email = "vital.gavrilov1983@gmail.com")
         ),
         security = @SecurityRequirement(name = "basicAuth")
 )

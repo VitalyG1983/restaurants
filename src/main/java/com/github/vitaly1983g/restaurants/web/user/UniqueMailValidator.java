@@ -1,13 +1,13 @@
 package com.github.vitaly1983g.restaurants.web.user;
 
+import com.github.vitaly1983g.restaurants.HasIdAndEmail;
+import com.github.vitaly1983g.restaurants.repository.UserRepository;
 import com.github.vitaly1983g.restaurants.web.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import com.github.vitaly1983g.restaurants.HasIdAndEmail;
-import com.github.vitaly1983g.restaurants.repository.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 

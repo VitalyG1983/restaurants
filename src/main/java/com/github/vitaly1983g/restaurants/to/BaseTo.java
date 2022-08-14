@@ -1,11 +1,11 @@
 package com.github.vitaly1983g.restaurants.to;
 
+import com.github.vitaly1983g.restaurants.HasId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.github.vitaly1983g.restaurants.HasId;
 
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

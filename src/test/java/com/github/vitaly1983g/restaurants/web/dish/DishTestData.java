@@ -19,10 +19,7 @@ public class DishTestData {
     public static final Dish rest2Dish6 = new Dish(REST2_DISH4_ID + 2, "Бургер из говядины", 200, 2);
     public static final Dish dish7 = new Dish(REST2_DISH4_ID + 3, "Гриль Кинг", 350, 3);
     public static final Dish dish8 = new Dish(REST2_DISH4_ID + 4, "Кола", 100, 3);
-    /* public static final Dish adminDish1 = new Dish(ADMIN_MENU_ID, LocalDate.of(2020, Month.JANUARY, 31));
-     public static final Dish adminDish2 = new Dish(ADMIN_MENU_ID + 1, LocalDate.of(2020, Month.JANUARY, 31));
- */
-    public static final List<Dish> dishes = List.of(dish8, dish7, rest2Dish6, rest2Dish5, rest2Dish4, dish3, dish2, dish1);
+
     public static final List<Dish> rest1Dishes = List.of(dish1, dish3, dish2);
 
     public static Dish getNew() {

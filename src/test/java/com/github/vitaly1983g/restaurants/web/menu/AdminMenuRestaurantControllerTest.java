@@ -47,7 +47,7 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_MATCHER.contentJson(emptyRestMenu1));
+                .andExpect(MENU_MATCHER.contentJson(rest1Menu1));
     }
 
     @Test
@@ -106,19 +106,6 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-
-/*    @Test
-    @Transactional(propagation = Propagation.NEVER)
-    @WithUserDetails(value = ADMIN_MAIL)
-    void updateDuplicate() throws Exception {
-        //Menu invalid = new Menu(MENU1_ID, rest2Menu1.getMenuDate(), rest2, dishes1InMenu1);
-        perform(MockMvcRequestBuilders.put(API_ADMIN_URL + REST_ID2 + "/menus/" + rest1Menu2.id())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(getNewMenuTo())))
-                .andExpect(status().isUnprocessableEntity())
-                .andDo(print());
-
-    }*/
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)

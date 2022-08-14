@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString//, exclude = {"restaurants"})
+@ToString
 public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
@@ -29,29 +29,9 @@ public class Dish extends NamedEntity {
     @Range(min = 0)
     private Integer price;
 
-    @Column(name = "rest_id")
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@Schema(hidden = true)
+    @Column(name = "rest_id", nullable = false)
     @Range(min = 1)
-    @NotNull
     private int restId;
-
- /*   @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Restaurant restaurants;*/
-
-    /* @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@Schema(hidden = true)
-    private Restaurant restaurants;*/
-
-  /*  @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
-    private Menu menu;*/
 
     public Dish(Integer id, String name, int price, int restId) {
         super(id, name);

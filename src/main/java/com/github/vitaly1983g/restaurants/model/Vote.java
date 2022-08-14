@@ -9,7 +9,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +21,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@ToString//, exclude = {"user"})
+@ToString
 public class Vote extends BaseEntity {
 
     @Column(name = "time_vote", nullable = false)
@@ -31,36 +30,16 @@ public class Vote extends BaseEntity {
 
     @Column(name = "date_vote", nullable = false)
     @NotNull
-    @FutureOrPresent
     private LocalDate dateVote;
-
- /*   //@Column(name = "dish_id", nullable = false)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
-
-  /*  @Column(name = "user_id", nullable = false)
-    @NotNull
-    private int userId;*/
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    //@JsonBackReference
     private User user;
-
- /*   @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rest_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@JsonBackReference
-    //@Schema(hidden = true)
-    private Restaurant restaurant;*/
 
     @Column(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    //@Schema(hidden = true)
-    @NotNull
     private int restId;
 
     public Vote(Integer id, LocalDateTime dtVote, User user, int restId) {

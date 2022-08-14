@@ -9,18 +9,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "meals", "password");
-    public static MatcherFactory.Matcher<User> USER_WITH_MEALS_MATCHER =
-            MatcherFactory.usingAssertions(User.class,
-                    //     No need use ignoringAllOverriddenEquals, see https://assertj.github.io/doc/#breaking-changes
-                    (a, e) -> assertThat(a).usingRecursiveComparison()
-                            .ignoringFields("registered", "meals.user", "password").isEqualTo(e),
-                    (a, e) -> {
-                        throw new UnsupportedOperationException();
-                    });
 
     public static final int USER_ID = 1;
     public static final int ADMIN_ID = 2;
@@ -33,11 +23,6 @@ public class UserTestData {
     public static final User user = new User(USER_ID, "User", USER_MAIL, "password", 2005, Role.USER);
     public static final User admin = new User(ADMIN_ID, "Admin", ADMIN_MAIL, "admin", 1900, Role.ADMIN, Role.USER);
     public static final User guest = new User(GUEST_ID, "Guest", GUEST_MAIL, "guest", 2000);
-
-    static {
-        //user.setVote(new Vote(LocalDateTime ));
-        //admin.setMenus(List.of(MealTestData.adminMenu2, MealTestData.adminMenu1));
-    }
 
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
