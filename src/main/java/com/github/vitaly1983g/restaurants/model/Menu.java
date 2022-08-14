@@ -25,7 +25,6 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @Schema(hidden = true)
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -33,11 +32,6 @@ public class Menu extends BaseEntity {
     @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<DishInMenu> dishesInMenu;
-
- /*   public Menu(Integer id, LocalDate menuDate) {
-        super(id);
-        this.menuDate = menuDate;
-    }*/
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
         super(id);

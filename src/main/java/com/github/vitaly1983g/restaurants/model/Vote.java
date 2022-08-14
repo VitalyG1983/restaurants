@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,7 +40,7 @@ public class Vote extends BaseEntity {
     private User user;
 
     @Column(name = "rest_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @Range(min = 1)
     private int restId;
 
     public Vote(Integer id, LocalDateTime dtVote, User user, int restId) {

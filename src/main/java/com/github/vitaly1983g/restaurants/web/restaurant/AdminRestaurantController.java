@@ -18,7 +18,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.assureIdConsistent;
 import static com.github.vitaly1983g.restaurants.util.validation.ValidationUtil.checkNew;
 
 @RestController

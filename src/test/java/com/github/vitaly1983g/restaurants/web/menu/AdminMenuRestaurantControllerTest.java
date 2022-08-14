@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -36,9 +35,6 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
 
     @Autowired
     private MenuRepository menuRepository;
-
-    @Autowired
-    EntityManager entityManager;
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
@@ -91,8 +87,6 @@ class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
 
         Menu expectedUpdated = MenuTestData.getUpdated();
         expectedUpdated.setId(MENU1_ID);
-        entityManager.flush();
-        entityManager.clear();
         MENU_MATCHER.assertMatch(menuRepository.getByDate(rest1Menu1.getMenuDate(), REST_ID1).get(), expectedUpdated);
     }
 
