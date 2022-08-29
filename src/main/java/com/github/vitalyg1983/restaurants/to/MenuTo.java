@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @ToString
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

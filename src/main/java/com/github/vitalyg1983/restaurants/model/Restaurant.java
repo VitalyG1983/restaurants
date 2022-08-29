@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"dishes", "votes"})
+@ToString(callSuper = true)
 public class Restaurant extends NamedEntity {
 
     @Column(name = "address", nullable = false)
@@ -28,19 +28,12 @@ public class Restaurant extends NamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
-    @OrderBy("restId, name")
+    @OrderBy("name")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Schema(hidden = true)
+    @ToString.Exclude
     private List<Dish> dishes;
-
-    @OneToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    @JoinColumn(name = "rest_id")
-    @OrderBy("dateVote, restId, timeVote")
-    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @Schema(hidden = true)
-    private List<Vote> votes;
 
     public Restaurant(Integer id, String name, String address) {
         super(id, name);

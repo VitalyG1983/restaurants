@@ -22,7 +22,6 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @RestController
 @RequestMapping(value = VoteController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j

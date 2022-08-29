@@ -10,11 +10,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_restId_idx")})
+@Table(name = "menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_date", "rest_id"}, name = "menu_unique_date_rest_id_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"dishesInMenu"})
+@ToString(callSuper = true)
 public class Menu extends BaseEntity {
 
     @Column(name = "menu_date", nullable = false)
@@ -24,12 +24,18 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @NotNull
+    @ToString.Exclude
     private Restaurant restaurant;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "menu_id", nullable = false)
+/*    @JoinTable(name = "dish_in_menu", joinColumns = {@JoinColumn(name = "menu_id"), @JoinColumn(name = "dish_id", nullable = false)},
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dish_in_menu_unique_menu_id_dish_id_idx")})*/
     @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
+    // private List<Dish> dishesInMenu;
     private List<DishInMenu> dishesInMenu;
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
@@ -39,10 +45,8 @@ public class Menu extends BaseEntity {
     }
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<DishInMenu> dishesInMenu) {
-        super(id);
-        this.id = id;
-        this.menuDate = menuDate;
-        this.restaurant = restaurant;
+        //public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<Dish> dishesInMenu) {
+        this(id, menuDate, restaurant);
         this.dishesInMenu = dishesInMenu;
     }
 }

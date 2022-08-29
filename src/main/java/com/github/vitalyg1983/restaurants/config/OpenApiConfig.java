@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter;
                         - admin@gmail.com / admin<br>
                         - guest@gmail.com / guest</p>
                         """,
-                contact = @Contact(url = "https://github.com/Vitaly1983G", name = "Vitaly Gavrilov", email = "vital.gavrilov1983@gmail.com")
+                contact = @Contact(url = "https://github.com/VitalyG1983", name = "Vitaly Gavrilov", email = "vital.gavrilov1983@gmail.com")
         ),
         security = @SecurityRequirement(name = "basicAuth")
 )

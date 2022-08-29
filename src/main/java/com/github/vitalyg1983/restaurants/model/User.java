@@ -2,7 +2,6 @@ package com.github.vitalyg1983.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.vitalyg1983.restaurants.HasIdAndEmail;
-import com.github.vitalyg1983.restaurants.util.UserUtil;
 import com.github.vitalyg1983.restaurants.util.validation.NoHtml;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -63,23 +61,18 @@ public class User extends NamedEntity implements HasIdAndEmail, Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles;
 
-    @Column(name = "calories_per_day", nullable = false, columnDefinition = "int default 2000")
-    @Range(min = 10, max = 10000)
-    private int caloriesPerDay = UserUtil.DEFAULT_CALORIES_PER_DAY;
-
     public User(User u) {
-        this(u.id, u.name, u.email, u.password, u.caloriesPerDay, u.enabled, u.registered, u.roles);
+        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
     }
 
-    public User(Integer id, String name, String email, String password, int caloriesPerDay, Role... roles) {
-        this(id, name, email, password, caloriesPerDay, true, new Date(), Arrays.asList(roles));
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, new Date(), Arrays.asList(roles));
     }
 
-    public User(Integer id, String name, String email, String password, int caloriesPerDay, boolean enabled, Date registered, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.caloriesPerDay = caloriesPerDay;
         this.enabled = enabled;
         this.registered = registered;
         setRoles(roles);

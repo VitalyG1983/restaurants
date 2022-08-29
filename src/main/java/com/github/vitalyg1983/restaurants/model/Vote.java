@@ -1,6 +1,6 @@
 package com.github.vitalyg1983.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "vote", uniqueConstraints = {
-        @UniqueConstraint(name = "vote_unique_date_userId_idx", columnNames = {"date_vote", "user_id"})
+        @UniqueConstraint(name = "vote_unique_date_user_id_idx", columnNames = {"date_vote", "user_id"})
 })
 @Getter
 @Setter
@@ -36,8 +36,17 @@ public class Vote extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonIgnore
+    @NotNull
+    @ToString.Exclude
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rest_id", insertable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)  // field 'restaurant' used only for delete votes from DB
+    @JsonIgnore
+    @ToString.Exclude
+    private Restaurant restaurant;
 
     @Column(name = "rest_id", nullable = false)
     @Range(min = 1)

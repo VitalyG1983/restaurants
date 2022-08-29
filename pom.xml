@@ -8,12 +8,12 @@
         <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.github.vitaly1983g</groupId>
+    <groupId>com.github.vitalyg1983</groupId>
     <artifactId>restaurants</artifactId>
     <version>1.0</version>
     <name>Restaurants</name>
     <description>Spring Boot 2.x application (Restaurants)</description>
-    <url>https://github.com/Vitaly1983G/restaurants</url>
+    <url>https://github.com/VitalyG1983/restaurants</url>
 
     <properties>
         <java.version>17</java.version>

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "dish", uniqueConstraints = {
@@ -24,8 +25,8 @@ public class Dish extends NamedEntity {
 
     @Column(name = "price", nullable = false)
     @NotNull
-    @Range(min = 0)
-    private Integer price;
+    @PositiveOrZero
+    private int price;
 
     @Column(name = "rest_id", nullable = false)
     @Range(min = 1)
