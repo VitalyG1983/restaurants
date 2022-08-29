@@ -8,15 +8,15 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Entity
+/*@Entity
 @Table(name = "dish_in_menu", uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dish_in_menu_unique_menu_id_dish_id_idx")})
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true)
+@ToString(callSuper = true)*/
 public class DishInMenu extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+   /* @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
@@ -31,5 +31,5 @@ public class DishInMenu extends BaseEntity {
     @JsonIgnore  // https://stackoverflow.com/questions/17319266/can-i-annotate-a-member-inherited-from-a-superclass
     public void setId(Integer id) {
         super.setId(id);
-    }
+    }*/
 }

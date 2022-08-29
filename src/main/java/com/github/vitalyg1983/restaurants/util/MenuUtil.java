@@ -1,7 +1,6 @@
 package com.github.vitalyg1983.restaurants.util;
 
 import com.github.vitalyg1983.restaurants.model.Dish;
-import com.github.vitalyg1983.restaurants.model.DishInMenu;
 import com.github.vitalyg1983.restaurants.model.Menu;
 import com.github.vitalyg1983.restaurants.model.Restaurant;
 import lombok.experimental.UtilityClass;
@@ -14,13 +13,13 @@ import java.util.List;
 public class MenuUtil {
 
     public static Menu create(Restaurant restaurant, List<Dish> dishes, LocalDate menuDate) {
-        List<DishInMenu> menus = createDishInMenu(dishes);
+        List<Dish> menus = createDishInMenu(dishes);
         return new Menu(null, menuDate, restaurant, menus);
     }
 
-    public static List<DishInMenu> createDishInMenu(List<Dish> dishes) {
-        List<DishInMenu> menus = new ArrayList<>();
-        dishes.forEach(dish -> menus.add(new DishInMenu(dish)));
+    public static List<Dish> createDishInMenu(List<Dish> dishes) {
+        List<Dish> menus = new ArrayList<>();
+        dishes.forEach(dish -> menus.add(new Dish(dish)));
         return menus;
     }
 }

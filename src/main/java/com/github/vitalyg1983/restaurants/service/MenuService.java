@@ -1,6 +1,7 @@
 package com.github.vitalyg1983.restaurants.service;
 
 import com.github.vitalyg1983.restaurants.error.DataConflictException;
+import com.github.vitalyg1983.restaurants.model.Dish;
 import com.github.vitalyg1983.restaurants.model.DishInMenu;
 import com.github.vitalyg1983.restaurants.model.Menu;
 import com.github.vitalyg1983.restaurants.repository.DishRepository;
@@ -33,9 +34,9 @@ public class MenuService {
             throw new DataConflictException("Dishes with ids=" + dishIds + " doesn't belong to Restaurant id=" + restId);
         }
         if (menuId.length != 0) {
-            List<DishInMenu> createdDishesInMenu = createDishInMenu(dishRepository.findAllById(idsRepository));
+            List<Dish> createdDishesInMenu = createDishInMenu(dishRepository.findAllById(idsRepository));
             Menu menu = menuRepository.getById(menuId[0]);
-            List<DishInMenu> dishesInMenu = menu.getDishesInMenu();
+            List<Dish> dishesInMenu = menu.getDishesInMenu();
             // here Hibernate directly clear the rows of dishesInMenu from the DB table DISHINMENU
             dishesInMenu.clear();
             menuRepository.flush();

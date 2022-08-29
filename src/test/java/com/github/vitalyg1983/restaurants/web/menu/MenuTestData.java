@@ -1,10 +1,10 @@
 package com.github.vitalyg1983.restaurants.web.menu;
 
-import com.github.vitalyg1983.restaurants.model.DishInMenu;
+import com.github.vitalyg1983.restaurants.model.Dish;
 import com.github.vitalyg1983.restaurants.model.Menu;
 import com.github.vitalyg1983.restaurants.to.MenuTo;
-import com.github.vitalyg1983.restaurants.web.MatcherFactory;
 import com.github.vitalyg1983.restaurants.util.DateTimeUtil;
+import com.github.vitalyg1983.restaurants.web.MatcherFactory;
 import com.github.vitalyg1983.restaurants.web.restaurant.RestaurantTestData;
 
 import java.time.LocalDate;
@@ -29,29 +29,28 @@ public class MenuTestData {
     public static final Menu rest2Menu1 = new Menu(REST2_MENU1_ID, DateTimeUtil.NOW_DATE, RestaurantTestData.rest2);
     public static final Menu rest3Menu1 = new Menu(MENU1_ID + 4, LocalDate.of(2020, Month.JANUARY, 31), RestaurantTestData.rest3);
 
-    public static final DishInMenu dish2InMenu = new DishInMenu(dish2);
-    public static final DishInMenu dish3InMenu = new DishInMenu(dish3);
-    public static final DishInMenu dish1InMenu = new DishInMenu(dish1);
+    // public static final Dish dish2 = new Dish(dish2);
+    // public static final Dish dish3 = new Dish(dish3);
+    //  public static final Dish dish1 = new Dish(dish1);
 
-    public static final DishInMenu dish4InMenu4 = new DishInMenu(rest2Dish4);
-    public static final DishInMenu dish5InMenu4 = new DishInMenu(rest2Dish5);
-    public static final DishInMenu dish6InMenu4 = new DishInMenu(rest2Dish6);
+    //public static final Dish rest2Dish4 = new Dish(rest2Dish4);
+    //public static final Dish rest2Dish5 = new Dish(rest2Dish5);
+    // public static final Dish rest2Dish6 = new Dish(rest2Dish6);
 
-    public static final DishInMenu dish7InMenu5 = new DishInMenu(dish7);
-    public static final DishInMenu dish8InMenu5 = new DishInMenu(dish8);
+    //public static final Dish dish7 = new Dish(dish7);
+    //public static final Dish dish8 = new Dish(dish8);
 
     public static final List<Menu> rest1Menus = List.of(rest1Menu3, rest1Menu2, rest1Menu1);
     public static final List<Menu> restMenusOnDate = List.of(rest1Menu1, rest2Menu1);
-    public static final List<DishInMenu> dishes1InMenu1 = List.of(dish1InMenu, dish2InMenu, dish3InMenu);
-    public static final List<DishInMenu> dishes2InMenu1 = List.of(dish1InMenu, dish2InMenu);
+    public static final List<Dish> dishes1InMenu1 = List.of(dish1, dish2, dish3);
+    public static final List<Dish> dishes2InMenu1 = List.of(dish1, dish2);
 
     static {
-        rest1Menu1.setDishesInMenu(List.of(dish1InMenu));
-        rest1Menu2.setDishesInMenu(List.of(dish2InMenu));
-        rest1Menu3.setDishesInMenu(List.of(dish3InMenu));
-        rest2Menu1.setDishesInMenu(List.of(dish4InMenu4, dish5InMenu4, dish6InMenu4));
-        rest3Menu1.setDishesInMenu(List.of(dish7InMenu5, dish8InMenu5));
-
+        rest1Menu1.setDishesInMenu(List.of(dish1));
+        rest1Menu2.setDishesInMenu(List.of(dish2));
+        rest1Menu3.setDishesInMenu(List.of(dish3));
+        rest2Menu1.setDishesInMenu(List.of(rest2Dish6, rest2Dish4, rest2Dish5));
+        rest3Menu1.setDishesInMenu(List.of(dish7, dish8));
     }
 
     public static Menu getNew() {
