@@ -162,7 +162,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getAllForRestaurantsByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/all-by-date?menuDate=" + DateTimeUtil.NOW_DATE))
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/by-date?menuDate=" + DateTimeUtil.NOW_DATE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

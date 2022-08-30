@@ -1,5 +1,6 @@
 package com.github.vitalyg1983.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,7 +30,9 @@ public class Dish extends NamedEntity {
     private int price;
 
     @Column(name = "rest_id", nullable = false)
-    @Range(min = 1)
+    //@Range(min = 1)
+    // not need in request/response, because restId get from url
+    @JsonIgnore
     private int restId;
 
     public Dish(Integer id, String name, int price, int restId) {

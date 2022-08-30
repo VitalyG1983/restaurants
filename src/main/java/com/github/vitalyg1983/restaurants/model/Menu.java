@@ -1,5 +1,8 @@
 package com.github.vitalyg1983.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,6 +28,9 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "rest_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @NotNull
+    //@JsonIgnore
+    // Not need in Response when Admin retrieve menu data. Needed when User GET Menu of Restaurants
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ToString.Exclude
     private Restaurant restaurant;
 

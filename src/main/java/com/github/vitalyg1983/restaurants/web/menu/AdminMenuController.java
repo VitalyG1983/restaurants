@@ -44,7 +44,7 @@ public class AdminMenuController extends AbstractMenuController {
         return super.getByDate(restId, menuDate);
     }
 
-    @GetMapping("/api/admin/restaurants/menus/all-by-date")
+    @GetMapping("/api/admin/restaurants/menus/by-date")
     public List<Menu> getAllForRestaurantsByDate(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
         return super.getAllForRestaurantsByDate(menuDate);

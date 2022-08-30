@@ -13,11 +13,11 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public interface MenuRepository extends BaseRepository<Menu> {
 
-    @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate")
+    @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish"}, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("SELECT m FROM Menu m WHERE m.restaurant.id=:restId ORDER BY m.menuDate DESC")
     List<Menu> getAllForRestaurant(int restId);
 
-    @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
     Optional<Menu> get(int id, int restId);
 
