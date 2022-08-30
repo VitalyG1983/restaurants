@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AdminMenuRestaurantControllerTest extends AbstractControllerTest {
+class AdminMenuControllerTest extends AbstractControllerTest {
 
     private static final String API_ADMIN_URL = "/api/admin/restaurants/" + RestaurantTestData.REST_ID1 + "/menus";
 

@@ -24,27 +24,17 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @CacheConfig(cacheNames = {"menu", "menus"})
-public class AdminRestaurantController {
+public class AdminRestaurantController extends AbstractRestaurantController {
     static final String API_URL = "/api/admin/restaurants";
-
-    private final RestaurantRepository repository;
 
     @GetMapping("/{restId}")
     public ResponseEntity<Restaurant> get(@PathVariable int restId) {
-        log.info("get restaurant id={}", restId);
-        return ResponseEntity.of(repository.findById(restId));
-    }
-
-    @GetMapping("/{restId}/with-dishes")
-    public ResponseEntity<Restaurant> getWithDishes(@PathVariable int restId) {
-        log.info("get restaurant id={} with dishIds", restId);
-        return ResponseEntity.of(repository.getWithDishes(restId));
+        return super.get(restId);
     }
 
     @GetMapping
     public List<Restaurant> getAll() {
-        log.info("getAll restaurants");
-        return repository.findAll(Sort.by("name"));
+        return super.getAll();
     }
 
     @DeleteMapping("/{restId}")
@@ -56,7 +46,7 @@ public class AdminRestaurantController {
     }
 
     @Transactional
-    @PatchMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{restId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int restId) {

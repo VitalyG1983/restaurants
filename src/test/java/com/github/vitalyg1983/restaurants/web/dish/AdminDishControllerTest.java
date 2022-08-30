@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class DishControllerTest extends AbstractControllerTest {
+class AdminDishControllerTest extends AbstractControllerTest {
 
     private static final String API_URL = "/api/admin/restaurants/1/dishes/";
 

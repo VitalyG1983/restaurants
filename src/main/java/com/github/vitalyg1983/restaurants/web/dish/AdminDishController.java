@@ -18,10 +18,10 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = DishController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = AdminDishController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class DishController {
+public class AdminDishController {
     static final String API_URL = "/api/admin/restaurants/{restId}/dishes";
 
     private final DishRepository repository;

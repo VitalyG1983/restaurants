@@ -13,10 +13,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = ProfileMenuRestaurantController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = MenuController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @AllArgsConstructor
-public class ProfileMenuRestaurantController extends AbstractMenuController {
+public class MenuController extends AbstractMenuController {
     protected static final String API_URL = "/api/restaurants";
 
     @GetMapping("/{restId}/menus/by-date")

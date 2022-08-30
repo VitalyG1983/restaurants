@@ -27,7 +27,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @CacheConfig(cacheNames = {"menu", "menus"})
-public class AdminMenuRestaurantController extends AbstractMenuController {
+public class AdminMenuController extends AbstractMenuController {
     static final String API_URL = "/api/admin/restaurants/{restId}/menus";
 
     protected MenuService service;

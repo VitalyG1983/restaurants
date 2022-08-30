@@ -13,9 +13,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ProfileMenuRestaurantControllerTest extends AbstractControllerTest {
+class MenuControllerTest extends AbstractControllerTest {
 
-    private static final String API_PROFILE_URL = ProfileMenuRestaurantController.API_URL + '/';
+    private static final String API_PROFILE_URL = MenuController.API_URL + '/';
 
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
