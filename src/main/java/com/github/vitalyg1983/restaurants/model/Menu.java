@@ -28,14 +28,12 @@ public class Menu extends BaseEntity {
     @ToString.Exclude
     private Restaurant restaurant;
 
+    // Many-to-Many With a New Entity: https://www.baeldung.com/jpa-many-to-many
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "menu_id", nullable = false)
-/*    @JoinTable(name = "dish_in_menu", joinColumns = {@JoinColumn(name = "menu_id"), @JoinColumn(name = "dish_id", nullable = false)},
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dish_in_menu_unique_menu_id_dish_id_idx")})*/
     @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
-    // private List<Dish> dishesInMenu;
     private List<DishInMenu> dishesInMenu;
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
@@ -45,7 +43,6 @@ public class Menu extends BaseEntity {
     }
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<DishInMenu> dishesInMenu) {
-        //public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<Dish> dishesInMenu) {
         this(id, menuDate, restaurant);
         this.dishesInMenu = dishesInMenu;
     }

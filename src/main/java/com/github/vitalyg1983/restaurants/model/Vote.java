@@ -41,13 +41,15 @@ public class Vote extends BaseEntity {
     @ToString.Exclude
     private User user;
 
+    // field 'restaurant' used only for delete votes from DB
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id", insertable = false, updatable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)  // field 'restaurant' used only for delete votes from DB
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     @ToString.Exclude
     private Restaurant restaurant;
 
+    // Foreign key instead of Entity Restaurant: https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
     @Column(name = "rest_id", nullable = false)
     @Range(min = 1)
     private int restId;

@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @ToString(callSuper = true)
 public class DishInMenu extends BaseEntity {
 
+    // Many-to-Many With a New Entity: https://www.baeldung.com/jpa-many-to-many
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dish_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
