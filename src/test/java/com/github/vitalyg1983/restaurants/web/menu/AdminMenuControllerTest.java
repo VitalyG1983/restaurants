@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.github.vitalyg1983.restaurants.util.DateTimeUtil.NOW_DATE;
+import static com.github.vitalyg1983.restaurants.web.menu.MenuTestData.NEW_DATE;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -85,6 +87,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
 
         Menu expectedUpdated = MenuTestData.getUpdated();
         expectedUpdated.setId(MenuTestData.MENU1_ID);
+        expectedUpdated.setMenuDate(NOW_DATE);
         MenuTestData.MENU_MATCHER.assertMatch(menuRepository.getByDate(MenuTestData.rest1Menu1.getMenuDate(), RestaurantTestData.REST_ID1).get(), expectedUpdated);
     }
 
@@ -103,7 +106,8 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void createWithLocation() throws Exception {
         MenuTo newMenuTo = MenuTestData.getNewMenuTo();
-        ResultActions action = perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + MenuTestData.NEW_DATE)
+        newMenuTo.setMenuDate(LocalDate.parse(NEW_DATE));
+        ResultActions action = perform(MockMvcRequestBuilders.post(API_ADMIN_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newMenuTo)));
 
@@ -111,7 +115,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
         int newId = created.id();
         Menu newMenu = MenuTestData.getNew();
         newMenu.setId(newId);
-        newMenu.setMenuDate(LocalDate.parse(MenuTestData.NEW_DATE));
+        newMenu.setMenuDate(LocalDate.parse(NEW_DATE));
         MenuTestData.MENU_MATCHER.assertMatch(created, newMenu);
         MenuTestData.MENU_MATCHER.assertMatch(menuRepository.getById(newId), newMenu);
     }
@@ -120,7 +124,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void createInvalid() throws Exception {
         MenuTo invalid = new MenuTo(null, new HashSet<>(List.of()));
-        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + MenuTestData.NEW_DATE)
+        perform(MockMvcRequestBuilders.post(API_ADMIN_URL + "?menuDate=" + NEW_DATE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(invalid)))
                 .andDo(print())
@@ -162,7 +166,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getAllForRestaurantsByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/by-date?menuDate=" + DateTimeUtil.NOW_DATE))
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/by-date?menuDate=" + NOW_DATE))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

@@ -29,7 +29,7 @@ public class Menu extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @NotNull
     //@JsonIgnore
-    // Not need in Response when Admin retrieve menu data. Needed when User GET Menu of Restaurants
+    // 'restaurant' not need in Response when Admin retrieve menu data. Needed when User GET Menu of Restaurants
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @ToString.Exclude
     private Restaurant restaurant;

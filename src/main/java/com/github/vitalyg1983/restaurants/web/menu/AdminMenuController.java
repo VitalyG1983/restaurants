@@ -72,17 +72,16 @@ public class AdminMenuController extends AbstractMenuController {
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id) {
         log.info("update menu id={} of restaurant {}", id, restId);
-        Menu menu = menuRepository.checkBelong(id, restId);
-        service.save(menuTo, restId, menu.getMenuDate(), id);
+        menuRepository.checkBelong(id, restId);
+        service.save(menuTo, restId, menuTo.getMenuDate(), id);
     }
 
     @Transactional
     @PostMapping(value = API_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
-    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId,
-                                                   @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
+    public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId) {
         log.info("create menu {} for restaurant {}", menuTo, restId);
-        Menu saved = service.save(menuTo, restId, menuDate);
+        Menu saved = service.save(menuTo, restId, menuTo.getMenuDate());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(API_URL + "/{id}")
                 .buildAndExpand(saved.getRestaurant().getId(), saved.getId()).toUri();

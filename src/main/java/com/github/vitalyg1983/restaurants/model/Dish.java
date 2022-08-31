@@ -31,7 +31,7 @@ public class Dish extends NamedEntity {
 
     @Column(name = "rest_id", nullable = false)
     //@Range(min = 1)
-    // not need in request/response, because restId get from url
+    // 'restId' not need in request/response, because restId get from url
     @JsonIgnore
     private int restId;
 

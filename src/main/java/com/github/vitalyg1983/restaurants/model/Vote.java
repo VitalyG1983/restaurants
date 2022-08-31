@@ -49,7 +49,7 @@ public class Vote extends BaseEntity {
     @ToString.Exclude
     private Restaurant restaurant;
 
-    // Foreign key instead of Entity Restaurant: https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
+    // Foreign key 'restId' instead of Entity Restaurant: https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
     @Column(name = "rest_id", nullable = false)
     @Range(min = 1)
     private int restId;
