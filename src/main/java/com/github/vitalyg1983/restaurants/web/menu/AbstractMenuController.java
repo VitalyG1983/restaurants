@@ -10,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.github.vitalyg1983.restaurants.util.DateTimeUtil.NOW_DATE;
-
 @Slf4j
 public abstract class AbstractMenuController {
 
@@ -21,12 +19,12 @@ public abstract class AbstractMenuController {
     @Cacheable("menu")
     public ResponseEntity<Menu> getByDate(int restId, LocalDate menuDate) {
         log.info("get menu on date {} of restaurant {}", menuDate, restId);
-        return ResponseEntity.of(menuRepository.getByDate(menuDate == null ? NOW_DATE : menuDate, restId));
+        return ResponseEntity.of(menuRepository.getByDate(menuDate, restId));
     }
 
     @Cacheable("menus")
     public List<Menu> getAllForRestaurantsByDate(LocalDate menuDate) {
         log.info("get menu on date {} for all restaurants", menuDate);
-        return menuRepository.getAllForRestaurantsByDate(menuDate == null ? NOW_DATE : menuDate);
+        return menuRepository.getAllForRestaurantsByDate(menuDate);
     }
 }

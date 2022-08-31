@@ -2,7 +2,6 @@ package com.github.vitalyg1983.restaurants.repository;
 
 import com.github.vitalyg1983.restaurants.error.DataConflictException;
 import com.github.vitalyg1983.restaurants.model.Vote;
-import com.github.vitalyg1983.restaurants.util.DateTimeUtil;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ public interface VoteRepository extends BaseRepository<Vote> {
     Optional<Vote> getCurrent(int id, LocalDate toDay, int userId);
 
     @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote = :voteDay")
-    Optional<Vote> getByDate(LocalDate voteDay, int userId);
+    Optional<Vote> getCurrentByToDayDate(LocalDate voteDay, int userId);
 
     @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote = :toDay")
     Optional<Vote> getProbablyVote(LocalDate toDay, int userId);
@@ -40,9 +39,8 @@ public interface VoteRepository extends BaseRepository<Vote> {
                         " doesn't belong to User id=" + userId));
     }
 
-    default Vote checkBelongCurrent(int id, int userId) {
-        return getCurrent(id, DateTimeUtil.NOW_DATE, userId).orElseThrow(
-                () -> new DataConflictException("Vote id=" + id + " on date=" +
-                        DateTimeUtil.NOW_DATE + " doesn't belong to User id=" + userId));
+    default Vote checkBelongCurrent(int userId) {
+        return getCurrentByToDayDate(LocalDate.now(), userId).orElseThrow(
+                () -> new DataConflictException("User id=" + userId + " doesn't have vote on today date=" + LocalDate.now()));
     }
 }

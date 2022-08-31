@@ -5,7 +5,6 @@ import com.github.vitalyg1983.restaurants.repository.MenuRepository;
 import com.github.vitalyg1983.restaurants.to.MenuTo;
 import com.github.vitalyg1983.restaurants.util.JsonUtil;
 import com.github.vitalyg1983.restaurants.web.AbstractControllerTest;
-import com.github.vitalyg1983.restaurants.util.DateTimeUtil;
 import com.github.vitalyg1983.restaurants.web.restaurant.RestaurantTestData;
 import com.github.vitalyg1983.restaurants.web.user.UserTestData;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.github.vitalyg1983.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitalyg1983.restaurants.web.menu.MenuTestData.NEW_DATE;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -87,7 +85,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
 
         Menu expectedUpdated = MenuTestData.getUpdated();
         expectedUpdated.setId(MenuTestData.MENU1_ID);
-        expectedUpdated.setMenuDate(NOW_DATE);
+        expectedUpdated.setMenuDate(LocalDate.now());
         MenuTestData.MENU_MATCHER.assertMatch(menuRepository.getByDate(MenuTestData.rest1Menu1.getMenuDate(), RestaurantTestData.REST_ID1).get(), expectedUpdated);
     }
 
@@ -166,7 +164,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void getAllForRestaurantsByDate() throws Exception {
-        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/by-date?menuDate=" + NOW_DATE))
+        perform(MockMvcRequestBuilders.get("/api/admin/restaurants/menus/by-date?menuDate=" + LocalDate.now()))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

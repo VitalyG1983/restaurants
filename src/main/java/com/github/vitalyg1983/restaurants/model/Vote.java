@@ -34,12 +34,16 @@ public class Vote extends BaseEntity {
     private LocalDate dateVote;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    @NotNull
     @ToString.Exclude
     private User user;
+
+    // Foreign key 'userId' instead of Entity User: https://stackoverflow.com/questions/6311776/hibernate-foreign-keys-instead-of-entities
+    @Column(name = "user_id", nullable = false)
+    @Range(min = 1)
+    private int userId;
 
     // field 'restaurant' used only for delete votes from DB
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,11 +58,11 @@ public class Vote extends BaseEntity {
     @Range(min = 1)
     private int restId;
 
-    public Vote(Integer id, LocalDateTime dtVote, User user, int restId) {
+    public Vote(Integer id, LocalDateTime dtVote, int userId, int restId) {
         super(id);
         this.timeVote = dtVote.toLocalTime();
         this.dateVote = dtVote.toLocalDate();
-        this.user = user;
+        this.userId = userId;
         this.restId = restId;
     }
 }

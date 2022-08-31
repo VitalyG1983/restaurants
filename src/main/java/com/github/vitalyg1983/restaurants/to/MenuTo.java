@@ -2,7 +2,6 @@ package com.github.vitalyg1983.restaurants.to;
 
 import lombok.*;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;

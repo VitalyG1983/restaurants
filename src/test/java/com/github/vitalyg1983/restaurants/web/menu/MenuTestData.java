@@ -3,16 +3,13 @@ package com.github.vitalyg1983.restaurants.web.menu;
 import com.github.vitalyg1983.restaurants.model.DishInMenu;
 import com.github.vitalyg1983.restaurants.model.Menu;
 import com.github.vitalyg1983.restaurants.to.MenuTo;
-import com.github.vitalyg1983.restaurants.util.DateTimeUtil;
 import com.github.vitalyg1983.restaurants.web.MatcherFactory;
-import com.github.vitalyg1983.restaurants.web.restaurant.RestaurantTestData;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.github.vitalyg1983.restaurants.util.DateTimeUtil.NOW_DATE;
 import static com.github.vitalyg1983.restaurants.web.dish.DishTestData.*;
 
 public class MenuTestData {
@@ -22,13 +19,13 @@ public class MenuTestData {
     public static final int MENU1_ID = 1;
     public static final int REST2_MENU1_ID = 4;
     public static final int INVALID_MENU_ID = 99;
-    public static final String NEW_DATE = NOW_DATE.plusDays(1).toString();
+    public static final String NEW_DATE = LocalDate.now().plusDays(1).toString();
 
     //public static final Menu emptyRestMenu1 = new Menu(MENU1_ID, NOW_DATE);
-    public static final Menu rest1Menu1 = new Menu(MENU1_ID, NOW_DATE, null); //RestaurantTestData.rest1);
+    public static final Menu rest1Menu1 = new Menu(MENU1_ID, LocalDate.now(), null); //RestaurantTestData.rest1);
     public static final Menu rest1Menu2 = new Menu(MENU1_ID + 1, LocalDate.of(2020, Month.JANUARY, 31), null);// RestaurantTestData.rest1);
     public static final Menu rest1Menu3 = new Menu(MENU1_ID + 2, LocalDate.of(2020, Month.JANUARY, 29), null);// RestaurantTestData.rest1);
-    public static final Menu rest2Menu1 = new Menu(REST2_MENU1_ID, NOW_DATE, null);//, RestaurantTestData.rest2);
+    public static final Menu rest2Menu1 = new Menu(REST2_MENU1_ID, LocalDate.now(), null);//, RestaurantTestData.rest2);
     public static final Menu rest3Menu1 = new Menu(MENU1_ID + 4, LocalDate.of(2020, Month.JANUARY, 31), null); //RestaurantTestData.rest3);
 
     public static final DishInMenu dish2InMenu = new DishInMenu(dish2);
@@ -62,7 +59,7 @@ public class MenuTestData {
     }
 
     public static MenuTo getNewMenuTo() {
-        return new MenuTo(null, new HashSet<>(List.of(2, 3, 1)), NOW_DATE);
+        return new MenuTo(null, new HashSet<>(List.of(2, 3, 1)), LocalDate.now());
     }
 
     public static Menu getUpdated() {

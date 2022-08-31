@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
-
-import static com.github.vitalyg1983.restaurants.util.DateTimeUtil.NOW_DATE;
 
 @RestController
 @RequestMapping(value = MenuController.API_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,11 +22,11 @@ public class MenuController extends AbstractMenuController {
 
     @GetMapping("/{restId}/menus/for-today")
     public ResponseEntity<Menu> getByDate(@PathVariable int restId) {
-        return super.getByDate(restId, NOW_DATE);
+        return super.getByDate(restId, LocalDate.now());
     }
 
     @GetMapping("/menus/for-today")
     public List<Menu> getAllForRestaurantsByDate() {
-        return super.getAllForRestaurantsByDate(NOW_DATE);
+        return super.getAllForRestaurantsByDate(LocalDate.now());
     }
 }

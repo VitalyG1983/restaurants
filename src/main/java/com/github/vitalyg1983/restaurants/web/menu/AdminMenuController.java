@@ -41,13 +41,13 @@ public class AdminMenuController extends AbstractMenuController {
     @GetMapping(API_URL + "/by-date")
     public ResponseEntity<Menu> getByDate(@PathVariable int restId,
                                           @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.getByDate(restId, menuDate);
+        return super.getByDate(restId, menuDate == null ? LocalDate.now() : menuDate);
     }
 
     @GetMapping("/api/admin/restaurants/menus/by-date")
     public List<Menu> getAllForRestaurantsByDate(
             @RequestParam @Nullable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate menuDate) {
-        return super.getAllForRestaurantsByDate(menuDate);
+        return super.getAllForRestaurantsByDate(menuDate == null ? LocalDate.now() : menuDate);
     }
 
     @GetMapping(API_URL)
