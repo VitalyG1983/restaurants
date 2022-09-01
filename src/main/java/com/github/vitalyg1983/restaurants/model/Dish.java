@@ -37,14 +37,18 @@ public class Dish extends NamedEntity {
     private int restId;
 
     // this field 'menus' used only for @OnDelete in 'dish_in_menu' rows when delete Dish or Restaurant
-    @ElementCollection
+/*    @ElementCollection
     @CollectionTable(name = "dish_in_menu", joinColumns = @JoinColumn(name = "dish_id"))
     @JoinColumn(name = "dish_id")
     @Column(name = "menu_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     @ToString.Exclude
-    private Set<Integer> menus;
+    private Set<Integer> menus;*/
+
+   /* @ManyToMany(mappedBy = "dishesInMenu")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    Set<Menu> menus;*/
 
     public Dish(Dish dish) {
         this(dish.getId(), dish.getName(), dish.getPrice(), dish.getRestId());

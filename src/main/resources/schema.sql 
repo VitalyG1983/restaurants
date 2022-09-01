@@ -1,0 +1,91 @@
+create table USERS
+(
+    ID         INTEGER auto_increment
+        primary key,
+    NAME       VARCHAR(128)            not null,
+    EMAIL      VARCHAR(128)            not null
+        constraint UK_6DOTKOTT2KJSP8VW4D0M25FB7
+            unique,
+    ENABLED    BOOL      default TRUE  not null,
+    PASSWORD   VARCHAR(256)            not null,
+    REGISTERED TIMESTAMP default NOW() not null
+);
+
+create table DISH
+(
+    ID      INTEGER auto_increment
+        primary key,
+    NAME    VARCHAR(128) not null,
+    PRICE   INTEGER      not null,
+    REST_ID INTEGER      not null,
+    constraint DISH_UNIQUE_REST_ID_NAME_IDX
+        unique (REST_ID, NAME),
+    constraint FKDTOXFJNB5QDSK523WL8A8569Q
+        foreign key (REST_ID) references RESTAURANT (ID)
+            on delete cascade
+);
+
+create table DISH_IN_MENU
+(
+    MENU_ID INTEGER not null,
+    DISH_ID INTEGER not null,
+    constraint DISH_IN_MENU_UNIQUE_MENU_ID_DISH_ID_IDX
+        unique (MENU_ID, DISH_ID),
+    constraint FKKN1B7IK3T0K551URUCCI7NUC8
+        foreign key (DISH_ID) references DISH (ID)
+            on delete cascade,
+    constraint FKN3T7IMH58MGA0IYVX19C1BDAR
+        foreign key (MENU_ID) references MENU (ID)
+);
+
+create table MENU
+(
+    ID        INTEGER auto_increment
+        primary key,
+    MENU_DATE DATE    not null,
+    REST_ID   INTEGER not null,
+    constraint MENU_UNIQUE_DATE_REST_ID_IDX
+        unique (MENU_DATE, REST_ID),
+    constraint FKO1DQRFUYRAVJ72MKF6CUQ0RUK
+        foreign key (REST_ID) references RESTAURANT (ID)
+            on delete cascade
+);
+
+create table RESTAURANT
+(
+    ID      INTEGER auto_increment
+        primary key,
+    NAME    VARCHAR(128) not null,
+    ADDRESS VARCHAR(120) not null,
+    constraint REST_UNIQUE_NAME_ADDRESS_IDX
+        unique (NAME, ADDRESS)
+);
+
+create table USER_ROLES
+(
+    USER_ID INTEGER not null,
+    ROLE    VARCHAR(255),
+    constraint UK_USER_ROLES
+        unique (USER_ID, ROLE),
+    constraint FKHFH9DX7W3UBF1CO1VDEV94G3F
+        foreign key (USER_ID) references USERS (ID)
+            on delete cascade
+);
+
+create table VOTE
+(
+    ID        INTEGER auto_increment
+        primary key,
+    DATE_VOTE DATE    not null,
+    REST_ID   INTEGER not null,
+    TIME_VOTE TIME    not null,
+    USER_ID   INTEGER not null,
+    constraint VOTE_UNIQUE_DATE_USER_ID_IDX
+        unique (DATE_VOTE, USER_ID),
+    constraint FKKMVVQILX49120P47NR9T56OMF
+        foreign key (USER_ID) references USERS (ID)
+            on delete cascade,
+    constraint FKVXYVQECCHVE0MVVIUNWE3076
+        foreign key (REST_ID) references RESTAURANT (ID)
+            on delete cascade
+);

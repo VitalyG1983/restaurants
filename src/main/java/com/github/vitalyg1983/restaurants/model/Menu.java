@@ -36,6 +36,8 @@ public class Menu extends BaseEntity {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dish_in_menu_unique_menu_id_dish_id_idx")})
     @OrderBy("name")
     @ToString.Exclude
+    //@JoinColumn(name = "dish_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Dish> dishesInMenu;
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
