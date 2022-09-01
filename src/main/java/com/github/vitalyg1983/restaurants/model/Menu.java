@@ -34,7 +34,7 @@ public class Menu extends BaseEntity {
     @ToString.Exclude
     private Restaurant restaurant;
 
-    // Many-to-Many With a New Entity: https://www.baeldung.com/jpa-many-to-many
+    // Many-to-Many With a New 3-d Entity: https://www.baeldung.com/jpa-many-to-many
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "menu_id", nullable = false)
     @OrderBy("dish")

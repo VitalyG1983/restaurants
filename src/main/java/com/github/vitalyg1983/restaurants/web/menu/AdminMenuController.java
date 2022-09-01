@@ -35,6 +35,7 @@ public class AdminMenuController extends AbstractMenuController {
 
     @GetMapping(API_URL + "/{id}")
     public ResponseEntity<Menu> get(@PathVariable int restId, @PathVariable int id) {
+        restaurantRepository.checkExistence(restId);
         return ResponseEntity.of(menuRepository.get(id, restId));
     }
 

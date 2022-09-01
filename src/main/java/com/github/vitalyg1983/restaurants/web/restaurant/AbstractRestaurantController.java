@@ -15,9 +15,9 @@ public abstract class AbstractRestaurantController {
     @Autowired
     protected RestaurantRepository repository;
 
-    public ResponseEntity<Restaurant> get(int restId) {
+    public Restaurant get(int restId) {
         log.info("get restaurant id={}", restId);
-        return ResponseEntity.of(repository.findById(restId));
+        return repository.checkExistence(restId);
     }
 
     public List<Restaurant> getAll() {

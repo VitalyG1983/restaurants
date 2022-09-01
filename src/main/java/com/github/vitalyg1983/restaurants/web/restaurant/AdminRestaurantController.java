@@ -28,7 +28,7 @@ public class AdminRestaurantController extends AbstractRestaurantController {
     static final String API_URL = "/api/admin/restaurants";
 
     @GetMapping("/{restId}")
-    public ResponseEntity<Restaurant> get(@PathVariable int restId) {
+    public Restaurant get(@PathVariable int restId) {
         return super.get(restId);
     }
 
