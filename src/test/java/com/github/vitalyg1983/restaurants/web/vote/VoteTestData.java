@@ -29,7 +29,7 @@ public class VoteTestData {
         return new Vote(null, LocalDateTime.now(), GUEST_ID, 1);
     }
 
-    public static void setVoteTestTime(LocalTime voteTestTime) {
-        DateTimeUtil.VOTE_TEST_TIME = voteTestTime;
+    public static void setVoteDeadLineTime(LocalTime voteTestTime) {
+        DateTimeUtil.VOTE_ELEVEN_TIME = voteTestTime;
     }
 }

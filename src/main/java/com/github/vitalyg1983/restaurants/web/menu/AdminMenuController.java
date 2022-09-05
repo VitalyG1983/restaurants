@@ -22,6 +22,9 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.github.vitalyg1983.restaurants.util.validation.ValidationUtil.assureIdConsistent;
+import static com.github.vitalyg1983.restaurants.util.validation.ValidationUtil.checkNew;
+
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
@@ -30,8 +33,8 @@ import java.util.List;
 public class AdminMenuController extends AbstractMenuController {
     static final String API_URL = "/api/admin/restaurants/{restId}/menus";
 
-    protected MenuService service;
-    protected RestaurantRepository restaurantRepository;
+    private MenuService service;
+    private RestaurantRepository restaurantRepository;
 
     @GetMapping(API_URL + "/{id}")
     public ResponseEntity<Menu> get(@PathVariable int restId, @PathVariable int id) {
@@ -67,22 +70,21 @@ public class AdminMenuController extends AbstractMenuController {
         menuRepository.delete(menuRepository.checkBelong(id, restId));
     }
 
-    @Transactional
     @PatchMapping(value = API_URL + "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(allEntries = true)
     public void update(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId, @PathVariable int id) {
         log.info("update menu id={} of restaurant {}", id, restId);
-        menuRepository.checkBelong(id, restId);
-        service.save(menuTo, restId, menuTo.getMenuDate(), id);
+        assureIdConsistent(menuTo, id);
+        service.update(menuTo, restId, id);
     }
 
-    @Transactional
     @PostMapping(value = API_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     @CacheEvict(allEntries = true)
     public ResponseEntity<Menu> createWithLocation(@Valid @RequestBody MenuTo menuTo, @PathVariable int restId) {
         log.info("create menu {} for restaurant {}", menuTo, restId);
-        Menu saved = service.save(menuTo, restId, menuTo.getMenuDate());
+        checkNew(menuTo);
+        Menu saved = service.create(menuTo, restId, menuTo.getMenuDate());
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(API_URL + "/{id}")
                 .buildAndExpand(saved.getRestaurant().getId(), saved.getId()).toUri();

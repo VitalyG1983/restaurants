@@ -15,7 +15,7 @@ public interface DishRepository extends BaseRepository<Dish> {
     @Query("SELECT d FROM Dish d WHERE d.restId=:restId ORDER BY d.name")
     List<Dish> getAll(int restId);
 
-    @Query("SELECT d.id FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids) ORDER BY d.name")
+    @Query("SELECT d.id FROM Dish d WHERE d.restId=:restId AND d.id IN (:ids)")
     Set<Integer> getAllIds(int restId, Set<Integer> ids);
 
     @Query("SELECT d FROM Dish d WHERE d.id = :id and d.restId = :restId")

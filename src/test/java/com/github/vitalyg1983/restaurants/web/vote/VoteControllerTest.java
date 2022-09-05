@@ -5,7 +5,6 @@ import com.github.vitalyg1983.restaurants.repository.VoteRepository;
 import com.github.vitalyg1983.restaurants.web.AbstractControllerTest;
 import com.github.vitalyg1983.restaurants.web.user.UserTestData;
 import com.github.vitalyg1983.restaurants.util.DateTimeUtil;
-import com.github.vitalyg1983.restaurants.web.restaurant.RestaurantTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,7 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static com.github.vitalyg1983.restaurants.web.restaurant.RestaurantTestData.*;
 import static com.github.vitalyg1983.restaurants.web.vote.VoteTestData.INVALID_VOTE_ID;
@@ -105,7 +104,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateBeforeEleven() throws Exception {
-        VoteTestData.setVoteTestTime(DateTimeUtil.VOTE_ELEVEN_TIME.minusHours(1));
+        VoteTestData.setVoteDeadLineTime(LocalTime.now().plusHours(1));
         perform(MockMvcRequestBuilders.patch(API_URL + "/?newRestId=" + REST_ID2))
                 .andExpect(status().isNoContent());
 
@@ -115,7 +114,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.USER_MAIL)
     void updateAfterEleven() throws Exception {
-        VoteTestData.setVoteTestTime(DateTimeUtil.VOTE_ELEVEN_TIME.plusHours(1));
+        VoteTestData.setVoteDeadLineTime(LocalTime.now().minusHours(1));
         perform(MockMvcRequestBuilders.patch(API_URL + "/?newRestId=" + REST_ID2))
                 .andExpect(status().isConflict());
 

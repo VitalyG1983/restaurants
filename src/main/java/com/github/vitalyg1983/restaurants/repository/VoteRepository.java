@@ -24,14 +24,8 @@ public interface VoteRepository extends BaseRepository<Vote> {
     @Query("SELECT v FROM Vote v WHERE v.dateVote=:dateVote ORDER BY v.restId, v.user.name")
     List<Vote> getAll(LocalDate dateVote);
 
-    @Query("SELECT v from Vote v WHERE v.id=:id AND v.user.id=:userId AND v.dateVote = :toDay")
-    Optional<Vote> getCurrent(int id, LocalDate toDay, int userId);
-
     @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote = :voteDay")
     Optional<Vote> getCurrentByToDayDate(LocalDate voteDay, int userId);
-
-    @Query("SELECT v from Vote v WHERE v.user.id=:userId AND v.dateVote = :toDay")
-    Optional<Vote> getProbablyVote(LocalDate toDay, int userId);
 
     default Vote checkBelong(int id, int userId, int restId) {
         return get(id, userId, restId).orElseThrow(

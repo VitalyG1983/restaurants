@@ -33,6 +33,7 @@ public class AdminDishController {
         return ResponseEntity.of(repository.get(id, restId));
     }
 
+    @Transactional
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int restId, @PathVariable int id) {

@@ -56,14 +56,12 @@ public class AdminVoteController extends AbstractVoteController {
         repository.delete(vote);
     }
 
-    @Transactional
     @PatchMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int newRestId) {
         super.update(authUser.id(), newRestId);
     }
 
-    @Transactional
     @PostMapping()
     public ResponseEntity<Vote> createWithLocation(@AuthenticationPrincipal AuthUser authUser, @RequestParam int restId) {
         return super.createWithLocation(authUser.id(), restId, API_URL + "/by-today");

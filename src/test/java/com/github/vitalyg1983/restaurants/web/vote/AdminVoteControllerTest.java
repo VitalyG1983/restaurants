@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static com.github.vitalyg1983.restaurants.web.vote.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -116,7 +117,7 @@ class AdminVoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateBeforeEleven() throws Exception {
-        VoteTestData.setVoteTestTime(DateTimeUtil.VOTE_ELEVEN_TIME.minusHours(1));
+        VoteTestData.setVoteDeadLineTime(LocalTime.now().plusHours(1));
         perform(MockMvcRequestBuilders.patch(API_URL + "/" + "?newRestId=" + RestaurantTestData.REST_ID1))
                 .andExpect(status().isNoContent());
 
@@ -126,7 +127,7 @@ class AdminVoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void updateAfterEleven() throws Exception {
-        VoteTestData.setVoteTestTime(DateTimeUtil.VOTE_ELEVEN_TIME.plusHours(1));
+        VoteTestData.setVoteDeadLineTime(LocalTime.now().minusHours(1));
         perform(MockMvcRequestBuilders.patch(API_URL + "/?newRestId=" + RestaurantTestData.REST_ID1))
                 .andExpect(status().isConflict());
 

@@ -21,6 +21,9 @@ public interface MenuRepository extends BaseRepository<Menu> {
     @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
     Optional<Menu> get(int id, int restId);
 
+    @Query("SELECT m FROM Menu m WHERE m.id = :id and m.restaurant.id = :restId")
+    Optional<Menu> getWithLazy(int id, int restId);
+
     @EntityGraph(attributePaths = {"dishesInMenu", "dishesInMenu.dish", "restaurant"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT m FROM Menu m WHERE m.restaurant.id = :restId AND m.menuDate = :menuDate")
     Optional<Menu> getByDate(LocalDate menuDate, int restId);
@@ -30,7 +33,7 @@ public interface MenuRepository extends BaseRepository<Menu> {
     List<Menu> getAllForRestaurantsByDate(LocalDate menuDate);
 
     default Menu checkBelong(int id, int restId) {
-        return get(id, restId).orElseThrow(
+        return getWithLazy(id, restId).orElseThrow(
                 () -> new DataConflictException("Menu id=" + id + " doesn't belong to Restaurant id=" + restId));
     }
 }
