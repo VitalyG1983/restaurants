@@ -44,7 +44,7 @@ spring:
 logging:
   level:
     root: WARN
-    com/github/vitalyg1983/restaurants: DEBUG
+    com/github/vitalydev/restaurants: DEBUG
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
 
 server.servlet:
