@@ -1,13 +1,13 @@
 package com.github.vitalydev.restaurants.service;
 
 import com.github.vitalydev.restaurants.error.DataConflictException;
+import com.github.vitalydev.restaurants.model.Dish;
 import com.github.vitalydev.restaurants.model.Menu;
 import com.github.vitalydev.restaurants.repository.DishRepository;
 import com.github.vitalydev.restaurants.repository.MenuRepository;
 import com.github.vitalydev.restaurants.repository.RestaurantRepository;
 import com.github.vitalydev.restaurants.to.MenuTo;
 import com.github.vitalydev.restaurants.util.MenuUtil;
-import com.github.vitalydev.restaurants.model.DishInMenu;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +27,8 @@ public class MenuService {
     @Transactional
     public void update(MenuTo menuTo, int restId, int menuId) {
         Menu menu = menuRepository.checkBelong(menuId, restId);
-        List<DishInMenu> createdDishesInMenu = MenuUtil.createDishesInMenu(dishRepository.findAllById(getIds(menuTo, restId)));
-        List<DishInMenu> dishesInMenu = menu.getDishesInMenu();
+        List<Dish> createdDishesInMenu = MenuUtil.createDishesInMenu(dishRepository.findAllById(getIds(menuTo, restId)));
+        List<Dish> dishesInMenu = menu.getDishesInMenu();
         // here Hibernate directly clear the rows of dishesInMenu from the DB table DISHINMENU
         dishesInMenu.clear();
         menuRepository.flush();

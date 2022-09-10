@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.util.Set;
 
 @Entity
 @Table(name = "dish", uniqueConstraints = {
@@ -33,6 +33,15 @@ public class Dish extends NamedEntity {
     // 'restId' not need in request/response, because restId get from url
     @JsonIgnore
     private int restId;
+
+    @ManyToMany(mappedBy = "dishesInMenu")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    Set<Menu> menus;
+
+    public Dish(Dish dish) {
+        this(dish.getId(), dish.getName(), dish.getPrice(), dish.getRestId());
+    }
 
     public Dish(Integer id, String name, int price, int restId) {
         super(id, name);

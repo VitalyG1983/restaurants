@@ -33,12 +33,24 @@ public class Menu extends BaseEntity {
     private Restaurant restaurant;
 
     // Many-to-Many With a New 3-d Entity: https://www.baeldung.com/jpa-many-to-many
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+/*    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "menu_id", nullable = false)
     @OrderBy("dish")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @ToString.Exclude
-    private List<DishInMenu> dishesInMenu;
+    private List<DishInMenu> dishesInMenu;*/
+
+    // Basic Many-to-Many through @JoinTable: https://www.baeldung.com/jpa-many-to-many
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "dish_in_menu",
+            joinColumns = @JoinColumn(name = "menu_id", nullable = false, referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id", nullable = false, referencedColumnName = "id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"menu_id", "dish_id"}, name = "dish_in_menu_unique_menu_id_dish_id_idx")})
+    @OrderBy("name")
+    @ToString.Exclude
+    //@JoinColumn(name = "dish_id")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Dish> dishesInMenu;
 
     public Menu(Integer id, LocalDate menuDate, Restaurant restaurant) {
         super(id);
@@ -46,7 +58,7 @@ public class Menu extends BaseEntity {
         this.restaurant = restaurant;
     }
 
-    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<DishInMenu> dishesInMenu) {
+    public Menu(Integer id, LocalDate menuDate, Restaurant restaurant, List<Dish> dishesInMenu) {
         this(id, menuDate, restaurant);
         this.dishesInMenu = dishesInMenu;
     }

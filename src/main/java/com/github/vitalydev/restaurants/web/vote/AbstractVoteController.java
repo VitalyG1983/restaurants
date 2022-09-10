@@ -47,6 +47,4 @@ public abstract class AbstractVoteController {
                 .buildAndExpand().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
-
-
 }
