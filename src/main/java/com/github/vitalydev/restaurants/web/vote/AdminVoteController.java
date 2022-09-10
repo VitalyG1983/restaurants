@@ -47,15 +47,6 @@ public class AdminVoteController extends AbstractVoteController {
         return repository.getAll(voteDate == null ? LocalDate.now() : voteDate);
     }
 
-    @Transactional
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id, @RequestParam int restId, @RequestParam int userId) {
-        log.info("delete vote id={} for user {}", id, userId);
-        Vote vote = repository.checkBelong(id, userId, restId);
-        repository.delete(vote);
-    }
-
     @PatchMapping()
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@AuthenticationPrincipal AuthUser authUser, @RequestParam int newRestId) {

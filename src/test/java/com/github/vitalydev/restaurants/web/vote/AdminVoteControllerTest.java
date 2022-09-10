@@ -79,24 +79,6 @@ class AdminVoteControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
-    void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete("/api/admin/votes/"
-                + VoteTestData.USER_VOTE1_ID + "?restId=" + RestaurantTestData.REST_ID1 + "&userId=" + UserTestData.USER_ID))
-                .andExpect(status().isNoContent());
-
-        assertFalse(voteRepository.findById(VoteTestData.USER_VOTE1_ID).isPresent());
-    }
-
-    @Test
-    @WithUserDetails(value = UserTestData.ADMIN_MAIL)
-    void deleteDataConflict() throws Exception {
-        perform(MockMvcRequestBuilders.delete("/api/admin/votes/"
-                + VoteTestData.INVALID_VOTE_ID + "?restId=" + RestaurantTestData.REST_ID1 + "&userId=" + UserTestData.USER_ID))
-                .andExpect(status().isConflict());
-    }
-
-    @Test
     @Transactional(propagation = Propagation.NEVER)
     @WithUserDetails(value = UserTestData.ADMIN_MAIL)
     void createDuplicate() throws Exception {
