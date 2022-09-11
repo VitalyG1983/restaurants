@@ -26,7 +26,6 @@ import java.util.List;
 @CacheConfig(cacheNames = {"menu", "menus"})
 public class AdminDishController {
     static final String API_URL = "/api/admin/restaurants/{restId}/dishes";
-
     private final DishRepository repository;
     private final RestaurantRepository restaurantRepository;
 

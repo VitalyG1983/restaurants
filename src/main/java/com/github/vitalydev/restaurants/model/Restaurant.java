@@ -1,6 +1,6 @@
 package com.github.vitalydev.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.vitalydev.restaurants.util.validation.NoHtml;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -26,11 +26,12 @@ public class Restaurant extends NamedEntity {
     @NoHtml
     private String address;
 
+    // field 'dishes' only for cascade @OnDelete List<Dish>
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "rest_id")
     @OrderBy("name")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonIgnore
     @Schema(hidden = true)
     @ToString.Exclude
     private List<Dish> dishes;

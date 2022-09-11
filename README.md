@@ -25,11 +25,9 @@ The most popular technologies/ tools/ frameworks used in project:
 **[JDK 17](http://jdk.java.net/17/) /Maven/ Spring/[Spring Security](http://projects.spring.io/spring-security/) /[Spring Data JPA](http://projects.spring.io/spring-data-jpa/) /[Spring Security Test](http://spring.io/blog/2014/05/07/preview-spring-security-test-method-security) /[Hibernate ORM](http://hibernate.org/orm/) /[Hibernate Validator](http://hibernate.org/validator/) /[SLF4J](http://www.slf4j.org/) /[Json Jackson](https://github.com/FasterXML/jackson) /[JUnit 5](https://junit.org/junit5/) /[Hamcrest](http://hamcrest.org/JavaHamcrest/) /[AssertJ](https://assertj.github.io/doc/) /REST(Jackson)  
 Spring Boot 2.5/ Lombok/ H2/ Caffeine Cache/ Swagger/OpenAPI 3.0.**
 
-- Run: `mvn spring-boot:run` in root directory.
-
-
-[SWAGGER REST API documentation](http://localhost:8080/swagger-ui.html)  
-Test credentials:
+- Run: `mvn spring-boot:run` in root directory. Then you can start:
+[SWAGGER REST API documentation](http://localhost:8080/swagger-ui.html) with
+test credentials:
 ```
 Admin: admin@gmail.com / admin
 User:  user@yandex.ru / password

@@ -32,7 +32,6 @@ import static com.github.vitalydev.restaurants.util.validation.ValidationUtil.ch
 @CacheConfig(cacheNames = {"menu", "menus"})
 public class AdminMenuController extends AbstractMenuController {
     static final String API_URL = "/api/admin/restaurants/{restId}/menus";
-
     private MenuService service;
     private RestaurantRepository restaurantRepository;
 

@@ -1,7 +1,7 @@
 package com.github.vitalydev.restaurants.web.vote;
 
-import com.github.vitalydev.restaurants.web.AuthUser;
 import com.github.vitalydev.restaurants.model.Vote;
+import com.github.vitalydev.restaurants.web.AuthUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

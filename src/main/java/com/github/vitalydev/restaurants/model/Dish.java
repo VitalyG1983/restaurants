@@ -29,11 +29,11 @@ public class Dish extends NamedEntity {
     private int price;
 
     @Column(name = "rest_id", nullable = false)
-    //@Range(min = 1)
     // 'restId' not need in request/response, because restId get from url
     @JsonIgnore
     private int restId;
 
+    //field 'menus' needed only for @OnDelete in "dish_in_menu" datatable
     @ManyToMany(mappedBy = "dishesInMenu")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore

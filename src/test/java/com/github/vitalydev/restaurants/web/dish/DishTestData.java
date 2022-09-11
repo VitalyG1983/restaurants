@@ -1,12 +1,12 @@
 package com.github.vitalydev.restaurants.web.dish;
 
-import com.github.vitalydev.restaurants.web.MatcherFactory;
 import com.github.vitalydev.restaurants.model.Dish;
+import com.github.vitalydev.restaurants.web.MatcherFactory;
 
 import java.util.List;
 
 public class DishTestData {
-    public static MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class,"restId");
+    public static MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restId");
 
     public static final int DISH1_ID = 1;
     public static final int REST2_DISH4_ID = 4;

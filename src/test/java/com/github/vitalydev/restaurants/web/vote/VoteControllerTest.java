@@ -1,9 +1,9 @@
 package com.github.vitalydev.restaurants.web.vote;
 
+import com.github.vitalydev.restaurants.model.Vote;
 import com.github.vitalydev.restaurants.repository.VoteRepository;
 import com.github.vitalydev.restaurants.web.AbstractControllerTest;
 import com.github.vitalydev.restaurants.web.restaurant.RestaurantTestData;
-import com.github.vitalydev.restaurants.model.Vote;
 import com.github.vitalydev.restaurants.web.user.UserTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

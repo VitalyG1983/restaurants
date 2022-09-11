@@ -1,6 +1,6 @@
 package com.github.vitalydev.restaurants.web.vote;
 
-import com.github.vitalydev.restaurants.util.DateTimeUtil;
+import com.github.vitalydev.restaurants.service.VoteService;
 import com.github.vitalydev.restaurants.web.MatcherFactory;
 import com.github.vitalydev.restaurants.model.Vote;
 
@@ -30,6 +30,6 @@ public class VoteTestData {
     }
 
     public static void setVoteDeadLineTime(LocalTime voteTestTime) {
-        DateTimeUtil.VOTE_ELEVEN_TIME = voteTestTime;
+        VoteService.DEADLINE_TO_CHANGE_VOTE = voteTestTime;
     }
 }

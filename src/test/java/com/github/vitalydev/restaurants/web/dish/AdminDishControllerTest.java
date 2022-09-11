@@ -5,7 +5,6 @@ import com.github.vitalydev.restaurants.repository.DishRepository;
 import com.github.vitalydev.restaurants.util.JsonUtil;
 import com.github.vitalydev.restaurants.web.AbstractControllerTest;
 import com.github.vitalydev.restaurants.web.user.UserTestData;
-import com.github.vitalydev.restaurants.web.restaurant.RestaurantTestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
